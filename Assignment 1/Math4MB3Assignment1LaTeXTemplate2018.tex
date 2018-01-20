@@ -39,8 +39,26 @@
   
   {\color{blue}
     \begin{proof}
-      {\color{magenta}\dots beautifully clear and concise text to be inserted here\dots}
-      When referring to equation~\eqref{E:SI} make sure to use ~\verb|equation~\eqref{E:SI}|~ in your source file so that you obtain a hyperlinked reference that is automatically numbered correctly.
+      In order to prove that the endemic equilibrium, given by $I_\ast = N$, is globally asymptotically stable, we must first find an appropriate Lyapunov function. First, let 
+\begin{equation*}
+\Delta = \{I \,:\, 0 \leq I \leq N\} \subset \mathbb{R}
+\end{equation*}
+represent an open set consisting of the biologically relevant region, containing $I_\ast = N$. Then, consider the the following $C^1$ function $L: \Delta \to \mathbb{R}$ given by
+\begin{equation*}
+L(I) = (I^2 - N^2)^2.
+\end{equation*}
+Since $L(N) = 0$ and $L(I) > 0$ for all $I \in \Delta \setminus \{I_\ast\}$, we say that $L$ is positive definite on $\Delta$. Additionally, observe that
+\begin{equation*}
+\begin{aligned}
+\dot{L}(I) &= \frac{dL}{dI} \frac{dI}{dt} \\
+&= 2(I^2 - N^2)(2 I)(\beta I)(N-I) \\
+&= 4 \beta I^2 (I^2 - N^2)(N-I)\\
+& = - 4 \beta I^2  (I+N) (N-I)^2
+\end{aligned}
+\end{equation*}
+is negative for all $I \in \Delta \setminus \{I_\ast\}$. As a result, $L$ is negative definite on $\Delta$. By Lyapunov's Direct Method, $L$ is a strict Lyapunov function, and $I_\ast=N$ is asymptotically stable. \\
+
+In order to prove global asymptotic stability, we observe that as the magnitude of $I$ gets arbitrarily large, $L(I)$ also gets arbitrarily large. In other words, $L(I) \to \infty$ as $|I| \to \infty$, and $L$ is thus radially unbounded. Since $L(I)$ is radially unbounded, and $L(I) < 0$ $\forall \ I \in \Delta \setminus \{I_\ast\}$, it follows by LaSalle's Invariance Principle that the endemic equilibrium is globally asymptotically stable.
     \end{proof}
   }
   
@@ -50,12 +68,66 @@
     
     {\color{blue}
       \begin{proof}
-        {\color{magenta}\dots beautifully clear and concise text to be inserted here\dots}
-        Since an exactly solution is requested, there will no doubt be an equation of the form
-        \begin{equation}
-          I(t) = \cdots \text{blah blah blah} \cdots ,
-        \end{equation}
-        which will be extremely enlightening.
+        In order to find an exact solution of the model, we must first solve the separable ordinary differential equation given by
+\begin{equation*}
+\frac{dI}{I(N-I)} = \beta dt.
+\end{equation*}
+Integrating both sides, we obtain the following:
+\begin{equation*}
+\begin{aligned}
+\int \frac{dI}{I(N-I)} &= \int \beta dt \\
+- \frac{1}{N} \int \left(\frac{1}{I-N} - \frac{1}{I}\right) dI &= \int \beta dt\\
+\frac{1}{N} \ln{|I|} - \frac{1}{N} \ln{|I-N|} + C_2 &= \beta t + C_1.
+\end{aligned}
+\end{equation*}
+Let $C_3 = C_1 - C_2$. Then, we obtain the following equation:
+\begin{equation*}
+\ln{\left(\frac{I}{I-N}\right)} = N(\beta t + C_3).
+\end{equation*}
+To further simplify, let $C = e^{NC_3}$ to obtain the following solution:
+\begin{equation}
+\begin{aligned}
+I &= \frac{NCe^{N \beta t}}{Ce^{N \beta t} - 1}.
+\label{genI}
+\end{aligned}
+\end{equation}
+
+Assuming an initial condition of $I(0) = I_0$, we can then solve for $C$:
+\begin{equation*}
+\begin{aligned}
+I_0 &= \frac{NCe^{N\beta(0)}}{Ce^{N\beta(0)-1}} \\
+I_0 &= \frac{NC}{C-1} \\
+C I_0 - NC &= I_0 \\
+C &= \frac{I_0}{I_0 - N}.
+\end{aligned}
+\end{equation*}
+Substituting this value into equation~\eqref{genI}, we obtain an exact solution of the model, given by
+\begin{equation}
+\begin{aligned}
+I(t) &= \frac{N \left(\frac{I_0}{I_0 - N}\right) e^{N \beta t}}{\left(\frac{I_0}{I_0 - N}\right) e^{N \beta t} - 1}.
+\label{ExactI1}
+\end{aligned}
+\end{equation}
+With some algebraic manipulation, we can obtain the exact solution presented in class. We observe:
+\begin{equation} \label{eq:solution}
+\begin{aligned}
+I(t) &= \frac{N I_0 e^{N \beta t}}{I_0 e^{N \beta t} - I_0 + N} \\
+&= \frac{N I_0 e^{N \beta t}}{I_0 \left(\frac{N}{N}\right) e^{N \beta t} - I_0 \left(\frac{N}{N}\right) + N} \\
+&= \frac{N I_0 e^{N \beta t}}{N\left(\left(\frac{I_0}{N}\right)(e^{N\beta t} - 1) + 1\right)} \\
+I(t) &= \frac{I_0 e^{N \beta t}}{1 + \frac{I_0}{N}(e^{N \beta t} - 1)}.
+\end{aligned}
+\end{equation}
+\\
+
+When $I_0 = 0$, we have $I(t) = 0$. Likewise, when $I_0 = N$, we have $I(t) = N$. Assume $I_0 \in (0, N)$.
+Taking the limit of equation~\eqref{ExactI1} as $t \to \infty$, we observe the behaviour of any solution $I(t) \in (0,N)$ as $t$ gets arbitrarily large. Dividing both numerator and denominator in equation~\eqref{eq:solution} by $e^{N \beta t}$, we have
+\begin{equation*}
+\begin{aligned}
+\lim_{t \to \infty} I(t) &= \lim_{t \to \infty}  \frac{I_0}{ e^{-N \beta t} + \frac{I_0}{N}(1 -  e^{-N \beta t})} = N.
+\end{aligned}
+\end{equation*}
+As a result of the above limit, we can conclude that for all initial conditions $I(0) \in (0,N)$, the solution ultimately converges to the endemic equilibrium given by $I_\ast = N$.
+Therefore, the endemic equilibrium is globally asymptotically stable.
       \end{proof}
     }
     
@@ -63,7 +135,38 @@
     
     {\color{blue}
       \begin{proof}
-        {\color{magenta}\dots beautifully clear and concise text to be inserted here\dots}
+        Denote
+\begin{equation*}
+\frac{dI}{dt} = \beta I (N-I) = F(t, I).
+\end{equation*}
+Observe that $F(t, I)$ is $C^1$ for all $(t, I) \in \mathbb{R} \times [0, N]$. 
+By the Fundamental Existence and Uniqueness Theorem, there exists a unique solution through any initial point $(0, I(0)) \in \{ 0\} \times [0, N]$.
+In particular, since $I(t) = 0$ and $I(t) = N$ are the only equilibrium solutions, $I(0) \in (0, N)$ implies $I(t) \in (0, N)$ for all $t \in \mathbb{R}$.
+
+Note that
+\begin{equation*}
+F(t, I) = \beta I (N-I) > 0
+\end{equation*}
+when $(t, I(t)) \in \mathbb{R} \times (0, N)$. 
+So $I(t)$ is a monotonically increasing function of $t$.
+To yield contradiction, given $\epsilon > 0$, suppose there does not exist $t < \infty$ such that $I(t) \in [N - \epsilon, N)$ for some $I(0) \in (0, N)$.
+In other words, $I(t) \leq N-\epsilon$ for all $t \in \mathbb{R}$.
+Since $I(t)$ is a monotonically increasing function and is bounded, it converges to its supremum, which is less than or equal to $N-\epsilon$. So
+\begin{equation*}
+\lim_{t \to \infty} I(t) = \sup_{t \in \mathbb{R}} I(t) = \hat{I} \implies \lim_{t \to \infty} F(t, I) = \lim_{I \to \hat{I}} F(t, I) = 0.
+\end{equation*}
+Since $\hat{I} \in (0, N)$,
+\begin{equation*}
+F(t, \hat{I}) > 0.
+\end{equation*}
+This contradicts our previous observation that $F(t, I)$ is a $C^1$ function. 
+
+Given $\epsilon > 0$, there exists $t < \infty$ such that for any $I(0) \in (0, N)$, $I(t) \in [N - \epsilon, N)$. 
+This implies that for any $I(0) \in (0, N)$,
+\begin{equation*}
+\lim_{t \to \infty} I(t) = N.
+\end{equation*}
+Therefore, the equilibrium point $I=N$ is globally asymptotically stable.
       \end{proof}
     }
     
@@ -78,7 +181,40 @@
 
 {\color{blue}
 \begin{proof}[Solution]
-{\color{magenta}\dots beautifully clear and concise text to be inserted here\dots}
+Peak prevalence is defined as the maximum proportion of the population that is simultaneously infected. 
+When $I(0) = 0$, $dI/dt = 0$ for all $t > 0$. So $I(t) = 0$ for all $t > 0$ and peak prevalence will be 0 as well.\\
+
+Suppose $I(0) > 0$.
+Recall that the derivative at a local maximum is 0. Let $t_p$ denote the time at which peak prevalence occurs. Let ${I}_p$ and ${S}_p$ be proportion of infected and susceptible individuals in the population at $t_p$. Then, ${I}_p$ represents peak prevalence and the following equation holds.
+\begin{equation}
+\left.\frac{dI}{dt}\right|_{t_p} = \R_0 S_p I_p - I_p = 0
+\label{eq:peakp}
+\end{equation}
+Since $I_p > 0$ for all $t>0$, solving equation~\eqref{eq:peakp} yields the following:
+\begin{equation}
+S_p = \frac{1}{\R_0}.
+\label{eq:peaks}
+\end{equation}
+Recall that the analytical solution of the SIR model for the phase portrait is given by
+\begin{equation*}
+I - I_0 = -(S - S_0) + \frac{1}{\R_0} \log (S/S_0)
+\end{equation*}
+At $t_p$, we have
+\begin{equation*}
+I_p - I_0 = -(S_p - S_0) + \frac{1}{\R_0} \log (S_p/S_0)
+\end{equation*}
+By substituting equation~\eqref{eq:peaks}, we obtain the following expression for peak prevalence:
+\begin{equation*}
+I_p = I_0 - \left(\frac{1}{\R_0} - S_0\right) + \frac{1}{\R_0} \log \left( \frac{1}{\R_0 S_0}\right).
+\end{equation*}
+\\
+Public health officials should be interested in peak prevalence for two reaons.
+First, it measures how dangerous disease can be. 
+Disease with higher peak prevalence will spread more easily and potentially be more dangerous.
+Knowing peak prevalence early in an outbreak allows public health officials to estimate how much intervention is required and make interventions before peak prevalence is reached. Public health officials are interested in whether they have enough resources (such as hospital capacity) to treat the number of infected individuals.
+Second, knowing peak prevalence allows future epidemics to be predicted.
+Once we know how fast an epidemic grows, it is possible to estimate how fast the peak prevalence will be reached. 
+Although exact shape of an epidemic is difficult to predict, knowing when peak prevalence occurs will allow public health officials to figure out an approximate shape of an epidemic.
 \end{proof}
 }
 
@@ -88,7 +224,44 @@
 
 {\color{blue}
 \begin{proof}[Solution]
-{\color{magenta}\dots beautifully clear and concise text to be inserted here\dots}
+Combining the expression for $dS/dt$ and $dR/dt$, we have that
+\begin{equation*}
+\frac{1}{S} \frac{dS}{dt} = - \R_0 \frac{dR}{dt}.
+\end{equation*}
+Note that $d \log S/dt = (dS/dt)/S$. We can integrate over $[0, \tau]$ to obtain
+\begin{equation}\label{eq:S(R)}
+\begin{aligned} 
+\int_0^\tau \frac{d\log S}{dt} &= - \R_0 \int_0^\tau \frac{dR}{dt}.\\
+\log S(\tau) - \log S(0) &= - \R_0(R(\tau) -R(0)) \\
+S(\tau) &= S(0) e^{-\R_0(R(\tau)-R(0))}
+\end{aligned}
+\end{equation}
+
+We recall that $S+I+R=1$, and thus we substitute $S=1-I-R$ into the above expression. This yields the following:
+
+\begin{equation*}
+\begin{aligned}
+1-I(\tau)-R(\tau)&=S(0)e^{-\R_0(R(\tau)-R(0))}\\
+\end{aligned}
+\end{equation*}
+
+If we substitute $I = dR/d\tau$, then 
+\begin{equation*}
+\begin{aligned}
+\frac{dR}{d\tau}&=1-S(0)e^{-\R_0(R(\tau)-R(0))}-R(\tau) \\
+\int_0^t d\tau&=\int_{R(0)}^{r} \frac{1}{1-S(0)e^{-\R_0(R-R(0))}-R} dR.
+\end{aligned}
+\end{equation*}
+where $r$ is proportion of individuals recovered at time $t$, i.e. $r= R(t)$.
+
+%% NOTE: Revisit notation
+
+Thus, we have derived an expression for $t(r)$, given by Equation \eqref{eq:t(R)}. We note that it cannot be simplified beyond this form, as there isn't an exact solution for this integral.
+
+\begin{equation}
+\label{eq:t(R)}
+t(r)=\int_{R(0)}^{r} \frac{1}{1-S(0)e^{-\R_0(R-R(0))}-R} dR
+\end{equation}
 \end{proof}
 }
 
@@ -96,32 +269,131 @@
 
 {\color{blue}
 \begin{proof}[Solution]
-{\color{magenta}\dots beautifully clear and concise text to be inserted here\dots}
+We start from the expression ${S(R)} = S_0 e^{-\R_0(R-R_0)}$ derived in equation~\eqref{eq:S(R)}. We can obtain an expression for $R(S)$ in the following way:
+
+\begin{equation} \label{eq:R(S)}
+\begin{aligned}
+e^{-\R_0(R-R_0)} &= \frac{S}{S_0}\\
+-\R_0(R-R_0) &= \log\left(\frac{S}{S_0}\right) \\
+R(S) &= R_0 - \frac{1}{\R_0} \log\left(\frac{S}{S_0}\right)
+\end{aligned}
+\end{equation}
+
+Recall from Equation (\ref{eq:peaks}) that at the time of peak prevalence $t_p$, the proportion susceptible in the population is
+
+\begin{equation*}
+\begin{aligned}
+S_p := S(t_p) = \frac{1}{\R_0}.
+\end{aligned}
+\end{equation*}
+
+Since $S(t)$ is monotonically decreasing and $R(t)$ is monotonically increasing (for non-equilibrium solutions), the values of $S(t)$ and $R(t)$ at $t_p$ are unique, and we can therefore substitute $S =S_p$ in (\ref{eq:R(S)}) to yield
+\begin{equation*}
+\begin{aligned}
+R_p &= R_0 - \frac{1}{\R_0}\log\left(\frac{1}{S_0 \R_0}\right).
+\end{aligned}
+\end{equation*}
+
+To obtain $t_p$, we can evaluate the expression for $t(R)$ given in (\ref{eq:t(R)}) at $R = R_p$ to obtain the time of peak prevalence. An expression for $t_p$ is therefore given by 
+\begin{equation*}
+\begin{aligned}
+t_p = t(R_p)=\int_{R_0}^{R_p} \frac{1}{1-S_0e^{-\R_0(R-R(0))}-R} dR, 
+\end{aligned}
+\end{equation*}
+where 
+$$
+R_p = R(0) - \frac{1}{\R_0}\log\left(\frac{1}{S_0 \R_0}\right).
+$$
+
 \end{proof}
 }
 
   \item \basicSIRanalQbiii
+
+{\color{blue}
+\begin{proof}[Answers]
+In order to compare our expressions with the P\&I time series for Philiadelphia 1918, we would have to make assumptions about how our model is related to the mortality data. 
+In our basic SIR model, $R$ measures the proportion of the population ``removed'' from the dynamics of the system, either through death or recovery (and subsequent immunity). A relationship between $R(t)$ and the observed Philadelphia mortality curve could be established by introducing a new death rate parameter $0 \leq \delta \leq 1$ that determines the proportion of individuals that enter the removed class through death.
+Then, $\delta R$ would represent the proportion of the population that have died from disase.
+The associated assumption with $\delta$ would be that a constant proportion of infected individuals die per unit time. That is, every infected individual has an identical probability of death. Furthermore, we would be making the assumption that as soon as an individual enters the infected class, the probability of death is immediately $\delta$, when in reality there is likely a time delay associated with the probability of death. In other words, we wouldn't expect an individual who has been infected for 10 seconds to have the same probability of death as one who has been infected for two days.
+\\\\
+Note that $\delta R$ is a cumulative function that represents proportion of population that have died whereas P\&I time series represents daily reports on death cases. 
+In order to make a comparison, we would first have to make assumptions about the population size, $N$, so that $\delta N R$ represents number of individuals that have died.
+Then, $\delta N R (t_{n+1}) - \delta N R (t_n)$ represents number of individuals that die between time $t_n$ and $t_{n+1}$. 
+We can compare this quantity with daily reports by letting $t_n$ be in the unit of days.
+To be more realistic, we can also assume that there is under reporting of death (only $\rho$ proportion of death is reported) and compare $\rho \delta N (R(t_{n+1}) - R(t_n))$ with time series.
+\\\\
+Additionally, our basic SIR model also assumes a homogeneous population in which all susceptible individuals have the same probability of infection, and all infected individuals have the same probability of death. It is likely this was not the case with the 1918 influenza epidemic. This assumption could in theory be made weaker by incorporating age structure into the model.
+\\\\
+We would not incorporate this expression in a report for a public health agency because of some key assumptions in the model that do not reflect the nature of an influenza epidemic. In particular, the temporal delay between prevalence and death is a factor we would expect to have a large impact on the inference of the time peak prevalence from mortality data, and the lack of heterogeneous age mortality structure may make our model an unreliable proxy for P\&I mortality data. This leads us to conclude that there would be large error associated with an estimate of the time of peak prevalence $t_p$ based on mortality data, and would not be useful for practical purposes.
+\end{proof}
+}
+
   \item \basicSIRanalQbiv
+
+{\color{blue}
+\begin{proof}[Answers]
+No, it is not possible to find an exact analytic expression for $t(S)$. We recall that our expression for $t(R)$ could not be integrated using elementary functions - we needed to leave this expression as an integral. It follows then, that since ${S(R)} = S_0 e^{-\R_0(R-R_0)}$, $t(S) = t(S(R))$ also cannot be evaluated. This is because $S$ is equal to a function of $R$ which is written using elementary functions. Thus, $t(S)$ is simply a change of variables from $t(R)$. Therefore, we conclude that just as we could not evaluate the integral for $t(R)$, we similarly cannot evaluate the integral for $t(S)$ using elementary functions. Instead, we derive the below integral expression for $t(S)$ using $R(S)=R_0-\frac{1}{\R_0} \log \left( \frac{S}{S_0}\right)$ and $dS/dt=-\R_0SI$. 
+\begin{equation}
+\begin{aligned}
+\frac{dS}{dt}&=-\R_0 SI\\
+&=-\R_0 S(1-S-R)\\
+&=-\R_0S \left( 1-S-R_0 + \frac{1}{\R_0} \log \left( \frac{S}{S_0}\right) \right)
+\end{aligned}
+\end{equation}
+Thus, we get Equation (\ref{eq:t(S)}) as our final expression for t(S).
+\begin{equation}
+\label{eq:t(S)}
+t(S)=-\frac{1}{\R_0}\int_{S(0)}^{S(\tau)} \frac{1}{1-S-R_0 +\frac{1}{\R_0}\log(\frac{S}{S_0})} dS
+\end{equation}
+\end{proof}
+}
+
   \end{enumerate}
 \item \basicSIRanalQc
 
 {\color{blue}
 \begin{proof}[Answers]
-{\color{magenta}\dots beautifully clear and concise text to be inserted here\dots}
-Since no numerical analysis or graphics were requested, there is no need to use \Rlogo to answer these questions.  Note, incidentally, that the \verb|\Rlogo| command that produces \Rlogo simply includes the image file \texttt{images/Rlogo.pdf} and scales it appropriately for text within a paragraph.  If we really loved that logo and wanted to display as we would a figure, we easily could\dots
+First, consider that for any initial condition $(S_0, I_0)$ with $S_0 > 1/\R_0$ and $I_0 >0$, we have $dS/dt < 0$, and $dI/dt > 0$. Since $dI/dt \geq 0$ as long as $S \geq 1/\R_0$, we have that $I >0$. It follows this, that as $dS/dt=-\R_0SI$, then $dS/dt < 0$ for $S \geq 1/\R_0$. That is, $S(t)$ is strictly monotonically decreasing in this region. Furthermore, it follows from the continuity of $dS/dt$ that for any $ \R_0 > 1$, $S(t) < 1/\R_0$ for some $t < \infty$.
+
+%First, we will show that the set $A = \{(s, 0) \, | \, 0 \leq s \leq 1 \} \subseteq \Delta$ is a closed subset of $\Delta$. We will show prove this by show that $\Delta \setminus A$ is open. Consider any $(x, y) \in \Delta \setminus A$.  Then $y > 0$, and $d((x, y), A) = d((x, y), (0, y)) = y$, where $d$ is the usual (Euclidean) metric on $\mathbb{R}^2$. Define $U = B((x, y), y/2) \cap \Delta$, where $B((x, y), r)$ denotes the ball of radius $r$ about $(x, y)$. \\
+
+%It follows then that the $U$ is an open set containing $(x, y)$ such that $U \cap A = \emptyset$, and $A$ is therefore closed.
+
+Let $\Delta$ denote the biologically relevant region $ \{ (S, I) \, | \, S \geq 0, I \geq 0, 0 \leq S+I \leq 1 \}$, and $A$ denote the closed subset of $\Delta$ given by $[0, 1] \times \{0\}$. Note that based on the above result, to show $I =0$ is globally asymptotically stable, it is sufficient to consider initial conditions in $\Delta' = \{ (S, I) \, | \, 0 \leq S \leq 1/\R_0, I \geq 0, 0 \leq S+I \leq 1 \}$, since any non-equilibrium (i.e. $I_0 \neq 0$) trajectory in $\Delta$ will enter $\Delta'$ in finite time.\\
+
+Next, we consider the function $L(S,I)=I$, and demonstrate that it is a strict Lyapunov function on $\Delta' \setminus A$. To begin, we check that $L$ is positive definite on $\Delta'$.\\\\
+On $A$, we have that $I = 0$. It follows directly that $L(x)= I = 0 \ \forall \ x \in A$. Similarly, for any point $x$ in the biologically relevant region $\Delta' \setminus A$, $L(x) = I > 0$ (otherwise $x$ would be in $A$ by construction). Thus, $L(S,I)=I \geq 0 \ \forall \ (S,I) \in \Delta'$ and $L(S,I)=I > 0 \ \forall \ (S,I) \in \Delta' \setminus A$. This demonstrates that $L$ is positive definite on $\Delta'$.\\
+
+Next, we show that $\dot{L}(x) < 0 \ \forall \ x \in \Delta' \setminus A$. First, let us find an expression for $\dot{L}(x)$. 
+\begin{equation*}
+\begin{aligned}
+\dot{L}=\frac{d}{dt}L(S,I) &= \frac{dL}{dI} \frac{dI}{dt}+ \frac{dL}{dS}\frac{dS}{dt}\\
+\dot{L}&= \R_0 SI - I
+\end{aligned}
+\end{equation*}
+Thus, $\dot{L} < 0$ if $\R_0 S < 1$. We note that $\R_0 >1$ in biologically relevant contexts - as this means that the disease is capable of causing an epidemic. Thus, $\R_0 S<1$ when $S< \frac{1}{\R_0}$. Therefore, the function $L(S,I)=I$ is a strict Lyapunov function on $\Delta' \setminus A$ (i.e. when $S< \frac{1}{\R_0}$), and we conclude that $I = 0$ is globally asymptotically stable.
 \end{proof}
 }
-\begin{center}
-\scalebox{3}{
-\includegraphics{images/Rlogo.pdf}
-}
-\end{center}
 
 \item \basicSIRanalQd
 
 {\color{blue}
 \begin{proof}[Solution]
-{\color{magenta}\dots beautifully clear and concise text to be inserted here\dots}
+We note that the equilibria of the SIR model are located where $dI/dt=dS/dt=dR/dt=0$. It is sufficient to analyze just where $dI/dt=dS/dt=0$. Thus, we must solve the following system of equations:
+
+\begin{equation*}
+\begin{aligned}
+0&=-\R_0 SI\\
+0&= \R_0 SI - I
+\end{aligned}
+\end{equation*}
+
+We find a continuum of equilibria given by $(S,I)=(S_0,0)$ for $S_0 \in [0,1]$. \\
+\\
+We begin our stability analysis by demonstrating that the function $L(S,I)=I$ is a Lyapunov function. We use the definition of $A$ as given above and define $\Delta'' = \{ (S, I) \, | \, 0 \leq S \leq 1/\R_0, I \geq 0, 0 \leq S+I \leq 1 \}$. Following the above argument exactly, we establish that $L(S,I)$ is positive definite on $\Delta''$. Next, we demonstrate that $\dot{L}(x) \leq 0 \ \forall \ x \in \Delta'' \setminus A$. As $\dot{L}=\R_0 S I -I$, we find that $\dot{L} \leq 0$ when $\R_0S<1$. Thus, as we are considering only when $\R_0>1$, we find that $L(S,I)=I$ is a Lyapunov function on $\Delta'' \setminus A$ (i.e. when $S \leq 1/\R_0)$. Thus, by Lyapunov's direct method, the equilibrium points given by $(S_0, 0)$ for $S_0 \in [0, 1/\R_0]$ are stable. 
+\\\\
+Next, we choose a point $(S_\ast,I_\ast)=(x_1 ,0)$, where $x_1=1/\R_0 + 2\varepsilon$ for $\varepsilon >0$. At time $t_0$, we perturb the point by $\delta >0$ such that $(S(t_0),I(t_0))=(x_1 ,\delta)$. However, we recall from part 2 (c), that $S(t)$ is monotonically decreasing (as $dS/dt<0$). Thus, it follows from the continuity of $dS/dt$ that $S(t_1) < 1/\R_0$ for some $t_1 < \infty$. Thus for some $t_1$, $(S(t_1),I(t_1))=(x_2 ,0)$ where $x_2 < 1/\R_0$. Therefore, $||(S(t_0), I(t_0))-(S_\ast, I_\ast)||<\delta$ implies $||(S(t_1), I(t_1))-(S_\ast, I_\ast)||>2\varepsilon >\varepsilon$.  As this holds for all $\delta>0$ arbitrarily small, we have $\exists \ \varepsilon>0$ such that $\nexists \ \delta(\varepsilon,t)>0$ such that $||(S(t_0), I(t_0))-(S_\ast, I_\ast)||<\delta$ implies $||(S(t), I(t))-(S_\ast, I_\ast)||<\varepsilon \ \forall \ t>t_0$. Thus, the equilibrium points given by $(S_0,0)$ for $S_0 \in \left(1/\R_0, 1\right]$ are unstable.
 \end{proof}
 }
 

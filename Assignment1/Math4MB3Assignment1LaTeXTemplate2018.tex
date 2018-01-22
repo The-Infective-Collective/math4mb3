@@ -195,8 +195,9 @@ S_p = \frac{1}{\R_0}.
 \end{equation}
 Recall that the analytical solution of the SIR model for the phase portrait is given by
 \begin{equation*}
-I - I_0 = -(S - S_0) + \frac{1}{\R_0} \log (S/S_0)
+I - I_0 = -(S - S_0) + \frac{1}{\R_0} \log (S/S_0),
 \end{equation*}
+where $S_0$ and $I_0$ represent the initial conditions ($I_0 = I(0)$ and $S_0 = S(0)$).
 At $t_p$, we have
 \begin{equation*}
 I_p - I_0 = -(S_p - S_0) + \frac{1}{\R_0} \log (S_p/S_0)
@@ -235,24 +236,24 @@ S(\tau) &= S(0) e^{-\R_0(R(\tau)-R(0))}
 \end{aligned}
 \end{equation}
 
-We recall that $S+I+R=1$, and thus we substitute $S=1-I-R$ into the above expression. This yields the following:
+We recall that $S+I+R=1$, and thus we substitute $S=1-I-R$ into the above expression. For sake of clarity, we drop $\tau$ and write $S_0 = S(0), R_0 = R(0)$ hereafter. This yields the following:
 \begin{equation*}
-1-I(\tau)-R(\tau)=S(0)e^{-\R_0(R(\tau)-R(0))}
+1-I-R=S_0e^{-\R_0(R-R_0)}.
 \end{equation*}
 
 If we substitute $I = dR/d\tau$, then 
 \begin{equation*}
 \begin{aligned}
-\frac{dR}{d\tau}&=1-S(0)e^{-\R_0(R(\tau)-R(0))}-R(\tau) \\
-\int_0^t d\tau&=\int_{R(0)}^{r} \frac{1}{1-S(0)e^{-\R_0(R-R(0))}-R} dR.
+\frac{dR}{d\tau}&=1-S_0e^{-\R_0(R -R_0 )}-R \\
+\int_0^t d\tau&=\int_{R_0}^{R_t} \frac{1}{1-S_0e^{-\R_0(R-R_0)}-R} dR,
 \end{aligned}
 \end{equation*}
-where $r$ is proportion of individuals recovered at time $t$, i.e. $r= R(t)$.
+where $R_t$ is proportion of individuals recovered at time $t$, i.e. $R_t = R(t)$.
 
-Thus, we have derived an expression for $t(r)$, given by Equation \eqref{eq:t(R)}. We note that it cannot be simplified beyond this form, as there isn't an exact solution for this integral.
+Thus, we have derived an expression for $t(r)$, given by Equation \eqref{eq:t(R)}. We note that it cannot be simplified beyond this form, as there isn't an exact solution for this integral:
 \begin{equation}
 \label{eq:t(R)}
-t(r)=\int_{R(0)}^{r} \frac{1}{1-S(0)e^{-\R_0(R-R(0))}-R} dR
+t(r)=\int_{R_0}^{R_t} \frac{1}{1-S_0e^{-\R_0(R-R_0)}-R} dR.
 \end{equation}
 \end{proof}
 }
@@ -287,12 +288,12 @@ R_p &= R_0 - \frac{1}{\R_0}\log\left(\frac{1}{S_0 \R_0}\right).
 To obtain $t_p$, we can evaluate the expression for $t(R)$ given in (\ref{eq:t(R)}) at $R = R_p$ to obtain the time of peak prevalence. An expression for $t_p$ is therefore given by 
 \begin{equation*}
 \begin{aligned}
-t_p = t(R_p)=\int_{R_0}^{R_p} \frac{1}{1-S_0e^{-\R_0(R-R(0))}-R} dR, 
+t_p = t(R_p)=\int_{R_0}^{R_p} \frac{1}{1-S_0e^{-\R_0(R-R_0)}-R} dR, 
 \end{aligned}
 \end{equation*}
 where 
 $$
-R_p = R(0) - \frac{1}{\R_0}\log\left(\frac{1}{S_0 \R_0}\right).
+R_p = R_0 - \frac{1}{\R_0}\log\left(\frac{1}{S_0 \R_0}\right).
 $$
 
 \end{proof}
@@ -307,9 +308,9 @@ In our basic SIR model, $R$ measures the proportion of the population ``removed'
 Then, $\delta R$ would represent the proportion of the population that have died from disase.
 The associated assumption with $\delta$ would be that a constant proportion of infected individuals die per unit time. That is, every infected individual has an identical probability of death. Furthermore, we would be making the assumption that as soon as an individual enters the infected class, the probability of death is immediately $\delta$, when in reality there is likely a time delay associated with the probability of death. In other words, we wouldn't expect an individual who has been infected for 10 seconds to have the same probability of death as one who has been infected for two days.
 
-Note that $\delta R$ is a cumulative function that represents proportion of population that have died whereas P\&I time series represents daily reports on death cases. 
-In order to make a comparison, we would first have to make assumptions about the population size, $N$, so that $\delta N R$ represents number of individuals that have died.
-Then, $\delta N R (t_{n+1}) - \delta N R (t_n)$ represents number of individuals that die between time $t_n$ and $t_{n+1}$. 
+Note that $\delta R$ represents cumulative proportion of population that have died whereas P\&I time series represents daily reports on death cases. 
+In order to make a comparison, we would first have to make assumptions about the population size, $N$, so that $\delta N R$ represents number of individuals that have died rather than proportion.
+Then, $\delta N R (t_{n+1}) - \delta N R (t_n)$ represents number of individuals that died between time $t_n$ and $t_{n+1}$. 
 We can compare this quantity with daily reports by letting $t_n$ be in the unit of days.
 To be more realistic, we can also assume that there is under reporting of death (only $\rho$ proportion of death is reported) and compare $\rho \delta N (R(t_{n+1}) - R(t_n))$ with time series.
 
@@ -334,7 +335,7 @@ No, it is not possible to find an exact analytic expression for $t(S)$. We recal
 Thus, we get Equation (\ref{eq:t(S)}) as our final expression for t(S).
 \begin{equation}
 \label{eq:t(S)}
-t(S)=-\frac{1}{\R_0}\int_{S(0)}^{S(\tau)} \frac{1}{1-S-R_0 +\frac{1}{\R_0}\log(\frac{S}{S_0})} dS
+t(S)=-\frac{1}{\R_0}\int_{S_0}^{S_t} \frac{1}{S\left(1-S-R_0 +\frac{1}{\R_0}\log\left(\frac{S}{S_0}\right)\right) } dS
 \end{equation}
 \end{proof}
 }

@@ -1,3 +1,10 @@
+## Assignment 2
+* Questions 1 and 2: Michael, Aurora
+* Question 3: Presta, Park
+* Drafts done by next meeting at 1 PM on Saturday, Feb 30.
+    + Work on separate files in the GitHub
+    + Tell Park as we finish file to begin compiling
+
 ## Assignment 1
 * Question 1: Presta, Park
 * Question 2

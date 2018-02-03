@@ -126,9 +126,11 @@ SI.vector.field <- function(t, vars, parms=c(beta=2,gamma=1)) {
 ## Draw solution
 draw.soln <- function(ic=c(x=1,y=0), tmax=1, 
                       times=seq(0,tmax,by=tmax/500), 
-                      func, parms, ... ) {
+                      func, parms,
+                      col="blue",
+                      ... ) {
   soln <- ode(ic, times, func, parms)
-  lines(times, soln[,"y"], col="blue", lwd=3, ... )
+  lines(times, soln[,"y"], col=col, lwd=3, ... )
 }
 @ 
 \FitSIRbiiiC
@@ -193,7 +195,6 @@ draw.sir <- function(S0,
               parms=c(beta=R0/inf.period, 
                       gamma=1/inf.period),
               ...)
-    invisible()
 }
 @ 
 
@@ -205,25 +206,26 @@ draw.sir <- function(S0,
 
   {\color{blue} \begin{proof}[Solution]
   {\color{magenta}
-<<sir.plot, fig.height=4, fig.width=6>>==
+<<sir.plot, fig.height=6, fig.width=8>>==
 I0 <- 1e-3
 S0 <- 1 - I0
 inf.period <- 4
 R0 <- c(1.2, 1.5, 1.8, 2, 3, 4)
-lty <- 1:length(R0)
+n <- length(R0)
 tmax <- 150
 
 plot(NA, xlim=c(0,tmax), ylim=c(0,0.4), xlab="Time (days)", ylab="Prevalence")
 SIR.plot <- Map(draw.sir, S0=S0, I0=I0, inf.period=inf.period, 
-    R0=R0, lty=lty, 
+    R0=R0, lty=1:n, col=1:n,
     tmax=tmax
 )
 
 legend(
     x=90, y=0.4,
-    legend=R0, lty=lty,
-    col="blue", lwd=3,
-    title="Reproductive number"
+    legend=R0, lty=1:n, col=1:n,
+    lwd=3,
+    title="Reproductive number",
+    seg.len=5
 )
 @
   }
@@ -233,7 +235,49 @@ legend(
 \item \FitSIRd
 
   {\color{blue} \begin{proof}[Solution]
-  {\color{magenta}\dots beautifully clear text and plot(s) here \dots\ interspersed with \Rlogo code if this is a \texttt{knitr} script}
+  {\color{magenta}
+In section 2 (a), it was assumed that mortality and prevalence has the following relationship:
+$$
+I(t) = \eta M(t-\tau).
+$$
+Rearranging, we have
+$$
+M(t) = \frac{1}{\eta} I(t+\tau)
+$$
+So we will have to run the model for $t+\tau$ time steps to compare and estimate $\eta$, $\tau$, $S(0)$, $I(0)$, $\R_0$, and infectious period.
+
+Here is the function:
+
+<<mort_function>>==
+simulate_mortality <- function(S0,
+                               I0,
+                               R0,
+                               inf.period,
+                               eta,
+                               tau,
+                               tmax=nrow(philadata)) {
+    soln <- as.data.frame(ode(
+        y=c(x=S0, y=I0), 
+        times=1:(tmax+tau), 
+        func=SIR.vector.field, 
+        parms=c(beta=R0/inf.period, 
+                      gamma=1/inf.period)))
+    
+    data.frame(
+        date=philadata$date,
+        pim=tail(soln$y, -tau)/eta
+    )
+}
+@
+
+Now here is the estimate that we found trial and error:
+<<phila_fit>>==
+mfit <- simulate_mortality(S0=1-1e-7, I0=1e-7, R0=2.2, inf.period = 4, eta=0.00025, tau=14)
+plot(mfit, type="l", lwd=3, col="blue")
+points(philadata)
+@
+
+  }
   \end{proof}
   }
  

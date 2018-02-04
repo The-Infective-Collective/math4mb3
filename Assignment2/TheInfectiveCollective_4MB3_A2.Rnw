@@ -138,7 +138,7 @@ Notice that the RHS of this equation is constant and thus forces $h - b = 0$. Th
   {\color{magenta}
   <<>>==
 library(tidyverse)
-library(ggplot2)
+library(ggplot2); theme_set(theme_bw())
 
 x <- philadata %>%
     filter(date <= "1918-10-7" & date >= "1918-09-15") #filter data in linear region
@@ -213,7 +213,7 @@ If in our case, the mean infectious period ($\frac{1}{\gamma}$) is 4 days, then 
 \begin{itemize}
     \item Your code will first need to load the \code{deSolve} package:
 <<load.deSolve,message=FALSE>>=
-library("deSolve")
+library(deSolve)
 @       
     \item \FitSIRbii
 <<plot.sine,fig.height=4>>=
@@ -251,7 +251,7 @@ draw.soln <- function(ic=c(x=1,y=0), tmax=1,
 @ 
 \FitSIRbiiiC
 <<eval=FALSE>>=
-  soln <- ode(times=times, func=func, parms=parms, y=ic)
+soln <- ode(times=times, func=func, parms=parms, y=ic)
 @ 
 
 We can now use our \code{draw.soln()} function to plot a few solutions of the SI model.
@@ -281,7 +281,10 @@ for (i in 1:length(betavals)) {
  
  {\color{blue} \begin{proof}[Solution]
  {\color{magenta}
-First, we start by defining a function for SIR vector field:
+First, we must determine values for $\beta$ and $\gamma$, since the basic SIR model that we have studied in class has parameters $\beta$ and $\gamma$.
+We can do so by following the method described in problem 2 (c). $\gamma$ is reciprocal of infectious period and $\beta = \R_0 \gamma$.
+If we suppose that $I_0 = 10^{-3}$ and $S_0 = 1 - I_0$, we can follow the template given in the question to graph solutions for a mean infectious period of 4 days, and for various $\mathcal{R}_0$ values. 
+We begin by defining a vector field for the SIR model:
 <<SIR.vec.fld>>==
 ## Vector Field for SIR model
 SIR.vector.field <- function(t, vars, parms=c(beta=2,gamma=1)) {
@@ -292,7 +295,7 @@ SIR.vector.field <- function(t, vars, parms=c(beta=2,gamma=1)) {
 }
 @
 
-Then, we can define a function that draws the solution given $\R_0$, infectious period, initial values, and maximum time step:
+Then, we can define a function that draws the solution to the SIR model given parameters, initial values, and maximum time step:
 <<draw.sir,tidy=FALSE>>=
 draw.sir <- function(S0,
                      I0,
@@ -326,8 +329,8 @@ n <- length(R0)
 tmax <- 150
 
 plot(NA, xlim=c(0,tmax), ylim=c(0,0.4), xlab="Time (days)", ylab="Prevalence")
-SIR.plot <- Map(draw.sir, S0=S0, I0=I0, inf.period=inf.period, 
-    R0=R0, lty=1:n, col=1:n,
+SIR.plot <- Map(draw.sir, S0=S0, I0=I0, R0=R0, inf.period=inf.period, 
+    lty=1:n, col=1:n,
     tmax=tmax
 )
 
@@ -357,7 +360,7 @@ M(t) = \frac{1}{\eta} I(t+\tau)
 $$
 So we will have to run the model for $t+\tau$ time steps to compare and estimate $\eta$, $\tau$, $S(0)$, $I(0)$, $\R_0$, and infectious period.
 
-Here is the function:
+Here is the function that will return a data frame whose columns are date and expected daily moratlity given parameters and initial conditions:
 <<mort_function>>==
 simulate_mortality <- function(S0,
                                I0,
@@ -384,16 +387,34 @@ Now here is the estimate that we found trial and error:
 $$
 S(0)=1-10^{-7}, I(0)=10^{-7}, \R_0=2.2, \frac{1}{\gamma}=4, \eta = 0.00025, \tau=14.
 $$
-Then, we can assess the fit by plotting:
-<<phila_fit>>==
+Then, we can look at compare our estimated mortality curve with data:
+<<phila_fit, fig.width=8, fig.height=5>>==
 mfit <- simulate_mortality(S0=1-1e-7, I0=1e-7, R0=2.2, inf.period = 4, eta=0.00025, tau=14)
 plot(mfit, type="l", lwd=3, col="blue")
 points(philadata)
+legend(
+    "topright",
+    legend=c("data", "fit"),
+    lty=c(NA, 1),
+    pch=c(1, NA),
+    col=c("black", "blue"),
+    lwd=2
+)
 @
-
-Note that our fit appears to underestimate 
-
-
+Note that our fit appears to underestimate mortality after November. We can take a closer look at the difference by putting the graph on a log scale:
+<<phila_fit_log, fig.width=8, fig.height=5>>==
+plot(mfit, type="l", lwd=3, col="blue", log="y")
+points(philadata)
+legend(
+    "topright",
+    legend=c("data", "fit"),
+    lty=c(NA, 1),
+    pch=c(1, NA),
+    col=c("black", "blue"),
+    lwd=2
+)
+@
+Notice that we have a very good fit in the middle but not near two opposite ends. SIR model predicts that the disease will become extinct after finite period of time. However, mortality data suggests that the epidemic continuous even after a long period of time. Hence, SIR model might simply be insufficient to explain the data and will not fit very well even if we tried harder.
   }
   \end{proof}
   }

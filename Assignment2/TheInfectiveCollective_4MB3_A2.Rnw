@@ -141,7 +141,13 @@ library(tidyverse)
 library(ggplot2)
 
 x <- philadata %>%
-    filter(date <= "1918-10-7" & date >= "1918-09-15") #filter data
+    filter(date <= "1918-10-7" & date >= "1918-09-15") #filter data in linear region
+
+ggplot(philadata, aes(x=date, y=log(pim))) +
+  geom_point() +
+  annotate(geom="rect", xmin = as.Date("1918-10-7"), xmax = as.Date("1918-09-15"), ymin =-Inf, ymax=Inf, alpha=0.2) +
+  coord_trans()
+  geom_smooth(data = x, aes(x=date, y=log(pim)), method = "lm")
 
 ggplot(x, aes(x=date,y=pim))+ #plot log10 plot of filtered data
     geom_point()+

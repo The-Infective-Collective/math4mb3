@@ -20,6 +20,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
+\SweaveOpts{concordance=TRUE}
 
 \begin{center}
 {\bf Mathematics 4MB3/6MB3 Mathematical Biology\\
@@ -140,17 +141,23 @@ Notice that the RHS of this equation is constant and thus forces $h - b = 0$. Th
 library(tidyverse)
 library(ggplot2); theme_set(theme_bw())
 
+philadata <- philadata  %>% 
+    mutate(day = as.numeric(date) - min(as.numeric(philadata$date))) #R stored dates as -18000. transformed so first date sept 1918 is 0
 x <- philadata %>%
     filter(date <= "1918-10-7" & date >= "1918-09-15") #filter data in linear region
 
-lm.base.e <- lm(log(pim)~date, data= x) #generates lm and gives slope in base e
+
+lm.base.e <- lm(log(pim)~day, data= x) #generates lm and gives slope in base e
+
+x<- philadata %>%
+  mutate(expected= lm.base.e$coefficents[1]*exp(lm.base.e$coefficients[2]*day))
 
 ggplot(philadata, aes(x=date, y=pim)) +
   geom_point() +
   annotate(geom="rect", xmin = as.Date("1918-10-7"), xmax = as.Date("1918-09-15"), ymin =0, ymax=Inf, alpha=0.2) +
-  geom_smooth(data=x, aes(x=date, y=pim), method = "lm", alpha=0.7) +
-  scale_y_log10(breaks=c(0, 10, 100, 1000)) +
   labs(x="Date", y="P&I Mortality")
+
+
 @
 
 To determine coefficients, we restricted the data to the portion in which the semi-log plot looks approximately linear, and fit a linear model using the \texttt{lm()} function to the log-transformed data. The slope and intercept of this fit is given below.

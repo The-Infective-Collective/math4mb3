@@ -20,7 +20,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
-\SweaveOpts{concordance=TRUE}
+%\SweaveOpts{concordance=TRUE}
 
 \begin{center}
 {\bf Mathematics 4MB3/6MB3 Mathematical Biology\\
@@ -170,7 +170,9 @@ To determine coefficients, we restricted the data to the portion in which the se
 
 \begin{center}
 \begin{tabular}{c c}\\
- slope & intercept 
+ slope & intercept \\
+ \hline
+ \Sexpr{lm.base.e$coefficients[2]} & \Sexpr{lm.base.e$coefficients[1]}
 \end{tabular}
 \end{center}
   

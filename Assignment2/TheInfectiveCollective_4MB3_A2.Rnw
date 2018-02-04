@@ -192,7 +192,7 @@ To determine coefficients, we restricted the data to the portion in which the se
 \frac{dR}{dt}&=\gamma I 
 \end{aligned}
 \end{equation}
-Given that we are examining data where $I$ is small, we can use the assumption that $S\simeq 1$. Thus, this yields the equation $\frac{dI}{dt}\simeq\beta I - \gamma I$. Solving this, we have Equation \ref{eq:Isolve}
+Given that we are examining data that starts when $I$ is small (and then we have a constant exponential growth rate of 0.2287), we can use the assumption that $S\simeq 1$. Thus, this yields the equation $\frac{dI}{dt}\simeq\beta I - \gamma I$. Solving this, we have Equation \ref{eq:Isolve}
 \begin{equation}
 \label{eq:Isolve}
 I=ce^{(\beta - \gamma)t}

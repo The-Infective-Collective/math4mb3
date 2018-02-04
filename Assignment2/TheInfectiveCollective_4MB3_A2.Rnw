@@ -157,9 +157,7 @@ To determine coefficients, we restricted the data to the portion in which the se
 
 \begin{center}
 \begin{tabular}{c c}\\
- slope & intercept \\
- \hline
- \Sexpr{lm.base.e$coefficients[2]}	& \Sexpr{lm.base.e$coefficients[1]} 
+ slope & intercept 
 \end{tabular}
 \end{center}
   

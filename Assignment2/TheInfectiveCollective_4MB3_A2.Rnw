@@ -26,9 +26,9 @@
 \smallskip
 2018 ASSIGNMENT 2}\\
 \medskip
-\underline{\emph{Group Name}}: \texttt{{\color{blue}Cream}}\\
+\underline{\emph{Group Name}}: \texttt{{\color{blue}The Infective Collective}}\\
 \medskip
-\underline{\emph{Group Members}}: {\color{blue}Eric Clapton, Ginger Baker, Jack Bruce}
+\underline{\emph{Group Members}}: {\color{blue}Aurora Basinski-Ferris, Michael Chong, Daniel Park, Daniel Presta}
 \end{center}
 
 \bigskip

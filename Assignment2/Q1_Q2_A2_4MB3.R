@@ -43,7 +43,7 @@ ggplot(x, aes(x=date,y=pim))+ #plot log10 plot of filtered data
   scale_y_log10() +
   geom_smooth(method = "lm", se=F)
 
-lm(formula ="date~log(pim)", data= x) #generates lm and gives slope in base e
+lm(log(pim)~date, data= x) #generates lm and gives slope in base e
 
 
        

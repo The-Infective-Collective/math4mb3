@@ -143,29 +143,23 @@ library(ggplot2); theme_set(theme_bw())
 x <- philadata %>%
     filter(date <= "1918-10-7" & date >= "1918-09-15") #filter data in linear region
 
-ggplot(philadata, aes(x=date, y=log(pim))) +
-  geom_point() +
-  annotate(geom="rect", xmin = as.Date("1918-10-7"), xmax = as.Date("1918-09-15"), ymin =-Inf, ymax=Inf, alpha=0.2) +
-  coord_trans()
-  geom_smooth(data = x, aes(x=date, y=log(pim)), method = "lm")
-
-ggplot(x, aes(x=date,y=pim))+ #plot log10 plot of filtered data
-    geom_point()+
-    scale_y_log10() +
-    geom_smooth(method = "lm", se=F) +
-    labs(x = "Date", y = "P&I Deaths", title = "Linear fit to log-transformed 1918 P&I Mortality Data in Philadelphia")
-
 lm.base.e <- lm(log(pim)~date, data= x) #generates lm and gives slope in base e
-lm.base.10 <- lm(log10(pim)~date, data = x)
+
+ggplot(philadata, aes(x=date, y=pim)) +
+  geom_point() +
+  annotate(geom="rect", xmin = as.Date("1918-10-7"), xmax = as.Date("1918-09-15"), ymin =0, ymax=Inf, alpha=0.2) +
+  geom_smooth(data=x, aes(x=date, y=pim), method = "lm", alpha=0.7) +
+  scale_y_log10(breaks=c(0, 10, 100, 1000)) +
+  labs(x="Date", y="P&I Mortality")
 @
 
-To determine coefficients, we restricted the data to the portion in which the semi-log plot looks approximately linear, and fit a linear model using the \texttt{lm()} function to the log-transformed data. In order to generate a plot that is more intuitive to read, this was also done for data transformed in log base 10. A natural logarithm plot would simply be a scaling of the plot shown. The corresponding intercepts and slopes for these two fits are given in the table below.
+To determine coefficients, we restricted the data to the portion in which the semi-log plot looks approximately linear, and fit a linear model using the \texttt{lm()} function to the log-transformed data. The slope and intercept of this fit is given below.
+
 \begin{center}
-\begin{tabular}{c c c}\\
-			& slope & intercept \\
+\begin{tabular}{c c}\\
+ slope & intercept \\
  \hline
-$\log_e$ 	& \Sexpr{lm.base.e$coefficients[2]}	& \Sexpr{lm.base.e$coefficients[1]} \\
-$\log_{10}$ &	\Sexpr{lm.base.10$coefficients[2]}	& \Sexpr{lm.base.10$coefficients[1]}
+ \Sexpr{lm.base.e$coefficients[2]}	& \Sexpr{lm.base.e$coefficients[1]} 
 \end{tabular}
 \end{center}
   

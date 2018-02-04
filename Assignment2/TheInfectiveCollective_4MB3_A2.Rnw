@@ -146,20 +146,23 @@ x <- philadata %>%
 ggplot(x, aes(x=date,y=pim))+ #plot log10 plot of filtered data
     geom_point()+
     scale_y_log10() +
-    geom_smooth(method = "lm", se=F)
+    geom_smooth(method = "lm", se=F) +
+    labs(x = "Date", y = "P&I Deaths", title = "Linear fit to log-transformed 1918 P&I Mortality Data in Philadelphia")
 
-lm(log(pim)~date, data= x) #generates lm and gives slope in base e
+lm.base.e <- lm(log(pim)~date, data= x) #generates lm and gives slope in base e
+lm.base.10 <- lm(log10(pim)~date, data = x)
 @
 
-To determine coefficients, we restricted the data to the portion in which the semi-log plot looks approximately linear, and fit a linear model using the \texttt{lm()} function to the log-transformed data. In order to generate a more intuitive plot, this was also done for data transformed in log base 10. The corresponding intercepts and slopes for these two fits are given in the table below.
+To determine coefficients, we restricted the data to the portion in which the semi-log plot looks approximately linear, and fit a linear model using the \texttt{lm()} function to the log-transformed data. In order to generate a plot that is more intuitive to read, this was also done for data transformed in log base 10. A natural logarithm plot would simply be a scaling of the plot shown. The corresponding intercepts and slopes for these two fits are given in the table below.
 \begin{center}
 \begin{tabular}{c c c}\\
 			& slope & intercept \\
  \hline
-$\log_e$ 	& 		& \\
-$\log_{10}$ &		&
+$\log_e$ 	& \Sexpr{lm.base.e$coefficients[2]}	& \Sexpr{lm.base.e$coefficients[1]} \\
+$\log_{10}$ &	\Sexpr{lm.base.10$coefficients[2]}	& \Sexpr{lm.base.10$coefficients[1]}
 \end{tabular}
 \end{center}
+  
   
   }
   \end{proof}

@@ -137,7 +137,8 @@ Notice that the RHS of this equation is constant and thus forces $h - b = 0$. Th
 
   {\color{blue} \begin{proof}[Solution]
   {\color{magenta}
-  <<>>==
+  \leavevmode
+  <<estimaternb, warning=FALSE, message=FALSE, fig.height=8, fig.height=5>>==
 library(tidyverse)
 library(ggplot2); theme_set(theme_bw())
 
@@ -149,20 +150,20 @@ x <- philadata %>%
 
 lm.base.e <- lm(log(pim)~day, data= x) #generates lm and gives slope in base e
 
-x<- x %>%
-  mutate(expected= exp(lm.base.e$coefficients[1])*exp(lm.base.e$coefficients[2]*day))
+x <- x %>%
+    mutate(expected= exp(lm.base.e$coefficients[1])*exp(lm.base.e$coefficients[2]*day))
 
 ggplot(philadata, aes(x=date, y=log(pim))) +
-  geom_point() +
-  annotate(geom="rect", xmin = as.Date("1918-10-7"), xmax = as.Date("1918-09-15"), ymin =0, ymax=Inf, alpha=0.2) +
-  labs(x="Date", y="log(P&I Mortality)") +
-  geom_line(data=x, aes(x=date, y=log(expected)), color="tomato3")
+    geom_point() +
+    annotate(geom="rect", xmin = as.Date("1918-10-7"), xmax = as.Date("1918-09-15"), ymin =0, ymax=Inf, alpha=0.2) +
+    labs(x="Date", y="log(P&I Mortality)") +
+    geom_line(data=x, aes(x=date, y=log(expected)), color="tomato3")
 
 ggplot(philadata, aes(x=date, y=pim)) +
-  geom_point() +
-  annotate(geom="rect", xmin = as.Date("1918-10-7"), xmax = as.Date("1918-09-15"), ymin =0, ymax=Inf, alpha=0.2) +
-  labs(x="Date", y="P&I Mortality") +
-  geom_line(data=x, aes(x=date, y=expected), color="tomato3")
+    geom_point() +
+    annotate(geom="rect", xmin = as.Date("1918-10-7"), xmax = as.Date("1918-09-15"), ymin =0, ymax=Inf, alpha=0.2) +
+    labs(x="Date", y="P&I Mortality") +
+    geom_line(data=x, aes(x=date, y=expected), color="tomato3")
 
 @
 
@@ -219,7 +220,7 @@ If in our case, the mean infectious period ($\frac{1}{\gamma}$) is 4 days, then 
 \item \FitSIRbIntro
 \begin{itemize}
     \item Your code will first need to load the \code{deSolve} package:
-<<load.deSolve,message=FALSE>>=
+<<load.deSolve,message=FALSE,warning=FALSE>>=
 library(deSolve)
 @       
     \item \FitSIRbii
@@ -335,7 +336,8 @@ R0 <- c(1.2, 1.5, 1.8, 2, 3, 4)
 n <- length(R0)
 tmax <- 150
 
-plot(NA, xlim=c(0,tmax), ylim=c(0,0.4), xlab="Time (days)", ylab="Prevalence")
+plot(NA, xlim=c(0,tmax), ylim=c(0,0.4), 
+     xlab="Time (days)", ylab="Prevalence")
 SIR.plot <- Map(draw.sir, S0=S0, I0=I0, R0=R0, inf.period=inf.period, 
     lty=1:n, col=1:n,
     tmax=tmax

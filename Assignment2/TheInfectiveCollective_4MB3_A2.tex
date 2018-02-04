@@ -70,7 +70,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
-\SweaveOpts{concordance=TRUE}
+%\SweaveOpts{concordance=TRUE}
 
 \begin{center}
 {\bf Mathematics 4MB3/6MB3 Mathematical Biology\\
@@ -197,48 +197,41 @@ Notice that the RHS of this equation is constant and thus forces $h - b = 0$. Th
 
   {\color{blue} \begin{proof}[Solution]
   {\color{magenta}
+  \leavevmode
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{library}\hlstd{(tidyverse)}
-\end{alltt}
-
-
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning: package 'tidyverse' was built under R version 3.4.3}}
-
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# -- Attaching packages ---------------------------------- tidyverse 1.2.1 --}}
-
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# v ggplot2 2.2.1\ \ \ \  v purrr\ \  0.2.4\\\#\# v tibble\ \ 1.4.2\ \ \ \  v dplyr\ \  0.7.4\\\#\# v tidyr\ \  0.8.0\ \ \ \  v stringr 1.2.0\\\#\# v readr\ \  1.1.1\ \ \ \  v forcats 0.2.0}}
-
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning: package 'ggplot2' was built under R version 3.4.3}}
-
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning: package 'tibble' was built under R version 3.4.3}}
-
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning: package 'tidyr' was built under R version 3.4.3}}
-
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning: package 'purrr' was built under R version 3.4.3}}
-
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning: package 'dplyr' was built under R version 3.4.3}}
-
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# -- Conflicts ------------------------------------- tidyverse\_conflicts() --\\\#\# x dplyr::filter() masks stats::filter()\\\#\# x dplyr::lag()\ \ \ \ masks stats::lag()}}\begin{alltt}
 \hlkwd{library}\hlstd{(ggplot2);} \hlkwd{theme_set}\hlstd{(}\hlkwd{theme_bw}\hlstd{())}
 
+\hlstd{philadata} \hlkwb{<-} \hlstd{philadata}  \hlopt{%>%}
+  \hlkwd{mutate}\hlstd{(}\hlkwc{day} \hlstd{=} \hlkwd{as.numeric}\hlstd{(date)} \hlopt{-} \hlkwd{min}\hlstd{(}\hlkwd{as.numeric}\hlstd{(philadata}\hlopt{$}\hlstd{date)))} \hlcom{#R stored dates as -18000. transformed so first date sept 1918 is 0}
 \hlstd{x} \hlkwb{<-} \hlstd{philadata} \hlopt{%>%}
   \hlkwd{filter}\hlstd{(date} \hlopt{<=} \hlstr{"1918-10-7"} \hlopt{&} \hlstd{date} \hlopt{>=} \hlstr{"1918-09-15"}\hlstd{)} \hlcom{#filter data in linear region}
 
-\hlstd{lm.base.e} \hlkwb{<-} \hlkwd{lm}\hlstd{(}\hlkwd{log}\hlstd{(pim)}\hlopt{~}\hlstd{date,} \hlkwc{data}\hlstd{= x)} \hlcom{#generates lm and gives slope in base e}
 
-\hlkwd{ggplot}\hlstd{(philadata,} \hlkwd{aes}\hlstd{(}\hlkwc{x}\hlstd{=date,} \hlkwc{y}\hlstd{=pim))} \hlopt{+}
-\hlkwd{geom_point}\hlstd{()} \hlopt{+}
-\hlkwd{annotate}\hlstd{(}\hlkwc{geom}\hlstd{=}\hlstr{"rect"}\hlstd{,} \hlkwc{xmin} \hlstd{=} \hlkwd{as.Date}\hlstd{(}\hlstr{"1918-10-7"}\hlstd{),} \hlkwc{xmax} \hlstd{=} \hlkwd{as.Date}\hlstd{(}\hlstr{"1918-09-15"}\hlstd{),} \hlkwc{ymin} \hlstd{=}\hlnum{0}\hlstd{,} \hlkwc{ymax}\hlstd{=}\hlnum{Inf}\hlstd{,} \hlkwc{alpha}\hlstd{=}\hlnum{0.2}\hlstd{)} \hlopt{+}
-\hlkwd{geom_smooth}\hlstd{(}\hlkwc{data}\hlstd{=x,} \hlkwd{aes}\hlstd{(}\hlkwc{x}\hlstd{=date,} \hlkwc{y}\hlstd{=pim),} \hlkwc{method} \hlstd{=} \hlstr{"lm"}\hlstd{,} \hlkwc{alpha}\hlstd{=}\hlnum{0.7}\hlstd{)} \hlopt{+}
-\hlkwd{scale_y_log10}\hlstd{(}\hlkwc{breaks}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,} \hlnum{10}\hlstd{,} \hlnum{100}\hlstd{,} \hlnum{1000}\hlstd{))} \hlopt{+}
-\hlkwd{labs}\hlstd{(}\hlkwc{x}\hlstd{=}\hlstr{"Date"}\hlstd{,} \hlkwc{y}\hlstd{=}\hlstr{"P&I Mortality"}\hlstd{)}
+\hlstd{lm.base.e} \hlkwb{<-} \hlkwd{lm}\hlstd{(}\hlkwd{log}\hlstd{(pim)}\hlopt{~}\hlstd{day,} \hlkwc{data}\hlstd{= x)} \hlcom{#generates lm and gives slope in base e}
+
+\hlstd{x} \hlkwb{<-} \hlstd{x} \hlopt{%>%}
+  \hlkwd{mutate}\hlstd{(}\hlkwc{expected}\hlstd{=} \hlkwd{exp}\hlstd{(lm.base.e}\hlopt{$}\hlstd{coefficients[}\hlnum{1}\hlstd{])}\hlopt{*}\hlkwd{exp}\hlstd{(lm.base.e}\hlopt{$}\hlstd{coefficients[}\hlnum{2}\hlstd{]}\hlopt{*}\hlstd{day))}
+
+\hlkwd{ggplot}\hlstd{(philadata,} \hlkwd{aes}\hlstd{(}\hlkwc{x}\hlstd{=date,} \hlkwc{y}\hlstd{=}\hlkwd{log}\hlstd{(pim)))} \hlopt{+}
+  \hlkwd{geom_point}\hlstd{()} \hlopt{+}
+  \hlkwd{annotate}\hlstd{(}\hlkwc{geom}\hlstd{=}\hlstr{"rect"}\hlstd{,} \hlkwc{xmin} \hlstd{=} \hlkwd{as.Date}\hlstd{(}\hlstr{"1918-10-7"}\hlstd{),} \hlkwc{xmax} \hlstd{=} \hlkwd{as.Date}\hlstd{(}\hlstr{"1918-09-15"}\hlstd{),} \hlkwc{ymin} \hlstd{=}\hlnum{0}\hlstd{,} \hlkwc{ymax}\hlstd{=}\hlnum{Inf}\hlstd{,} \hlkwc{alpha}\hlstd{=}\hlnum{0.2}\hlstd{)} \hlopt{+}
+  \hlkwd{labs}\hlstd{(}\hlkwc{x}\hlstd{=}\hlstr{"Date"}\hlstd{,} \hlkwc{y}\hlstd{=}\hlstr{"log(P&I Mortality)"}\hlstd{)} \hlopt{+}
+  \hlkwd{geom_line}\hlstd{(}\hlkwc{data}\hlstd{=x,} \hlkwd{aes}\hlstd{(}\hlkwc{x}\hlstd{=date,} \hlkwc{y}\hlstd{=}\hlkwd{log}\hlstd{(expected)),} \hlkwc{color}\hlstd{=}\hlstr{"tomato3"}\hlstd{)}
 \end{alltt}
-
-
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning: Transformation introduced infinite values in continuous y-axis}}\end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-1-1} 
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/estimaternb-1} 
+\begin{kframe}\begin{alltt}
+\hlkwd{ggplot}\hlstd{(philadata,} \hlkwd{aes}\hlstd{(}\hlkwc{x}\hlstd{=date,} \hlkwc{y}\hlstd{=pim))} \hlopt{+}
+  \hlkwd{geom_point}\hlstd{()} \hlopt{+}
+  \hlkwd{annotate}\hlstd{(}\hlkwc{geom}\hlstd{=}\hlstr{"rect"}\hlstd{,} \hlkwc{xmin} \hlstd{=} \hlkwd{as.Date}\hlstd{(}\hlstr{"1918-10-7"}\hlstd{),} \hlkwc{xmax} \hlstd{=} \hlkwd{as.Date}\hlstd{(}\hlstr{"1918-09-15"}\hlstd{),} \hlkwc{ymin} \hlstd{=}\hlnum{0}\hlstd{,} \hlkwc{ymax}\hlstd{=}\hlnum{Inf}\hlstd{,} \hlkwc{alpha}\hlstd{=}\hlnum{0.2}\hlstd{)} \hlopt{+}
+  \hlkwd{labs}\hlstd{(}\hlkwc{x}\hlstd{=}\hlstr{"Date"}\hlstd{,} \hlkwc{y}\hlstd{=}\hlstr{"P&I Mortality"}\hlstd{)} \hlopt{+}
+  \hlkwd{geom_line}\hlstd{(}\hlkwc{data}\hlstd{=x,} \hlkwd{aes}\hlstd{(}\hlkwc{x}\hlstd{=date,} \hlkwc{y}\hlstd{=expected),} \hlkwc{color}\hlstd{=}\hlstr{"tomato3"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/estimaternb-2} 
 
 \end{knitrout}
 
@@ -246,7 +239,9 @@ To determine coefficients, we restricted the data to the portion in which the se
 
 \begin{center}
 \begin{tabular}{c c}\\
- slope & intercept 
+ slope & intercept \\
+ \hline
+ 0.2286857 & -1.7714926
 \end{tabular}
 \end{center}
   
@@ -268,7 +263,7 @@ To determine coefficients, we restricted the data to the portion in which the se
 \frac{dR}{dt}&=\gamma I 
 \end{aligned}
 \end{equation}
-Given that we are examining data where $I$ is small, we can use the assumption that $S\simeq 1$. Thus, this yields the equation $\frac{dI}{dt}\simeq\beta I - \gamma I$. Solving this, we have Equation \ref{eq:Isolve}
+Given that we are examining data that starts when $I$ is small (and then we have a constant exponential growth rate of 0.2287), we can use the assumption that $S\simeq 1$. Thus, this yields the equation $\frac{dI}{dt}\simeq\beta I - \gamma I$. Solving this, we have Equation \ref{eq:Isolve}
 \begin{equation}
 \label{eq:Isolve}
 I=ce^{(\beta - \gamma)t}
@@ -447,7 +442,8 @@ Then, we can define a function that draws the solution to the SIR model given pa
 \hlstd{n} \hlkwb{<-} \hlkwd{length}\hlstd{(R0)}
 \hlstd{tmax} \hlkwb{<-} \hlnum{150}
 
-\hlkwd{plot}\hlstd{(}\hlnum{NA}\hlstd{,} \hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,tmax),} \hlkwc{ylim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{0.4}\hlstd{),} \hlkwc{xlab}\hlstd{=}\hlstr{"Time (days)"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Prevalence"}\hlstd{)}
+\hlkwd{plot}\hlstd{(}\hlnum{NA}\hlstd{,} \hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,tmax),} \hlkwc{ylim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{0.4}\hlstd{),}
+     \hlkwc{xlab}\hlstd{=}\hlstr{"Time (days)"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Prevalence"}\hlstd{)}
 \hlstd{SIR.plot} \hlkwb{<-} \hlkwd{Map}\hlstd{(draw.sir,} \hlkwc{S0}\hlstd{=S0,} \hlkwc{I0}\hlstd{=I0,} \hlkwc{R0}\hlstd{=R0,} \hlkwc{inf.period}\hlstd{=inf.period,}
     \hlkwc{lty}\hlstd{=}\hlnum{1}\hlopt{:}\hlstd{n,} \hlkwc{col}\hlstd{=}\hlnum{1}\hlopt{:}\hlstd{n,}
     \hlkwc{tmax}\hlstd{=tmax}

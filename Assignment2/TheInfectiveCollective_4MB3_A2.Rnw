@@ -149,14 +149,20 @@ x <- philadata %>%
 
 lm.base.e <- lm(log(pim)~day, data= x) #generates lm and gives slope in base e
 
-x<- philadata %>%
-  mutate(expected= lm.base.e$coefficents[1]*exp(lm.base.e$coefficients[2]*day))
+x<- x %>%
+  mutate(expected= exp(lm.base.e$coefficients[1])*exp(lm.base.e$coefficients[2]*day))
+
+ggplot(philadata, aes(x=date, y=log(pim))) +
+  geom_point() +
+  annotate(geom="rect", xmin = as.Date("1918-10-7"), xmax = as.Date("1918-09-15"), ymin =0, ymax=Inf, alpha=0.2) +
+  labs(x="Date", y="log(P&I Mortality)") +
+  geom_line(data=x, aes(x=date, y=log(expected)), color="tomato3")
 
 ggplot(philadata, aes(x=date, y=pim)) +
   geom_point() +
   annotate(geom="rect", xmin = as.Date("1918-10-7"), xmax = as.Date("1918-09-15"), ymin =0, ymax=Inf, alpha=0.2) +
-  labs(x="Date", y="P&I Mortality")
-
+  labs(x="Date", y="P&I Mortality") +
+  geom_line(data=x, aes(x=date, y=expected), color="tomato3")
 
 @
 

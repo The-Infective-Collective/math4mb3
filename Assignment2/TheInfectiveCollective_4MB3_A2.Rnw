@@ -20,6 +20,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
+\SweaveOpts{concordance=TRUE}
 %\SweaveOpts{concordance=TRUE}
 
 \begin{center}
@@ -290,7 +291,7 @@ for (i in 1:length(betavals)) {
  {\color{blue} \begin{proof}[Solution]
  {\color{magenta}
 First, we must determine values for $\beta$ and $\gamma$, since the basic SIR model that we have studied in class has parameters $\beta$ and $\gamma$.
-We can do so by following the method described in problem 2 (c). $\gamma$ is reciprocal of infectious period and $\beta = \R_0 \gamma$.
+We can do so by following the method described in problem 2 (c). We observe that $\gamma$ is the reciprocal of the infectious period, and that $\beta = \R_0 \gamma$.
 If we suppose that $I_0 = 10^{-3}$ and $S_0 = 1 - I_0$, we can follow the template given in the question to graph solutions for a mean infectious period of 4 days, and for various $\mathcal{R}_0$ values. 
 We begin by defining a vector field for the SIR model:
 <<SIR.vec.fld>>==
@@ -303,7 +304,7 @@ SIR.vector.field <- function(t, vars, parms=c(beta=2,gamma=1)) {
 }
 @
 
-Then, we can define a function that draws the solution to the SIR model given parameters, initial values, and maximum time step:
+Then, we can define a function that draws the solution to the SIR model given parameters, initial values, and the maximum time step:
 <<draw.sir,tidy=FALSE>>=
 draw.sir <- function(S0,
                      I0,
@@ -359,7 +360,7 @@ legend(
 
   {\color{blue} \begin{proof}[Solution]
   {\color{magenta}
-In section 2 (a), it was assumed that mortality and prevalence has the following relationship:
+In section 2 (a), it was assumed that mortality and prevalence have the following relationship:
 $$
 I(t) = \eta M(t-\tau).
 $$
@@ -369,7 +370,7 @@ M(t) = \frac{1}{\eta} I(t+\tau)
 $$
 So we will have to run the model for $t+\tau$ time steps to compare and estimate $\eta$, $\tau$, $S(0)$, $I(0)$, $\R_0$, and infectious period.
 
-Here is the function that will return a data frame whose columns are date and expected daily moratlity given parameters and initial conditions:
+Here is the function that will return a data frame whose columns are date and expected daily moratlity, given parameters and initial conditions:
 <<mort_function>>==
 simulate_mortality <- function(S0,
                                I0,
@@ -392,11 +393,11 @@ simulate_mortality <- function(S0,
 }
 @
 
-Now here is the estimate that we found trial and error:
+Now here is the estimate that we found via trial and error:
 $$
 S(0)=1-10^{-7}, I(0)=10^{-7}, \R_0=2.2, \frac{1}{\gamma}=4, \eta = 0.00025, \tau=14.
 $$
-Then, we can look at compare our estimated mortality curve with data:
+Then, we can compare our estimated mortality curve with the given data:
 <<phila_fit, fig.width=8, fig.height=5>>==
 mfit <- simulate_mortality(S0=1-1e-7, I0=1e-7, R0=2.2, inf.period = 4, eta=0.00025, tau=14)
 plot(mfit, type="l", lwd=3, col="blue")
@@ -410,7 +411,7 @@ legend(
     lwd=2
 )
 @
-Note that our fit appears to underestimate mortality after November. We can take a closer look at the difference by putting the graph on a log scale:
+Note that our fit appears to underestimate mortality after November. We can take a closer look at the difference by plotting the graph on a log scale:
 <<phila_fit_log, fig.width=8, fig.height=5>>==
 plot(mfit, type="l", lwd=3, col="blue", log="y")
 points(philadata)
@@ -423,7 +424,7 @@ legend(
     lwd=2
 )
 @
-Notice that we have a very good fit in the middle but not near two opposite ends. SIR model predicts that the disease will become extinct after finite period of time. However, mortality data suggests that the epidemic continuous even after a long period of time. Hence, SIR model might simply be insufficient to explain the data and will not fit very well even if we tried harder.
+Notice that we have a very good fit in the middle but not near the two opposite ends. The SIR model predicts that the disease will become extinct after a finite period of time. However, mortality data suggests that the epidemic will continue even after a long period of time. Hence, we can conlude that the SIR model might simply be insufficient to explain the data and will not fit very well even if we tried harder.
   }
   \end{proof}
   }

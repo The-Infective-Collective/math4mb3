@@ -1,54 +1,4 @@
-\documentclass[12pt]{article}\usepackage[]{graphicx}\usepackage[]{color}
-%% maxwidth is the original width if it is less than linewidth
-%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
-\makeatletter
-\def\maxwidth{ %
-  \ifdim\Gin@nat@width>\linewidth
-    \linewidth
-  \else
-    \Gin@nat@width
-  \fi
-}
-\makeatother
-
-\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
-\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
-\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
-\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
-\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
-\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
-\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
-\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
-\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
-\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
-\let\hlipl\hlkwb
-
-\usepackage{framed}
-\makeatletter
-\newenvironment{kframe}{%
- \def\at@end@of@kframe{}%
- \ifinner\ifhmode%
-  \def\at@end@of@kframe{\end{minipage}}%
-  \begin{minipage}{\columnwidth}%
- \fi\fi%
- \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
- \colorbox{shadecolor}{##1}\hskip-\fboxsep
-     % There is no \\@totalrightmargin, so:
-     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
- \MakeFramed {\advance\hsize-\width
-   \@totalleftmargin\z@ \linewidth\hsize
-   \@setminipage}}%
- {\par\unskip\endMakeFramed%
- \at@end@of@kframe}
-\makeatother
-
-\definecolor{shadecolor}{rgb}{.97, .97, .97}
-\definecolor{messagecolor}{rgb}{0, 0, 0}
-\definecolor{warningcolor}{rgb}{1, 0, 1}
-\definecolor{errorcolor}{rgb}{1, 0, 0}
-\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
-
-\usepackage{alltt}
+\documentclass[12pt]{article}
 
 \input{4mbapreamble}
 \input{4mba2q}
@@ -68,8 +18,10 @@
 \rfoot{}
 \renewcommand\headrulewidth{0pt} % Removes funny header line
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+
+\usepackage{Sweave}
 \begin{document}
+\input{TheInfectiveCollective_4MB3_A2-concordance}
 %\SweaveOpts{concordance=TRUE}
 
 \begin{center}
@@ -93,61 +45,54 @@ This assignment was due in class on \textcolor{red}{\bf Monday 5 February 2018 a
 \item \PhilaDataReceived
 
 \item \PhilaDataReadA
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlstd{datafile} \hlkwb{<-} \hlstr{"pim_us_phila_city_1918_dy.csv"}
-\hlstd{philadata} \hlkwb{<-} \hlkwd{read.csv}\hlstd{(datafile)}
-\hlstd{philadata}\hlopt{$}\hlstd{date} \hlkwb{<-} \hlkwd{as.Date}\hlstd{(philadata}\hlopt{$}\hlstd{date)}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
+\begin{Schunk}
+\begin{Sinput}
+> datafile <- "pim_us_phila_city_1918_dy.csv"
+> philadata <- read.csv(datafile)
+> philadata$date <- as.Date(philadata$date)
+\end{Sinput}
+\end{Schunk}
 \PhilaDataReadB
 
 \item \PhilaDataReproduceA
   {\color{blue} \begin{proof}[Solution]
   {\color{magenta}
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{## first make the box with no annotation or curves}
-\hlcom{# don't actually plot anything}
-\hlkwd{plot}\hlstd{(philadata}\hlopt{$}\hlstd{date, philadata}\hlopt{$}\hlstd{pim,} \hlkwc{type}\hlstd{=}\hlstr{"n"}\hlstd{,}
-     \hlkwc{bty}\hlstd{=}\hlstr{"L"}\hlstd{,} \hlcom{# no upper or right box lines}
-     \hlkwc{ylim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{800}\hlstd{),} \hlcom{# axis limits}
-     \hlkwc{yaxp}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{800}\hlstd{,}\hlnum{4}\hlstd{),} \hlcom{#first two numbers is coordinates of }
-                      \hlcom{#extreme tick marks, third number is the number of marks}
-     \hlkwc{xaxt}\hlstd{=}\hlstr{'n'}\hlstd{,} \hlcom{#supress x ticks and labels}
-     \hlkwc{xlab}\hlstd{=}\hlstr{""}\hlstd{,}
-     \hlkwc{ann}\hlstd{=}\hlnum{FALSE}\hlstd{,} \hlcom{# no axis annotation (i.e., no title or axis labels)}
-     \hlkwc{xaxs}\hlstd{=}\hlstr{"i"}\hlstd{,} \hlcom{#first tick on x axis is the y axis}
-     \hlkwc{las}\hlstd{=}\hlnum{1} \hlcom{# axis label style: always horizontal}
-\hlstd{)}
-\hlstd{month} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{9}\hlstd{,}\hlnum{10}\hlstd{,}\hlnum{11}\hlstd{,}\hlnum{12}\hlstd{)} \hlcom{#want sept, oct, nov, dec labels}
-\hlstd{ticks} \hlkwb{<-} \hlkwd{seq}\hlstd{(philadata}\hlopt{$}\hlstd{date[}\hlnum{1}\hlstd{],}
-             \hlstd{philadata}\hlopt{$}\hlstd{date[}\hlkwd{length}\hlstd{(philadata}\hlopt{$}\hlstd{date)],} \hlkwc{by}\hlstd{=}\hlstr{"months"}\hlstd{)}
-\hlcom{#put ticks where we want them and labels}
-\hlkwd{axis}\hlstd{(}\hlnum{1}\hlstd{,} \hlkwc{at} \hlstd{= ticks,} \hlkwc{labels} \hlstd{= month.abb[month],} \hlkwc{tcl} \hlstd{=} \hlopt{-}\hlnum{0.3}\hlstd{)}
-
-\hlcom{## creat label for axes}
-\hlcom{#putting x label 'Date' on}
-\hlkwd{mtext}\hlstd{(}\hlstr{"Date"}\hlstd{,} \hlkwc{side}\hlstd{=}\hlnum{1}\hlstd{,} \hlkwc{adj}\hlstd{=}\hlnum{1}\hlstd{,} \hlkwc{line}\hlstd{=}\hlnum{1.5}\hlstd{,} \hlkwc{font}\hlstd{=}\hlnum{1}\hlstd{,} \hlkwc{cex}\hlstd{=}\hlnum{1.75}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"blue"}\hlstd{)}
-\hlkwd{mtext}\hlstd{(}\hlstr{"P&I Deaths"}\hlstd{,} \hlkwc{side}\hlstd{=}\hlnum{2}\hlstd{,} \hlkwc{at}\hlstd{=}\hlnum{900}\hlstd{,}
-      \hlkwc{line}\hlstd{=}\hlopt{-}\hlnum{4}\hlstd{,} \hlkwc{font}\hlstd{=}\hlnum{1}\hlstd{,} \hlkwc{las}\hlstd{=}\hlnum{1}\hlstd{,} \hlkwc{cex}\hlstd{=}\hlnum{1.75}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"blue"}\hlstd{)}
-\hlcom{# putting y label on}
-\hlcom{# at =900 is because it is at around 900 on the y axis plot (just above the top which is 800)}
-\hlcom{# font=1 means normal font (not italics or bold)}
-
-\hlcom{## plot data}
-\hlcom{#putting the grey line, lwd gives line thickness relativ to default}
-\hlkwd{lines}\hlstd{(philadata,} \hlkwc{col}\hlstd{=}\hlstr{"grey"}\hlstd{,} \hlkwc{lwd}\hlstd{=}\hlnum{1.75}\hlstd{)}
-\hlcom{#putting the red points}
-\hlkwd{points}\hlstd{(philadata}\hlopt{$}\hlstd{date, philadata}\hlopt{$}\hlstd{pim,} \hlkwc{pch}\hlstd{=}\hlnum{21}\hlstd{,} \hlkwc{bg}\hlstd{=}\hlstr{"red"}\hlstd{)}
-\end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{figure/PnI_fig-1} 
-
-\end{knitrout}
+\begin{Schunk}
+\begin{Sinput}
+> ## first make the box with no annotation or curves
+> # don't actually plot anything
+> plot(philadata$date, philadata$pim, type="n", 
++      bty="L", # no upper or right box lines
++      ylim=c(0,800), # axis limits
++      yaxp=c(0,800,4), #first two numbers is coordinates of 
++                       #extreme tick marks, third number is the number of marks
++      xaxt='n', #supress x ticks and labels
++      xlab="",
++      ann=FALSE, # no axis annotation (i.e., no title or axis labels)
++      xaxs="i", #first tick on x axis is the y axis
++      las=1 # axis label style: always horizontal
++ )
+> month <- c(9,10,11,12) #want sept, oct, nov, dec labels
+> ticks <- seq(philadata$date[1],
++              philadata$date[length(philadata$date)], by="months") 
+> #put ticks where we want them and labels
+> axis(1, at = ticks, labels = month.abb[month], tcl = -0.3) 
+> ## creat label for axes
+> #putting x label 'Date' on
+> mtext("Date", side=1, adj=1, line=1.5, font=1, cex=1.75, col="blue") 
+> mtext("P&I Deaths", side=2, at=900, 
++       line=-4, font=1, las=1, cex=1.75, col="blue")
+> # putting y label on
+> # at =900 is because it is at around 900 on the y axis plot (just above the top which is 800)
+> # font=1 means normal font (not italics or bold)
+> 
+> ## plot data
+> #putting the grey line, lwd gives line thickness relativ to default
+> lines(philadata, col="grey", lwd=1.75) 
+> #putting the red points
+> points(philadata$date, philadata$pim, pch=21, bg="red") 
+\end{Sinput}
+\end{Schunk}
   }
   \end{proof}
   }
@@ -198,379 +143,30 @@ Notice that the RHS of this equation is constant and thus forces $h - b = 0$. Th
   {\color{blue} \begin{proof}[Solution]
   {\color{magenta}
   \leavevmode
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{library}\hlstd{(tidyverse)}
-\hlkwd{library}\hlstd{(ggplot2);} \hlkwd{theme_set}\hlstd{(}\hlkwd{theme_bw}\hlstd{())}
+  <<estimaternb, warning=FALSE, message=FALSE, fig.height=8, fig.height=5>>==
+library(tidyverse)
+library(ggplot2); theme_set(theme_bw())
 
-\hlstd{philadata} \hlkwb{<-} \hlstd{philadata}  \hlopt{%>%}
-  \hlkwd{mutate}\hlstd{(}\hlkwc{day} \hlstd{=} \hlkwd{as.numeric}\hlstd{(date)} \hlopt{-} \hlkwd{min}\hlstd{(}\hlkwd{as.numeric}\hlstd{(philadata}\hlopt{$}\hlstd{date)))} \hlcom{#R stored dates as -18000. transformed so first date sept 1918 is 0}
-\hlstd{x} \hlkwb{<-} \hlstd{philadata} \hlopt{%>%}
-  \hlkwd{filter}\hlstd{(date} \hlopt{<=} \hlstr{"1918-10-7"} \hlopt{&} \hlstd{date} \hlopt{>=} \hlstr{"1918-09-15"}\hlstd{)} \hlcom{#filter data in linear region}
+philadata <- philadata  %>% 
+    mutate(day = as.numeric(date) - min(as.numeric(philadata$date))) #R stored dates as -18000. transformed so first date sept 1918 is 0
+x <- philadata %>%
+    filter(date <= "1918-10-7" & date >= "1918-09-15") #filter data in linear region
 
 
-\hlstd{lm.base.e} \hlkwb{<-} \hlkwd{lm}\hlstd{(}\hlkwd{log}\hlstd{(pim)}\hlopt{~}\hlstd{day,} \hlkwc{data}\hlstd{= x)} \hlcom{#generates lm and gives slope in base e}
+lm.base.e <- lm(log(pim)~day, data= x) #generates lm and gives slope in base e
 
-\hlstd{x} \hlkwb{<-} \hlstd{x} \hlopt{%>%}
-  \hlkwd{mutate}\hlstd{(}\hlkwc{expected}\hlstd{=} \hlkwd{exp}\hlstd{(lm.base.e}\hlopt{$}\hlstd{coefficients[}\hlnum{1}\hlstd{])}\hlopt{*}\hlkwd{exp}\hlstd{(lm.base.e}\hlopt{$}\hlstd{coefficients[}\hlnum{2}\hlstd{]}\hlopt{*}\hlstd{day))}
+x <- x %>%
+    mutate(expected= exp(lm.base.e$coefficients[1])*exp(lm.base.e$coefficients[2]*day))
 
-\hlkwd{ggplot}\hlstd{(philadata,} \hlkwd{aes}\hlstd{(}\hlkwc{x}\hlstd{=date,} \hlkwc{y}\hlstd{=}\hlkwd{log}\hlstd{(pim)))} \hlopt{+}
-  \hlkwd{geom_point}\hlstd{()} \hlopt{+}
-  \hlkwd{annotate}\hlstd{(}\hlkwc{geom}\hlstd{=}\hlstr{"rect"}\hlstd{,} \hlkwc{xmin} \hlstd{=} \hlkwd{as.Date}\hlstd{(}\hlstr{"1918-10-7"}\hlstd{),} \hlkwc{xmax} \hlstd{=} \hlkwd{as.Date}\hlstd{(}\hlstr{"1918-09-15"}\hlstd{),} \hlkwc{ymin} \hlstd{=}\hlnum{0}\hlstd{,} \hlkwc{ymax}\hlstd{=}\hlnum{Inf}\hlstd{,} \hlkwc{alpha}\hlstd{=}\hlnum{0.2}\hlstd{)} \hlopt{+}
-  \hlkwd{labs}\hlstd{(}\hlkwc{x}\hlstd{=}\hlstr{"Date"}\hlstd{,} \hlkwc{y}\hlstd{=}\hlstr{"log(P&I Mortality)"}\hlstd{)} \hlopt{+}
-  \hlkwd{geom_line}\hlstd{(}\hlkwc{data}\hlstd{=x,} \hlkwd{aes}\hlstd{(}\hlkwc{x}\hlstd{=date,} \hlkwc{y}\hlstd{=}\hlkwd{log}\hlstd{(expected)),} \hlkwc{color}\hlstd{=}\hlstr{"tomato3"}\hlstd{)}
-\end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{figure/estimaternb-1} 
-\begin{kframe}\begin{alltt}
-\hlkwd{ggplot}\hlstd{(philadata,} \hlkwd{aes}\hlstd{(}\hlkwc{x}\hlstd{=date,} \hlkwc{y}\hlstd{=pim))} \hlopt{+}
-  \hlkwd{geom_point}\hlstd{()} \hlopt{+}
-  \hlkwd{annotate}\hlstd{(}\hlkwc{geom}\hlstd{=}\hlstr{"rect"}\hlstd{,} \hlkwc{xmin} \hlstd{=} \hlkwd{as.Date}\hlstd{(}\hlstr{"1918-10-7"}\hlstd{),} \hlkwc{xmax} \hlstd{=} \hlkwd{as.Date}\hlstd{(}\hlstr{"1918-09-15"}\hlstd{),} \hlkwc{ymin} \hlstd{=}\hlnum{0}\hlstd{,} \hlkwc{ymax}\hlstd{=}\hlnum{Inf}\hlstd{,} \hlkwc{alpha}\hlstd{=}\hlnum{0.2}\hlstd{)} \hlopt{+}
-  \hlkwd{labs}\hlstd{(}\hlkwc{x}\hlstd{=}\hlstr{"Date"}\hlstd{,} \hlkwc{y}\hlstd{=}\hlstr{"P&I Mortality"}\hlstd{)} \hlopt{+}
-  \hlkwd{geom_line}\hlstd{(}\hlkwc{data}\hlstd{=x,} \hlkwd{aes}\hlstd{(}\hlkwc{x}\hlstd{=date,} \hlkwc{y}\hlstd{=expected),} \hlkwc{color}\hlstd{=}\hlstr{"tomato3"}\hlstd{)}
-\end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{figure/estimaternb-2} 
+ggplot(philadata, aes(x=date, y=log(pim))) +
+    geom_point() +
+    annotate(geom="rect", xmin = as.Date("1918-10-7"), xmax = as.Date("1918-09-15"), ymin =0, ymax=Inf, alpha=0.2) +
+    labs(x="Date", y="log(P&I Mortality)") +
+    geom_line(data=x, aes(x=date, y=log(expected)), color="tomato3")
 
-\end{knitrout}
+ggplot(philadata, aes(x=date, y=pim)) +
+    geom_point() +
+    annotate(geom="rect", xmin = as.Date("1918-10-7"), xmax = as.Date("1918-09-15"), ymin =0, ymax=Inf, alpha=0.2) +
+    labs(x="Date", y="P&I Mortality") +
+    geom_line(data=x, aes(x=date, y=expected), color="tomato3")
 
-To determine coefficients, we restricted the data to the portion in which the semi-log plot looks approximately linear, and fit a linear model using the \texttt{lm()} function to the log-transformed data. The slope and intercept of this fit is given below.
-
-\begin{center}
-\begin{tabular}{c c}\\
- slope & intercept \\
- \hline
- 0.2286857 & -1.7714926
-\end{tabular}
-\end{center}
-  
-  
-  }
-  \end{proof}
-  }
-  
-\item \EstimateRnc
-
-  {\color{blue} \begin{proof}[Solution]
-  {\color{magenta}
-  We recall that the SIR model is given by Equation \ref{eq:SIRmodel}.
-\begin{equation}
-\label{eq:SIRmodel}
-\begin{aligned}
-\frac{dS}{dt}&=-\beta SI \\
-\frac{dI}{dt}&=\beta SI - \gamma I \\
-\frac{dR}{dt}&=\gamma I 
-\end{aligned}
-\end{equation}
-Given that we are examining data that starts when $I$ is small (and then we have a constant exponential growth rate of 0.2287), we can use the assumption that $S\simeq 1$. Thus, this yields the equation $\frac{dI}{dt}\simeq\beta I - \gamma I$. Solving this, we have Equation \ref{eq:Isolve}
-\begin{equation}
-\label{eq:Isolve}
-I=ce^{(\beta - \gamma)t}
-\end{equation}
-Following from the answer in Question 2 Part a, we know that the slope of 0.2287 of our fitted mortality curve in Part b is equal to the $\beta - \gamma$ slope we would have if we took the log of Equation \ref{eq:Isolve}.
-
-We recall from the SIR model that the constant $\R_0$ is given by the product of the transmission rate and the mean infection period. Equivalently, we have that $\R_0 = \frac{\beta}{\gamma}$. Thus, in order to establish a value for $\R_0$, we need either $\gamma$ or $\beta$, as then we can solve for the other variable using that $\beta - \gamma = 0.2287$. It is much more logical to look for an independent measure of $\gamma$, as the mean infectious period given by $\frac{1}{\gamma}$ is easier to infer from data than the transmission rate. 
-
-If in our case, the mean infectious period ($\frac{1}{\gamma}$) is 4 days, then we know that $\gamma = \frac{1}{4}$. Thus, we have that $\beta=0.4787$. From this information, we can solve for $\R_0 = 0.4787*4 = 1.9148$.
-  }
-  \end{proof}
-  }
-
-\end{enumerate}
-
-\section{Fit the basic SIR model to the Philadelphia P\&I time series}
-
-\begin{enumerate}[(a)]
-
-\item \FitSIRa
-
-\item \FitSIRbIntro
-\begin{itemize}
-    \item Your code will first need to load the \code{deSolve} package:
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{library}\hlstd{(deSolve)}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-    \item \FitSIRbii
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlstd{plot.sine} \hlkwb{<-} \hlkwa{function}\hlstd{(} \hlkwc{xmin}\hlstd{=}\hlnum{0}\hlstd{,} \hlkwc{xmax}\hlstd{=}\hlnum{2}\hlopt{*}\hlstd{pi ) \{}
-  \hlstd{x} \hlkwb{<-} \hlkwd{seq}\hlstd{(xmin,xmax,}\hlkwc{length}\hlstd{=}\hlnum{100}\hlstd{)}
-  \hlkwd{plot}\hlstd{(x,} \hlkwd{sin}\hlstd{(x),} \hlkwc{typ}\hlstd{=}\hlstr{"l"}\hlstd{)}
-  \hlkwd{grid}\hlstd{()} \hlcom{# add a light grey grid}
-\hlstd{\}}
-\hlkwd{plot.sine}\hlstd{(}\hlkwc{xmax}\hlstd{=}\hlnum{4}\hlopt{*}\hlstd{pi)}
-\end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{figure/plot_sine-1} 
-
-\end{knitrout}
-  \item \FitSIRbiiiA
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{## Vector Field for SI model}
-\hlstd{SI.vector.field} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{t}\hlstd{,} \hlkwc{vars}\hlstd{,} \hlkwc{parms}\hlstd{=}\hlkwd{c}\hlstd{(}\hlkwc{beta}\hlstd{=}\hlnum{2}\hlstd{,}\hlkwc{gamma}\hlstd{=}\hlnum{1}\hlstd{)) \{}
-  \hlkwd{with}\hlstd{(}\hlkwd{as.list}\hlstd{(}\hlkwd{c}\hlstd{(parms, vars)), \{}
-    \hlstd{dx} \hlkwb{<-} \hlopt{-}\hlstd{beta}\hlopt{*}\hlstd{x}\hlopt{*}\hlstd{y} \hlcom{# dS/dt}
-    \hlstd{dy} \hlkwb{<-} \hlstd{beta}\hlopt{*}\hlstd{x}\hlopt{*}\hlstd{y}  \hlcom{# dI/dt}
-    \hlstd{vec.fld} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlkwc{dx}\hlstd{=dx,} \hlkwc{dy}\hlstd{=dy)}
-    \hlkwd{return}\hlstd{(}\hlkwd{list}\hlstd{(vec.fld))} \hlcom{# ode() requires a list}
-  \hlstd{\})}
-\hlstd{\}}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-
-\FitSIRbiiiB
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{## Draw solution}
-\hlstd{draw.soln} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{ic}\hlstd{=}\hlkwd{c}\hlstd{(}\hlkwc{x}\hlstd{=}\hlnum{1}\hlstd{,}\hlkwc{y}\hlstd{=}\hlnum{0}\hlstd{),} \hlkwc{tmax}\hlstd{=}\hlnum{1}\hlstd{,}
-                      \hlkwc{times}\hlstd{=}\hlkwd{seq}\hlstd{(}\hlnum{0}\hlstd{,tmax,}\hlkwc{by}\hlstd{=tmax}\hlopt{/}\hlnum{500}\hlstd{),}
-                      \hlkwc{func}\hlstd{,} \hlkwc{parms}\hlstd{,}
-                      \hlkwc{col}\hlstd{=}\hlstr{"blue"}\hlstd{,}
-                      \hlkwc{...} \hlstd{) \{}
-  \hlstd{soln} \hlkwb{<-} \hlkwd{ode}\hlstd{(ic, times, func, parms)}
-  \hlkwd{lines}\hlstd{(times, soln[,}\hlstr{"y"}\hlstd{],} \hlkwc{col}\hlstd{=col,} \hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{, ... )}
-\hlstd{\}}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-\FitSIRbiiiC
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlstd{soln} \hlkwb{<-} \hlkwd{ode}\hlstd{(}\hlkwc{times}\hlstd{=times,} \hlkwc{func}\hlstd{=func,} \hlkwc{parms}\hlstd{=parms,} \hlkwc{y}\hlstd{=ic)}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-
-We can now use our \code{draw.soln()} function to plot a few solutions of the SI model.
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{## Plot solutions of the SI model}
-\hlstd{tmax} \hlkwb{<-} \hlnum{10} \hlcom{# end time for numerical integration of the ODE}
-\hlcom{## draw box for plot:}
-\hlkwd{plot}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{0}\hlstd{,}\hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,tmax),}\hlkwc{ylim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{1}\hlstd{),}
-     \hlkwc{type}\hlstd{=}\hlstr{"n"}\hlstd{,}\hlkwc{xlab}\hlstd{=}\hlstr{"Time (t)"}\hlstd{,}\hlkwc{ylab}\hlstd{=}\hlstr{"Prevalence (I)"}\hlstd{,}\hlkwc{las}\hlstd{=}\hlnum{1}\hlstd{)}
-\hlcom{## initial conditions:}
-\hlstd{I0} \hlkwb{<-} \hlnum{0.001}
-\hlstd{S0} \hlkwb{<-} \hlnum{1} \hlopt{-} \hlstd{I0}
-\hlcom{## draw solutions for several values of parameter beta:}
-\hlstd{betavals} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{1.5}\hlstd{,}\hlnum{2}\hlstd{,}\hlnum{2.5}\hlstd{)}
-\hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(betavals)) \{}
-  \hlkwd{draw.soln}\hlstd{(}\hlkwc{ic}\hlstd{=}\hlkwd{c}\hlstd{(}\hlkwc{x}\hlstd{=S0,}\hlkwc{y}\hlstd{=I0),} \hlkwc{tmax}\hlstd{=tmax,}
-            \hlkwc{func}\hlstd{=SI.vector.field,}
-            \hlkwc{parms}\hlstd{=}\hlkwd{c}\hlstd{(}\hlkwc{beta}\hlstd{=betavals[i],}\hlkwc{gamma}\hlstd{=}\hlnum{1}\hlstd{),}
-            \hlkwc{lty}\hlstd{=i} \hlcom{# use a different line style for each solution}
-            \hlstd{)}
-\hlstd{\}}
-\end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{figure/plot_SI_model-1} 
-
-\end{knitrout}
-
-
-  \end{itemize}
- 
- {\color{blue} \begin{proof}[Solution]
- {\color{magenta}
-First, we must determine values for $\beta$ and $\gamma$, since the basic SIR model that we have studied in class has parameters $\beta$ and $\gamma$.
-We can do so by following the method described in problem 2 (c). $\gamma$ is reciprocal of infectious period and $\beta = \R_0 \gamma$.
-If we suppose that $I_0 = 10^{-3}$ and $S_0 = 1 - I_0$, we can follow the template given in the question to graph solutions for a mean infectious period of 4 days, and for various $\mathcal{R}_0$ values. 
-We begin by defining a vector field for the SIR model:
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{## Vector Field for SIR model}
-\hlstd{SIR.vector.field} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{t}\hlstd{,} \hlkwc{vars}\hlstd{,} \hlkwc{parms}\hlstd{=}\hlkwd{c}\hlstd{(}\hlkwc{beta}\hlstd{=}\hlnum{2}\hlstd{,}\hlkwc{gamma}\hlstd{=}\hlnum{1}\hlstd{)) \{}
-    \hlkwd{with}\hlstd{(}\hlkwd{as.list}\hlstd{(}\hlkwd{c}\hlstd{(parms, vars)), \{}
-        \hlstd{inf} \hlkwb{<-} \hlstd{beta}\hlopt{*}\hlstd{x}\hlopt{*}\hlstd{y}
-        \hlkwd{return}\hlstd{(}\hlkwd{list}\hlstd{(}\hlkwd{c}\hlstd{(}\hlkwc{dx}\hlstd{=}\hlopt{-}\hlstd{inf,} \hlkwc{dy}\hlstd{=inf}\hlopt{-}\hlstd{gamma}\hlopt{*}\hlstd{y)))}
-    \hlstd{\})}
-\hlstd{\}}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-
-Then, we can define a function that draws the solution to the SIR model given parameters, initial values, and maximum time step:
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlstd{draw.sir} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{S0}\hlstd{,}
-                     \hlkwc{I0}\hlstd{,}
-                     \hlkwc{R0}\hlstd{,}
-                     \hlkwc{inf.period}\hlstd{,}
-                     \hlkwc{tmax}\hlstd{,} \hlcom{## max time}
-                     \hlkwc{...}\hlstd{) \{}
-    \hlkwd{draw.soln}\hlstd{(}\hlkwc{ic}\hlstd{=}\hlkwd{c}\hlstd{(}\hlkwc{x}\hlstd{=S0,} \hlkwc{y}\hlstd{=I0),}
-              \hlkwc{tmax}\hlstd{=tmax,}
-              \hlkwc{func}\hlstd{=SIR.vector.field,}
-              \hlkwc{parms}\hlstd{=}\hlkwd{c}\hlstd{(}\hlkwc{beta}\hlstd{=R0}\hlopt{/}\hlstd{inf.period,}
-                      \hlkwc{gamma}\hlstd{=}\hlnum{1}\hlopt{/}\hlstd{inf.period),}
-              \hlstd{...)}
-\hlstd{\}}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-
- }
- \end{proof}
- }
-
-\item \FitSIRc
-
-  {\color{blue} \begin{proof}[Solution]
-  {\color{magenta}
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlstd{I0} \hlkwb{<-} \hlnum{1e-3}
-\hlstd{S0} \hlkwb{<-} \hlnum{1} \hlopt{-} \hlstd{I0}
-\hlstd{inf.period} \hlkwb{<-} \hlnum{4}
-\hlstd{R0} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{1.2}\hlstd{,} \hlnum{1.5}\hlstd{,} \hlnum{1.8}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{4}\hlstd{)}
-\hlstd{n} \hlkwb{<-} \hlkwd{length}\hlstd{(R0)}
-\hlstd{tmax} \hlkwb{<-} \hlnum{150}
-
-\hlkwd{plot}\hlstd{(}\hlnum{NA}\hlstd{,} \hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,tmax),} \hlkwc{ylim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{0.4}\hlstd{),}
-     \hlkwc{xlab}\hlstd{=}\hlstr{"Time (days)"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Prevalence"}\hlstd{)}
-\hlstd{SIR.plot} \hlkwb{<-} \hlkwd{Map}\hlstd{(draw.sir,} \hlkwc{S0}\hlstd{=S0,} \hlkwc{I0}\hlstd{=I0,} \hlkwc{R0}\hlstd{=R0,} \hlkwc{inf.period}\hlstd{=inf.period,}
-    \hlkwc{lty}\hlstd{=}\hlnum{1}\hlopt{:}\hlstd{n,} \hlkwc{col}\hlstd{=}\hlnum{1}\hlopt{:}\hlstd{n,}
-    \hlkwc{tmax}\hlstd{=tmax}
-\hlstd{)}
-
-\hlkwd{legend}\hlstd{(}
-    \hlkwc{x}\hlstd{=}\hlnum{90}\hlstd{,} \hlkwc{y}\hlstd{=}\hlnum{0.4}\hlstd{,}
-    \hlkwc{legend}\hlstd{=R0,} \hlkwc{lty}\hlstd{=}\hlnum{1}\hlopt{:}\hlstd{n,} \hlkwc{col}\hlstd{=}\hlnum{1}\hlopt{:}\hlstd{n,}
-    \hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,}
-    \hlkwc{title}\hlstd{=}\hlstr{"Reproductive number"}\hlstd{,}
-    \hlkwc{seg.len}\hlstd{=}\hlnum{5}
-\hlstd{)}
-\end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{figure/sir_plot-1} 
-
-\end{knitrout}
-  }
-  \end{proof}
-  }
-  
-\item \FitSIRd
-
-  {\color{blue} \begin{proof}[Solution]
-  {\color{magenta}
-In section 2 (a), it was assumed that mortality and prevalence has the following relationship:
-$$
-I(t) = \eta M(t-\tau).
-$$
-Rearranging, we have
-$$
-M(t) = \frac{1}{\eta} I(t+\tau)
-$$
-So we will have to run the model for $t+\tau$ time steps to compare and estimate $\eta$, $\tau$, $S(0)$, $I(0)$, $\R_0$, and infectious period.
-
-Here is the function that will return a data frame whose columns are date and expected daily moratlity given parameters and initial conditions:
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlstd{simulate_mortality} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{S0}\hlstd{,}
-                               \hlkwc{I0}\hlstd{,}
-                               \hlkwc{R0}\hlstd{,}
-                               \hlkwc{inf.period}\hlstd{,}
-                               \hlkwc{eta}\hlstd{,}
-                               \hlkwc{tau}\hlstd{,}
-                               \hlkwc{tmax}\hlstd{=}\hlkwd{nrow}\hlstd{(philadata)) \{}
-    \hlstd{soln} \hlkwb{<-} \hlkwd{as.data.frame}\hlstd{(}\hlkwd{ode}\hlstd{(}
-        \hlkwc{y}\hlstd{=}\hlkwd{c}\hlstd{(}\hlkwc{x}\hlstd{=S0,} \hlkwc{y}\hlstd{=I0),}
-        \hlkwc{times}\hlstd{=}\hlnum{1}\hlopt{:}\hlstd{(tmax}\hlopt{+}\hlstd{tau),}
-        \hlkwc{func}\hlstd{=SIR.vector.field,}
-        \hlkwc{parms}\hlstd{=}\hlkwd{c}\hlstd{(}\hlkwc{beta}\hlstd{=R0}\hlopt{/}\hlstd{inf.period,}
-                      \hlkwc{gamma}\hlstd{=}\hlnum{1}\hlopt{/}\hlstd{inf.period)))}
-
-    \hlkwd{data.frame}\hlstd{(}
-        \hlkwc{date}\hlstd{=philadata}\hlopt{$}\hlstd{date,}
-        \hlkwc{pim}\hlstd{=}\hlkwd{tail}\hlstd{(soln}\hlopt{$}\hlstd{y,} \hlopt{-}\hlstd{tau)}\hlopt{/}\hlstd{eta}
-    \hlstd{)}
-\hlstd{\}}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-
-Now here is the estimate that we found trial and error:
-$$
-S(0)=1-10^{-7}, I(0)=10^{-7}, \R_0=2.2, \frac{1}{\gamma}=4, \eta = 0.00025, \tau=14.
-$$
-Then, we can look at compare our estimated mortality curve with data:
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlstd{mfit} \hlkwb{<-} \hlkwd{simulate_mortality}\hlstd{(}\hlkwc{S0}\hlstd{=}\hlnum{1}\hlopt{-}\hlnum{1e-7}\hlstd{,} \hlkwc{I0}\hlstd{=}\hlnum{1e-7}\hlstd{,} \hlkwc{R0}\hlstd{=}\hlnum{2.2}\hlstd{,} \hlkwc{inf.period} \hlstd{=} \hlnum{4}\hlstd{,} \hlkwc{eta}\hlstd{=}\hlnum{0.00025}\hlstd{,} \hlkwc{tau}\hlstd{=}\hlnum{14}\hlstd{)}
-\hlkwd{plot}\hlstd{(mfit,} \hlkwc{type}\hlstd{=}\hlstr{"l"}\hlstd{,} \hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"blue"}\hlstd{)}
-\hlkwd{points}\hlstd{(philadata)}
-\hlkwd{legend}\hlstd{(}
-    \hlstr{"topright"}\hlstd{,}
-    \hlkwc{legend}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"data"}\hlstd{,} \hlstr{"fit"}\hlstd{),}
-    \hlkwc{lty}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{NA}\hlstd{,} \hlnum{1}\hlstd{),}
-    \hlkwc{pch}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{NA}\hlstd{),}
-    \hlkwc{col}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"black"}\hlstd{,} \hlstr{"blue"}\hlstd{),}
-    \hlkwc{lwd}\hlstd{=}\hlnum{2}
-\hlstd{)}
-\end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{figure/phila_fit-1} 
-
-\end{knitrout}
-Note that our fit appears to underestimate mortality after November. We can take a closer look at the difference by putting the graph on a log scale:
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{plot}\hlstd{(mfit,} \hlkwc{type}\hlstd{=}\hlstr{"l"}\hlstd{,} \hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"blue"}\hlstd{,} \hlkwc{log}\hlstd{=}\hlstr{"y"}\hlstd{)}
-\hlkwd{points}\hlstd{(philadata)}
-\hlkwd{legend}\hlstd{(}
-    \hlstr{"topright"}\hlstd{,}
-    \hlkwc{legend}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"data"}\hlstd{,} \hlstr{"fit"}\hlstd{),}
-    \hlkwc{lty}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{NA}\hlstd{,} \hlnum{1}\hlstd{),}
-    \hlkwc{pch}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{NA}\hlstd{),}
-    \hlkwc{col}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"black"}\hlstd{,} \hlstr{"blue"}\hlstd{),}
-    \hlkwc{lwd}\hlstd{=}\hlnum{2}
-\hlstd{)}
-\end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{figure/phila_fit_log-1} 
-
-\end{knitrout}
-Notice that we have a very good fit in the middle but not near two opposite ends. SIR model predicts that the disease will become extinct after finite period of time. However, mortality data suggests that the epidemic continuous even after a long period of time. Hence, SIR model might simply be insufficient to explain the data and will not fit very well even if we tried harder.
-  }
-  \end{proof}
-  }
- 
-\end{enumerate}
-
-\section{Executive summary for the Public Health Agency}
-
-\ExecSumm
-
-  {\color{blue} \begin{proof}[Solution]
-  {\color{magenta}\dots beautifully clear executive summary here, on its own page\dots}
-  \end{proof}
-  }
-
-\bigskip
-
-\centerline{\bf--- END OF ASSIGNMENT ---}
-
-\bigskip
-Compile time for this document:
-\today\ @ \thistime
-
-\end{document}

@@ -20,8 +20,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
-\SweaveOpts{concordance=TRUE}
-%\SweaveOpts{concordance=TRUE}
 
 \begin{center}
 {\bf Mathematics 4MB3/6MB3 Mathematical Biology\\

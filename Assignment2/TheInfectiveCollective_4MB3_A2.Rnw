@@ -118,13 +118,13 @@ I(t) = g e^{ht}
 for some constants $a$, $b$, $g$, and $h$. Furthermore, if we assume that $I(t) = \eta M(t - \tau)$, for some $\eta$ and $\tau$, then we can write
 \begin{equation*}
 \begin{aligned}
-g e^{ht} = I(t) = \eta M(t - \tau) = \eta a e^{bt}.
+g e^{ht} = I(t) = \eta M(t - \tau) = \eta a e^{b(t-\tau)}.
 \end{aligned}
 \end{equation*}
-Then $g e^{ht} = \eta a e ^{bt}$, and
+Then $g e^{ht} = \eta ae^{-\tau} e ^{bt}$, and
 \begin{equation*}
 \begin{aligned}
-e^{(h-b)t} = \frac{\eta a }{g}.
+e^{(h-b)t} = \frac{\eta ae^{-\tau} }{g}.
 \end{aligned}
 \end{equation*}
 Notice that the RHS of this equation is constant and thus forces $h - b = 0$. That is, $h=b$, and thus both $I(t)$ and $M(t)$ have the same exponential growth rate.
@@ -433,11 +433,11 @@ Notice that we have a very good fit in the middle but not near the two opposite 
 
 \ExecSumm
 \newpage
-The 1918 influenza pandemic was one of the worst influenza epidemics ever recorded. Data from this period are therefore valuable to study because they can provide insight into how similar present-day infectious diseases might spread in a population. In this report, we summarize results from the analysis of 1918 pneumonia and influenza mortality data in Philadelphia, and discuss potential implications for influenza dynamics and future outbreaks. \\\\
+The 1918 influenza pandemic was one of the worst influenza epidemics ever recorded. Data from this period are therefore valuable to study because they can provide insight into how similar present-day infectious diseases might spread in a population. In this report, we summarize results from the analysis of 1918 pneumonia and influenza mortality data in Philadelphia, and discuss potential implications for influenza dynamics and future outbreaks. \newline
 
-Using these data, we can characterize key features of the spread of this epidemic. We begin by analyzing the average number of secondary cases caused by a primary case. Knowing this quantity allows us to estimate the total number of infected individuals and to predict how many people would potentially be infected in any future flu epidemics. In particular, we observed that the average number of secondary cases caused by a primary case is linked to how fast an epidemic grows and how long an infection lasts. Hence, if we can estimate these quantities in the early stages of these epidemics, we will be able to better prepare for future epidemics. \\\\
+Using these data, we can characterize key features of the spread of this epidemic. We begin by analyzing the average number of secondary cases caused by a primary case. Knowing this quantity allows us to estimate the total number of infected individuals and to predict how many people would potentially be infected in any future flu epidemics. In particular, we observed that the average number of secondary cases caused by a primary case is linked to how fast an epidemic grows and how long an infection lasts. Hence, if we can estimate these quantities in the early stages of these epidemics, we will be able to better prepare for future epidemics. \newline
 
-For the 1918 flu, we estimate based on the Philadelphia data that a primary case of influenza would have caused approximately 1.9 to 2.3 secondary cases, assuming that the average flu infection lasts four days. From this, we estimate that about 76\%-86\% of the population would have been ultimately infected by this flu strain. Furthermore, we expect that at the peak of the epidemic, about 14\%-20\% of the population would have been infected simultaneously, meaning that current hospital capacities are unlikely to be able to handle a similar epidemic. In addition, if another flu of this magnitude were to occur, 47\%-56\% of the population would need to be vaccinated in order to prevent the disease from growing in the population. That is, if this portion of the population were vaccinated, we would expect the total number of simultaneously infected individuals in the population to decrease, thereby preventing an epidemic. \\\\
+For the 1918 flu, we estimate based on the Philadelphia data that a primary case of influenza would have caused approximately 1.9 to 2.3 secondary cases, assuming that the average flu infection lasts four days. From this, we estimate that about 76\%-86\% of the population would have been ultimately infected by this flu strain. Furthermore, we expect that at the peak of the epidemic, about 14\%-20\% of the population would have been infected simultaneously, meaning that current hospital capacities are unlikely to be able to handle a similar epidemic. In addition, if another flu of this magnitude were to occur, 47\%-56\% of the population would need to be vaccinated in order to prevent the disease from growing in the population. That is, if this portion of the population were vaccinated, we would expect the total number of simultaneously infected individuals in the population to decrease, thereby preventing an epidemic. \newline
 
 The investigations performed so far were rather preliminary, and additional analysis would be beneficial. If the PHAC were to continue to fund research on historical flu epidemics, we would pursue additional avenues which could help increase the accuracy of our estimate of the average number of secondary cases caused by a primary case. This improved value would in turn provide more accurate information about final expected epidemic size. One possible way to improve the estimate would be to investigate external factors that might help us better explain the data in the 1918 time series. For example, after investigating the biological processes that the spread of influenza relies upon, we would introduce additional terms into our model to try to represent the disease dynamics in greater detail. Another possible way to improve our estimate of the average number of secondary cases caused by a primary case is through examining other time series from epidemics in different locations which were likely caused by the same strain of influenza. This would help us deduce if our model and estimated values are consistent with the dynamics of influenza in general.
 

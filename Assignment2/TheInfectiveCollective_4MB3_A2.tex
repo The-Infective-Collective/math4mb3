@@ -521,9 +521,10 @@ Then, we can compare our estimated mortality curve with the given data:
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{mfit} \hlkwb{<-} \hlkwd{simulate_mortality}\hlstd{(}\hlkwc{S0}\hlstd{=}\hlnum{1}\hlopt{-}\hlnum{1e-7}\hlstd{,} \hlkwc{I0}\hlstd{=}\hlnum{1e-7}\hlstd{,} \hlkwc{R0}\hlstd{=}\hlnum{2.2}\hlstd{,}
-                           \hlkwc{inf.period} \hlstd{=} \hlnum{4}\hlstd{,} \hlkwc{eta}\hlstd{=}\hlnum{0.00025}\hlstd{,} \hlkwc{tau}\hlstd{=}\hlnum{14}\hlstd{)}
-\hlkwd{plot}\hlstd{(mfit,} \hlkwc{type}\hlstd{=}\hlstr{"l"}\hlstd{,} \hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"blue"}\hlstd{)}
+\hlstd{mfit} \hlkwb{<-} \hlkwd{simulate_mortality}\hlstd{(}\hlkwc{S0}\hlstd{=}\hlnum{1}\hlopt{-}\hlnum{1e-7}\hlstd{,} \hlkwc{I0}\hlstd{=}\hlnum{1e-7}\hlstd{,}
+                           \hlkwc{R0}\hlstd{=}\hlnum{2.2}\hlstd{,} \hlkwc{inf.period} \hlstd{=} \hlnum{4}\hlstd{,}
+                           \hlkwc{eta}\hlstd{=}\hlnum{0.00025}\hlstd{,} \hlkwc{tau}\hlstd{=}\hlnum{14}\hlstd{)}
+\hlkwd{plot}\hlstd{(mfit,} \hlkwc{type}\hlstd{=}\hlstr{"l"}\hlstd{,} \hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"blue"}\hlstd{,} \hlkwc{ylim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{800}\hlstd{))}
 \hlkwd{points}\hlstd{(philadata)}
 \hlkwd{legend}\hlstd{(}
     \hlstr{"topright"}\hlstd{,}

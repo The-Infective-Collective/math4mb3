@@ -54,7 +54,6 @@ philadata$date <- as.Date(philadata$date)
   {\color{magenta}
 <<PnI_fig, fig.width=8, fig.height=6>>==
 ## first make the box with no annotation or curves
-# don't actually plot anything
 plot(philadata$date, philadata$pim, type="n", 
      bty="L", # no upper or right box lines
      ylim=c(0,800), # axis limits
@@ -69,23 +68,21 @@ plot(philadata$date, philadata$pim, type="n",
 month <- c(9,10,11,12) #want sept, oct, nov, dec labels
 ticks <- seq(philadata$date[1],
              philadata$date[length(philadata$date)], by="months") 
-#put ticks where we want them and labels
+#put ticks where we want them and labels:
 axis(1, at = ticks, labels = month.abb[month], tcl = -0.3) 
 
-## creat label for axes
-#putting x label 'Date' on
+## create blue labels for axes
 mtext("Date", side=1, adj=1, line=1.5, font=1, cex=1.75, col="blue") 
 mtext("P&I Deaths", side=2, at=900, 
       line=-4, font=1, las=1, cex=1.75, col="blue")
-# putting y label on
 # at =900 is because it is at around 900 on the y axis plot
     # (just above the top which is 800)
-# font=1 means normal font (not italics or bold)
+# font=1 because normal font (not italics or bold)
 
 ## plot data
-#putting the grey line, lwd gives line thickness relativ to default
+#putting the grey line (lwd gives line thickness relative to default):
 lines(philadata, col="grey", lwd=1.75) 
-#putting the red points
+#putting the red points:
 points(philadata$date, philadata$pim, pch=21, bg="red") 
 @
   }
@@ -144,7 +141,7 @@ library(ggplot2); theme_set(theme_bw())
 
 philadata <- philadata  %>% 
     mutate(day = as.numeric(date) - min(as.numeric(philadata$date))) 
-#R stored dates as -18000. transformed so first date sept 1918 is 0
+#R stored dates as -18000 when numeric. transformed so first date sept 1918 is 0
 x <- philadata %>%
     filter(date <= "1918-10-7" & date >= "1918-09-15") 
 #filter data in linear region
@@ -152,9 +149,11 @@ x <- philadata %>%
 #generate lm and give slope in base e
 lm.base.e <- lm(log(pim)~day, data= x) 
 
+#add column to x data with pts expected by our model above:
 x <- x %>%
     mutate(expected= exp(lm.base.e$coefficients[1])*exp(lm.base.e$coefficients[2]*day))
 
+#plot on log scale:
 ggplot(philadata, aes(x=date, y=log(pim))) +
     geom_point() +
     annotate(geom="rect", xmin = as.Date("1918-10-7"),
@@ -163,6 +162,7 @@ ggplot(philadata, aes(x=date, y=log(pim))) +
     labs(x="Date", y="log(P&I Mortality)") +
     geom_line(data=x, aes(x=date, y=log(expected)), color="tomato3")
 
+#plot on normal scale and show how model fits:
 ggplot(philadata, aes(x=date, y=pim)) +
     geom_point() +
     annotate(geom="rect", xmin = as.Date("1918-10-7"),

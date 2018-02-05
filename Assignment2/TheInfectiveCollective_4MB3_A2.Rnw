@@ -404,8 +404,10 @@ S(0)=1-10^{-7}, I(0)=10^{-7}, \R_0=2.2, \frac{1}{\gamma}=4, \eta = 0.00025, \tau
 $$
 Then, we can compare our estimated mortality curve with the given data:
 <<phila_fit, fig.width=8, fig.height=5>>==
-mfit <- simulate_mortality(S0=1-1e-7, I0=1e-7, R0=2.2, inf.period = 4, eta=0.00025, tau=14)
-plot(mfit, type="l", lwd=3, col="blue")
+mfit <- simulate_mortality(S0=1-1e-7, I0=1e-7,
+                           R0=2.2, inf.period = 4,
+                           eta=0.00025, tau=14)
+plot(mfit, type="l", lwd=3, col="blue", ylim=c(0,800))
 points(philadata)
 legend(
     "topright",

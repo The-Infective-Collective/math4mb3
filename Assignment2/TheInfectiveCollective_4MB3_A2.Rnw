@@ -304,7 +304,7 @@ We begin by defining a vector field for the SIR model:
 ## Vector Field for SIR model
 SIR.vector.field <- function(t, vars, parms=c(beta=2,gamma=1)) {
     with(as.list(c(parms, vars)), {
-        inf <- beta*x*y
+        inf <- beta*x*y ## infection
         return(list(c(dx=-inf, dy=inf-gamma*y)))
     })
 }
@@ -318,6 +318,7 @@ draw.sir <- function(S0,
                      inf.period,
                      tmax, ## max time
                      ...) {
+    ## draw solution curve (prevalence)
     draw.soln(ic=c(x=S0, y=I0), 
               tmax=tmax, 
               func=SIR.vector.field,
@@ -336,6 +337,8 @@ draw.sir <- function(S0,
   {\color{blue} \begin{proof}[Solution]
   {\color{magenta}
 <<sir.plot, fig.height=6, fig.width=8>>==
+## setting up initial conditions
+## as well as parameters
 I0 <- 1e-3
 S0 <- 1 - I0
 inf.period <- 4
@@ -343,8 +346,11 @@ R0 <- c(1.2, 1.5, 1.8, 2, 3, 4)
 n <- length(R0)
 tmax <- 150
 
+## set up plot window
 plot(NA, xlim=c(0,tmax), ylim=c(0,0.4), 
      xlab="Time (days)", ylab="Prevalence")
+## actually plot curves
+## Map is a fancy way of avoiding loops
 SIR.plot <- Map(draw.sir, S0=S0, I0=I0, R0=R0, inf.period=inf.period, 
     lty=1:n, col=1:n,
     tmax=tmax
@@ -353,9 +359,7 @@ SIR.plot <- Map(draw.sir, S0=S0, I0=I0, R0=R0, inf.period=inf.period,
 legend(
     x=90, y=0.4,
     legend=R0, lty=1:n, col=1:n,
-    lwd=3,
-    title="Reproductive number",
-    seg.len=5
+    lwd=3, title="Reproductive number", seg.len=5
 )
 @
   }
@@ -385,6 +389,7 @@ simulate_mortality <- function(S0,
                                eta,
                                tau,
                                tmax=nrow(philadata)) {
+    ## first we want to solve ode
     soln <- as.data.frame(ode(
         y=c(x=S0, y=I0), 
         times=1:(tmax+tau), 
@@ -392,6 +397,7 @@ simulate_mortality <- function(S0,
         parms=c(beta=R0/inf.period, 
                       gamma=1/inf.period)))
     
+    ## then mortality is approximation
     data.frame(
         date=philadata$date,
         pim=tail(soln$y, -tau)/eta
@@ -405,9 +411,12 @@ S(0)=1-10^{-7}, I(0)=10^{-7}, \R_0=2.2, \frac{1}{\gamma}=4, \eta = 0.00025, \tau
 $$
 Then, we can compare our estimated mortality curve with the given data:
 <<phila_fit, fig.width=8, fig.height=5>>==
+## simulating mortality using parameters we estimated
 mfit <- simulate_mortality(S0=1-1e-7, I0=1e-7,
                            R0=2.2, inf.period = 4,
                            eta=0.00025, tau=14)
+
+## plotting expected mortality curve
 plot(mfit, type="l", lwd=3, col="blue", ylim=c(0,800))
 points(philadata)
 legend(

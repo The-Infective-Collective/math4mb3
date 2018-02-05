@@ -110,7 +110,6 @@ This assignment was due in class on \textcolor{red}{\bf Monday 5 February 2018 a
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlcom{## first make the box with no annotation or curves}
-\hlcom{# don't actually plot anything}
 \hlkwd{plot}\hlstd{(philadata}\hlopt{$}\hlstd{date, philadata}\hlopt{$}\hlstd{pim,} \hlkwc{type}\hlstd{=}\hlstr{"n"}\hlstd{,}
      \hlkwc{bty}\hlstd{=}\hlstr{"L"}\hlstd{,} \hlcom{# no upper or right box lines}
      \hlkwc{ylim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{800}\hlstd{),} \hlcom{# axis limits}
@@ -125,23 +124,21 @@ This assignment was due in class on \textcolor{red}{\bf Monday 5 February 2018 a
 \hlstd{month} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{9}\hlstd{,}\hlnum{10}\hlstd{,}\hlnum{11}\hlstd{,}\hlnum{12}\hlstd{)} \hlcom{#want sept, oct, nov, dec labels}
 \hlstd{ticks} \hlkwb{<-} \hlkwd{seq}\hlstd{(philadata}\hlopt{$}\hlstd{date[}\hlnum{1}\hlstd{],}
              \hlstd{philadata}\hlopt{$}\hlstd{date[}\hlkwd{length}\hlstd{(philadata}\hlopt{$}\hlstd{date)],} \hlkwc{by}\hlstd{=}\hlstr{"months"}\hlstd{)}
-\hlcom{#put ticks where we want them and labels}
+\hlcom{#put ticks where we want them and labels:}
 \hlkwd{axis}\hlstd{(}\hlnum{1}\hlstd{,} \hlkwc{at} \hlstd{= ticks,} \hlkwc{labels} \hlstd{= month.abb[month],} \hlkwc{tcl} \hlstd{=} \hlopt{-}\hlnum{0.3}\hlstd{)}
 
-\hlcom{## creat label for axes}
-\hlcom{#putting x label 'Date' on}
+\hlcom{## create blue labels for axes}
 \hlkwd{mtext}\hlstd{(}\hlstr{"Date"}\hlstd{,} \hlkwc{side}\hlstd{=}\hlnum{1}\hlstd{,} \hlkwc{adj}\hlstd{=}\hlnum{1}\hlstd{,} \hlkwc{line}\hlstd{=}\hlnum{1.5}\hlstd{,} \hlkwc{font}\hlstd{=}\hlnum{1}\hlstd{,} \hlkwc{cex}\hlstd{=}\hlnum{1.75}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"blue"}\hlstd{)}
 \hlkwd{mtext}\hlstd{(}\hlstr{"P&I Deaths"}\hlstd{,} \hlkwc{side}\hlstd{=}\hlnum{2}\hlstd{,} \hlkwc{at}\hlstd{=}\hlnum{900}\hlstd{,}
       \hlkwc{line}\hlstd{=}\hlopt{-}\hlnum{4}\hlstd{,} \hlkwc{font}\hlstd{=}\hlnum{1}\hlstd{,} \hlkwc{las}\hlstd{=}\hlnum{1}\hlstd{,} \hlkwc{cex}\hlstd{=}\hlnum{1.75}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"blue"}\hlstd{)}
-\hlcom{# putting y label on}
 \hlcom{# at =900 is because it is at around 900 on the y axis plot}
     \hlcom{# (just above the top which is 800)}
-\hlcom{# font=1 means normal font (not italics or bold)}
+\hlcom{# font=1 because normal font (not italics or bold)}
 
 \hlcom{## plot data}
-\hlcom{#putting the grey line, lwd gives line thickness relativ to default}
+\hlcom{#putting the grey line (lwd gives line thickness relative to default):}
 \hlkwd{lines}\hlstd{(philadata,} \hlkwc{col}\hlstd{=}\hlstr{"grey"}\hlstd{,} \hlkwc{lwd}\hlstd{=}\hlnum{1.75}\hlstd{)}
-\hlcom{#putting the red points}
+\hlcom{#putting the red points:}
 \hlkwd{points}\hlstd{(philadata}\hlopt{$}\hlstd{date, philadata}\hlopt{$}\hlstd{pim,} \hlkwc{pch}\hlstd{=}\hlnum{21}\hlstd{,} \hlkwc{bg}\hlstd{=}\hlstr{"red"}\hlstd{)}
 \end{alltt}
 \end{kframe}
@@ -206,7 +203,7 @@ Notice that the RHS of this equation is constant and thus forces $h - b = 0$. Th
 
 \hlstd{philadata} \hlkwb{<-} \hlstd{philadata}  \hlopt{%>%}
   \hlkwd{mutate}\hlstd{(}\hlkwc{day} \hlstd{=} \hlkwd{as.numeric}\hlstd{(date)} \hlopt{-} \hlkwd{min}\hlstd{(}\hlkwd{as.numeric}\hlstd{(philadata}\hlopt{$}\hlstd{date)))}
-\hlcom{#R stored dates as -18000. transformed so first date sept 1918 is 0}
+\hlcom{#R stored dates as -18000 when numeric. transformed so first date sept 1918 is 0}
 \hlstd{x} \hlkwb{<-} \hlstd{philadata} \hlopt{%>%}
   \hlkwd{filter}\hlstd{(date} \hlopt{<=} \hlstr{"1918-10-7"} \hlopt{&} \hlstd{date} \hlopt{>=} \hlstr{"1918-09-15"}\hlstd{)}
 \hlcom{#filter data in linear region}
@@ -214,10 +211,12 @@ Notice that the RHS of this equation is constant and thus forces $h - b = 0$. Th
 \hlcom{#generate lm and give slope in base e}
 \hlstd{lm.base.e} \hlkwb{<-} \hlkwd{lm}\hlstd{(}\hlkwd{log}\hlstd{(pim)}\hlopt{~}\hlstd{day,} \hlkwc{data}\hlstd{= x)}
 
+\hlcom{#add column to x data with pts expected by our model above:}
 \hlstd{x} \hlkwb{<-} \hlstd{x} \hlopt{%>%}
   \hlkwd{mutate}\hlstd{(}\hlkwc{expected}\hlstd{=} \hlkwd{exp}\hlstd{(lm.base.e}\hlopt{$}\hlstd{coefficients[}\hlnum{1}\hlstd{])}\hlopt{*}
              \hlkwd{exp}\hlstd{(lm.base.e}\hlopt{$}\hlstd{coefficients[}\hlnum{2}\hlstd{]}\hlopt{*}\hlstd{day))}
 
+\hlcom{#plot on log scale:}
 \hlkwd{ggplot}\hlstd{(philadata,} \hlkwd{aes}\hlstd{(}\hlkwc{x}\hlstd{=date,} \hlkwc{y}\hlstd{=}\hlkwd{log}\hlstd{(pim)))} \hlopt{+}
   \hlkwd{geom_point}\hlstd{()} \hlopt{+}
   \hlkwd{annotate}\hlstd{(}\hlkwc{geom}\hlstd{=}\hlstr{"rect"}\hlstd{,} \hlkwc{xmin} \hlstd{=} \hlkwd{as.Date}\hlstd{(}\hlstr{"1918-10-7"}\hlstd{),}
@@ -229,6 +228,7 @@ Notice that the RHS of this equation is constant and thus forces $h - b = 0$. Th
 \end{kframe}
 \includegraphics[width=\maxwidth]{figure/estimaternb-1} 
 \begin{kframe}\begin{alltt}
+\hlcom{#plot on normal scale and show how model fits:}
 \hlkwd{ggplot}\hlstd{(philadata,} \hlkwd{aes}\hlstd{(}\hlkwc{x}\hlstd{=date,} \hlkwc{y}\hlstd{=pim))} \hlopt{+}
   \hlkwd{geom_point}\hlstd{()} \hlopt{+}
   \hlkwd{annotate}\hlstd{(}\hlkwc{geom}\hlstd{=}\hlstr{"rect"}\hlstd{,} \hlkwc{xmin} \hlstd{=} \hlkwd{as.Date}\hlstd{(}\hlstr{"1918-10-7"}\hlstd{),}
@@ -402,7 +402,7 @@ We begin by defining a vector field for the SIR model:
 \hlcom{## Vector Field for SIR model}
 \hlstd{SIR.vector.field} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{t}\hlstd{,} \hlkwc{vars}\hlstd{,} \hlkwc{parms}\hlstd{=}\hlkwd{c}\hlstd{(}\hlkwc{beta}\hlstd{=}\hlnum{2}\hlstd{,}\hlkwc{gamma}\hlstd{=}\hlnum{1}\hlstd{)) \{}
     \hlkwd{with}\hlstd{(}\hlkwd{as.list}\hlstd{(}\hlkwd{c}\hlstd{(parms, vars)), \{}
-        \hlstd{inf} \hlkwb{<-} \hlstd{beta}\hlopt{*}\hlstd{x}\hlopt{*}\hlstd{y}
+        \hlstd{inf} \hlkwb{<-} \hlstd{beta}\hlopt{*}\hlstd{x}\hlopt{*}\hlstd{y} \hlcom{## infection}
         \hlkwd{return}\hlstd{(}\hlkwd{list}\hlstd{(}\hlkwd{c}\hlstd{(}\hlkwc{dx}\hlstd{=}\hlopt{-}\hlstd{inf,} \hlkwc{dy}\hlstd{=inf}\hlopt{-}\hlstd{gamma}\hlopt{*}\hlstd{y)))}
     \hlstd{\})}
 \hlstd{\}}
@@ -420,6 +420,7 @@ Then, we can define a function that draws the solution to the SIR model given pa
                      \hlkwc{inf.period}\hlstd{,}
                      \hlkwc{tmax}\hlstd{,} \hlcom{## max time}
                      \hlkwc{...}\hlstd{) \{}
+    \hlcom{## draw solution curve (prevalence)}
     \hlkwd{draw.soln}\hlstd{(}\hlkwc{ic}\hlstd{=}\hlkwd{c}\hlstd{(}\hlkwc{x}\hlstd{=S0,} \hlkwc{y}\hlstd{=I0),}
               \hlkwc{tmax}\hlstd{=tmax,}
               \hlkwc{func}\hlstd{=SIR.vector.field,}
@@ -442,6 +443,8 @@ Then, we can define a function that draws the solution to the SIR model given pa
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
+\hlcom{## setting up initial conditions}
+\hlcom{## as well as parameters}
 \hlstd{I0} \hlkwb{<-} \hlnum{1e-3}
 \hlstd{S0} \hlkwb{<-} \hlnum{1} \hlopt{-} \hlstd{I0}
 \hlstd{inf.period} \hlkwb{<-} \hlnum{4}
@@ -449,8 +452,11 @@ Then, we can define a function that draws the solution to the SIR model given pa
 \hlstd{n} \hlkwb{<-} \hlkwd{length}\hlstd{(R0)}
 \hlstd{tmax} \hlkwb{<-} \hlnum{150}
 
+\hlcom{## set up plot window}
 \hlkwd{plot}\hlstd{(}\hlnum{NA}\hlstd{,} \hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,tmax),} \hlkwc{ylim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{0.4}\hlstd{),}
      \hlkwc{xlab}\hlstd{=}\hlstr{"Time (days)"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Prevalence"}\hlstd{)}
+\hlcom{## actually plot curves}
+\hlcom{## Map is a fancy way of avoiding loops}
 \hlstd{SIR.plot} \hlkwb{<-} \hlkwd{Map}\hlstd{(draw.sir,} \hlkwc{S0}\hlstd{=S0,} \hlkwc{I0}\hlstd{=I0,} \hlkwc{R0}\hlstd{=R0,} \hlkwc{inf.period}\hlstd{=inf.period,}
     \hlkwc{lty}\hlstd{=}\hlnum{1}\hlopt{:}\hlstd{n,} \hlkwc{col}\hlstd{=}\hlnum{1}\hlopt{:}\hlstd{n,}
     \hlkwc{tmax}\hlstd{=tmax}
@@ -459,9 +465,7 @@ Then, we can define a function that draws the solution to the SIR model given pa
 \hlkwd{legend}\hlstd{(}
     \hlkwc{x}\hlstd{=}\hlnum{90}\hlstd{,} \hlkwc{y}\hlstd{=}\hlnum{0.4}\hlstd{,}
     \hlkwc{legend}\hlstd{=R0,} \hlkwc{lty}\hlstd{=}\hlnum{1}\hlopt{:}\hlstd{n,} \hlkwc{col}\hlstd{=}\hlnum{1}\hlopt{:}\hlstd{n,}
-    \hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,}
-    \hlkwc{title}\hlstd{=}\hlstr{"Reproductive number"}\hlstd{,}
-    \hlkwc{seg.len}\hlstd{=}\hlnum{5}
+    \hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{title}\hlstd{=}\hlstr{"Reproductive number"}\hlstd{,} \hlkwc{seg.len}\hlstd{=}\hlnum{5}
 \hlstd{)}
 \end{alltt}
 \end{kframe}
@@ -497,6 +501,7 @@ Here is the function that will return a data frame whose columns are date and ex
                                \hlkwc{eta}\hlstd{,}
                                \hlkwc{tau}\hlstd{,}
                                \hlkwc{tmax}\hlstd{=}\hlkwd{nrow}\hlstd{(philadata)) \{}
+    \hlcom{## first we want to solve ode}
     \hlstd{soln} \hlkwb{<-} \hlkwd{as.data.frame}\hlstd{(}\hlkwd{ode}\hlstd{(}
         \hlkwc{y}\hlstd{=}\hlkwd{c}\hlstd{(}\hlkwc{x}\hlstd{=S0,} \hlkwc{y}\hlstd{=I0),}
         \hlkwc{times}\hlstd{=}\hlnum{1}\hlopt{:}\hlstd{(tmax}\hlopt{+}\hlstd{tau),}
@@ -504,6 +509,7 @@ Here is the function that will return a data frame whose columns are date and ex
         \hlkwc{parms}\hlstd{=}\hlkwd{c}\hlstd{(}\hlkwc{beta}\hlstd{=R0}\hlopt{/}\hlstd{inf.period,}
                       \hlkwc{gamma}\hlstd{=}\hlnum{1}\hlopt{/}\hlstd{inf.period)))}
 
+    \hlcom{## then mortality is approximation}
     \hlkwd{data.frame}\hlstd{(}
         \hlkwc{date}\hlstd{=philadata}\hlopt{$}\hlstd{date,}
         \hlkwc{pim}\hlstd{=}\hlkwd{tail}\hlstd{(soln}\hlopt{$}\hlstd{y,} \hlopt{-}\hlstd{tau)}\hlopt{/}\hlstd{eta}
@@ -521,9 +527,12 @@ Then, we can compare our estimated mortality curve with the given data:
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
+\hlcom{## simulating mortality using parameters we estimated}
 \hlstd{mfit} \hlkwb{<-} \hlkwd{simulate_mortality}\hlstd{(}\hlkwc{S0}\hlstd{=}\hlnum{1}\hlopt{-}\hlnum{1e-7}\hlstd{,} \hlkwc{I0}\hlstd{=}\hlnum{1e-7}\hlstd{,}
                            \hlkwc{R0}\hlstd{=}\hlnum{2.2}\hlstd{,} \hlkwc{inf.period} \hlstd{=} \hlnum{4}\hlstd{,}
                            \hlkwc{eta}\hlstd{=}\hlnum{0.00025}\hlstd{,} \hlkwc{tau}\hlstd{=}\hlnum{14}\hlstd{)}
+
+\hlcom{## plotting expected mortality curve}
 \hlkwd{plot}\hlstd{(mfit,} \hlkwc{type}\hlstd{=}\hlstr{"l"}\hlstd{,} \hlkwc{lwd}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{"blue"}\hlstd{,} \hlkwc{ylim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{800}\hlstd{))}
 \hlkwd{points}\hlstd{(philadata)}
 \hlkwd{legend}\hlstd{(}

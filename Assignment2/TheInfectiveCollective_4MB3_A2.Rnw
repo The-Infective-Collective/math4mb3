@@ -59,7 +59,7 @@ plot(philadata$date, philadata$pim, type="n",
      bty="L", # no upper or right box lines
      ylim=c(0,800), # axis limits
      yaxp=c(0,800,4), #first two numbers is coordinates of 
-                      #extreme tick marks, third number is the number of marks
+                      #extreme tick marks, third number is num. of marks
      xaxt='n', #supress x ticks and labels
      xlab="",
      ann=FALSE, # no axis annotation (i.e., no title or axis labels)
@@ -78,7 +78,8 @@ mtext("Date", side=1, adj=1, line=1.5, font=1, cex=1.75, col="blue")
 mtext("P&I Deaths", side=2, at=900, 
       line=-4, font=1, las=1, cex=1.75, col="blue")
 # putting y label on
-# at =900 is because it is at around 900 on the y axis plot (just above the top which is 800)
+# at =900 is because it is at around 900 on the y axis plot
+    # (just above the top which is 800)
 # font=1 means normal font (not italics or bold)
 
 ## plot data
@@ -142,25 +143,31 @@ library(tidyverse)
 library(ggplot2); theme_set(theme_bw())
 
 philadata <- philadata  %>% 
-    mutate(day = as.numeric(date) - min(as.numeric(philadata$date))) #R stored dates as -18000. transformed so first date sept 1918 is 0
+    mutate(day = as.numeric(date) - min(as.numeric(philadata$date))) 
+#R stored dates as -18000. transformed so first date sept 1918 is 0
 x <- philadata %>%
-    filter(date <= "1918-10-7" & date >= "1918-09-15") #filter data in linear region
+    filter(date <= "1918-10-7" & date >= "1918-09-15") 
+#filter data in linear region
 
-
-lm.base.e <- lm(log(pim)~day, data= x) #generates lm and gives slope in base e
+#generate lm and give slope in base e
+lm.base.e <- lm(log(pim)~day, data= x) 
 
 x <- x %>%
     mutate(expected= exp(lm.base.e$coefficients[1])*exp(lm.base.e$coefficients[2]*day))
 
 ggplot(philadata, aes(x=date, y=log(pim))) +
     geom_point() +
-    annotate(geom="rect", xmin = as.Date("1918-10-7"), xmax = as.Date("1918-09-15"), ymin =0, ymax=Inf, alpha=0.2) +
+    annotate(geom="rect", xmin = as.Date("1918-10-7"),
+             xmax = as.Date("1918-09-15"), ymin =0, ymax=Inf,
+             alpha=0.2) +
     labs(x="Date", y="log(P&I Mortality)") +
     geom_line(data=x, aes(x=date, y=log(expected)), color="tomato3")
 
 ggplot(philadata, aes(x=date, y=pim)) +
     geom_point() +
-    annotate(geom="rect", xmin = as.Date("1918-10-7"), xmax = as.Date("1918-09-15"), ymin =0, ymax=Inf, alpha=0.2) +
+    annotate(geom="rect", xmin = as.Date("1918-10-7"),
+             xmax = as.Date("1918-09-15"), ymin =0, ymax=Inf,
+             alpha=0.2) +
     labs(x="Date", y="P&I Mortality") +
     geom_line(data=x, aes(x=date, y=expected), color="tomato3")
 

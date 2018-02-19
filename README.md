@@ -1,3 +1,10 @@
+## Assignment 3
+* [Overleaf link](https://www.overleaf.com/13878972rmcxjkvrbdws)
+* Parts (a) to (f): Michael, Aurora
+* Parts (g) to (j): Presta, Park
+* Part (k) together
+* Next meeting: 6:30 PM, Monday Feb 26
+
 ## Assignment 2
 * Questions 1 and 2: Michael, Aurora
 * Question 3: Presta, Park

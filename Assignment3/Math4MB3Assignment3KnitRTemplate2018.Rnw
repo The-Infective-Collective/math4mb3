@@ -1,0 +1,283 @@
+\documentclass[12pt]{article}
+
+\input{4mbapreamble}
+\input{4mba3q}
+\newcommand{\BeautifulSolution}{{\color{blue}\begin{proof}{\color{magenta}\dots beautifully clear and concise text to be inserted here\dots}\end{proof}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% FANCY HEADER AND FOOTER STUFF %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{fancyhdr,lastpage}
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer parameters
+%%%\lhead{Student Name: \theblank{4cm}}
+%%%\chead{}
+%%%\rhead{Student Number: \theblank{3cm}}
+%%%\lfoot{\small\bfseries\ifnum\thepage<\pageref{LastPage}{CONTINUED\\on next page}\else{LAST PAGE}\fi}
+\lfoot{}
+\cfoot{{\small\bfseries Page \thepage\ of \pageref{LastPage}}}
+\rfoot{}
+\renewcommand\headrulewidth{0pt} % Removes funny header line
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\begin{center}
+{\bf Mathematics 4MB3/6MB3 Mathematical Biology\\
+\smallskip
+2018 ASSIGNMENT 3}\\
+\medskip
+\underline{\emph{Group Name}}: \texttt{{\color{blue}The Rolling Stones}}\\
+\medskip
+\underline{\emph{Group Members}}: {\color{blue}Mick Jagger, Keith Richards, Ronnie Wood, Charlie Watts}
+\end{center}
+
+\bigskip
+\noindent
+This assignment is {\bfseries\color{red} due in class} on \textcolor{red}{\bf Wednesday 28 February 2018 at 11:30am}.
+
+\bigskip
+
+\section*{Analysis of the standard SIR model with vital dynamics}
+
+\SIRintro
+
+\begin{enumerate}[(a)]
+
+\item \SIRa
+\BeautifulSolution
+ 
+\item \SIRb
+\BeautifulSolution
+
+\item \SIRc
+\BeautifulSolution
+
+\item \SIRd
+\BeautifulSolution
+
+\item \SIRe
+\BeautifulSolution
+
+\item \SIRf
+\BeautifulSolution
+
+\item \SIRg
+\BeautifulSolution
+
+\item \SIRh
+\BeautifulSolution
+
+\item \SIRi
+{\color{blue}\begin{proof}{\color{magenta}
+Recall that the Jacobian of the system (ignoring $R$) at the endemic equilibrium is given by
+$$
+\begin{bmatrix}
+- \epsilon \R_0 & - 1 \\
+\epsilon (\R_0 - 1) & 0
+\end{bmatrix}
+$$
+where its characteristic equation is given by
+$$
+\lambda^2 + \epsilon \R_0 \lambda + \epsilon(\R_0 - 1) = 0
+$$
+Then, its eigenvalues are given by
+$$
+\lambda = \frac{-\epsilon \R_0 \pm \sqrt{\epsilon^2 \R_0^2 - 4 \epsilon(\R_0 - 1)}}{2}.
+$$
+When
+$$
+\epsilon < \frac{4 (\R_0 - 1)}{\R_0^2},
+$$
+the eigenvalues of the Jacobian matrix are given by
+$$
+\lambda = -\frac{\epsilon \R_0}{2} \pm i \frac{\sqrt{4 \epsilon (\R_0 - 1) - \epsilon^2 \R_0^2}}{2}
+$$
+For convenience, denote
+$$
+\begin{aligned}
+\eta &= \frac{\sqrt{4 \epsilon (\R_0 - 1) - \epsilon^2 \R_0^2}}{2}\\
+\alpha &= -\frac{\epsilon \R_0}{2}.
+\end{aligned}
+$$
+Furthermore, denote corresponding eigenvectors by $\vec{v}_1 = \vec{a} + \vec{b} i$ and $\vec{v}_2 = \vec{a} - \vec{b} i$.
+Consider the following linear system:
+$$
+\frac{d}{dt} \vec{x} = \begin{bmatrix}
+- \epsilon \R_0 & - 1 \\
+\epsilon (\R_0 - 1) & 0
+\end{bmatrix} \vec{x},
+$$
+where
+$$
+\vec{x}(t) = \begin{bmatrix}
+S(t)\\
+I(t)
+\end{bmatrix}
+$$
+Then, by the result derived from 3MB3 course, we find that the solution to this linear system is given by
+$$
+\vec{x}(t) = \left[c_1 \left(\cos (\eta t) \vec{a} - \sin (\eta t) \vec{b} \right) + c_2 \left(\sin (\eta t) \vec{a} + \cos (\eta t) \vec{b} \right)  \right] \exp(\alpha t),
+$$
+where $c_1, c_2$ are determined by the initial conditions.
+Indeed, this shows that the oscillation is damped because $\alpha < 0$ (and sine and cosine term "proves" the oscillatory dynamics). Furthermore, period of damped osccilation is given by $2\pi/\eta$ which is equal to
+$$
+\frac{2\pi}{\sqrt{\epsilon (\R_0 - 1) - \epsilon^2 \R_0^2}}.
+$$
+Furthermore, $e$-folding time for decay of the amplitude of oscillation is given by
+$$
+-\frac{1}{\alpha} = \frac{2}{\epsilon \R_0}
+$$
+We expect our original SIR model to have similar $e$-folding time as well as period as this system.
+We want to confirm these facts numerically.
+
+First, we need to load some packages:
+<<load, warning=FALSE, message=FALSE>>==
+library(deSolve)
+library(dplyr)
+@
+Following the previous assignment, we start by writing the gradient function:
+<<grad>>==2
+SIR.grad <- function(t, y, param) {
+    with(as.list(c(param, y)), {
+        dS <- epsilon - R0 * S * I - epsilon * S
+        dI <- R0 * S * I - I
+        dR <- (1-epsilon) * I - epsilon * R
+        
+        list(c(dS, dI, dR))
+    })
+}
+@
+
+Here, we will use $\R_0=1.5$ and $\epsilon=1/20$ with initial conditions $S(0)=0.99, I(0)=0.01$.
+First, we want to confirm the rate of exponential decay first.
+To illustrate that the rate of exponential decay matches, we plot 
+$$
+c_3 \exp(- \epsilon \R_0 t/2) + \epsilon(1- 1/\R_0)
+$$
+along with the prevalence curve where $c_3$ is found by trial and error to match the second peak. 
+
+<<exp_decay, fig.width=8, fig.height=6>>==
+par <- c(R0=1.5, epsilon=1/20)
+y <- c(S=1-1e-2, I=1e-2, R=0)
+tvec <- seq(0, 150, by=0.1)
+
+df <- as.data.frame(ode(y, tvec, SIR.grad, par))
+
+plot(tvec, df$I, type="l", ylab="proportion", xlab="time", lwd=2)
+with(as.list(par),{
+    curve(0.05 * exp(-epsilon * R0*x/2)+ epsilon * (1-1/R0), add=T, col=2, lty=2, lwd=2)
+})
+legend(
+    "topright",
+    col=c(1, 2),
+    lty=c(1, 2),
+    lwd=c(2,2),
+    legend=c("SIR prevalence", "exponential")
+)
+@
+
+We find that the exponential curve matches subsequent peaks (after the second peak) of the prevalence curve. 
+It does not match the first peak but we do not expect the SIR model to behave like its linearized model immediately.
+Hence, the discrepancy between the exponential curve and the first peak prevalence does not necessarily imply that the rate of exponential is different from what we expected.
+
+To provide a stronger evidence, we plot the approximate solution (solution to the linear equation) along with the solution to the ODE.
+Note that the approximate solution converges to $(0,0)$ equilibrium instead of the endemic equilibrum. 
+Instead of plotting the approximate solution directly, we compute
+$$
+\vec{x} + \begin{bmatrix}
+\frac{1}{\R_0}\\
+\epsilon(1- 1/\R_0)
+\end{bmatrix}
+$$
+so that the approximate solution converges to the endemic equilibrium. 
+We find $c_1, c_2$ numerically by minimizing the sum of squared difference between the initial condition of the ODe with the initial condition of the approximate solution (so that both curves start at the same place).
+We compare prevalence as well as phase portrait.
+Once again, we plot the same exponential curve on top of prevalence curves.
+
+<<approx, fig.width=8, fig.height=6>>==
+approxSIR <- function(t, y, param) {
+    with(as.list(param), {
+        
+        eq <- c(1/R0, epsilon * (1-1/R0))
+        
+        approxfun <- function(t, c1, c2) {
+            (c1 * (cos(eta * t) * avec 
+                   - sin(eta * t) * bvec) +
+                c2 * (sin(eta * t) * avec 
+                      + cos(eta * t) * bvec)) * exp(alpha * t) + eq
+        }
+        
+        jac <- matrix(c(-epsilon*R0, epsilon*(R0-1), -1, 0), 2, 2)
+        ee <- eigen(jac)
+        
+        alpha <- Re(ee$values[1])
+        eta <- Im(ee$values[1])
+        
+        avec <- Re(ee$vectors[,1])
+        bvec <- Im(ee$vectors[,1])
+        
+        res <- optim(par=c(0, 0), fn=function(x) {
+            sum((y[c("S", "I")]-approxfun(min(t), c1=x[1], c2=x[2]))^2)
+        })
+        
+        pp <- res$par
+        
+        ss <- sapply(t, function(t) {
+            c(t, approxfun(t, c1=pp[1], c2=pp[2]))
+        }, simplify=FALSE)
+        
+        solution <- as.data.frame(do.call('rbind', ss))
+        
+        names(solution) <- c("time", "S", "I")
+        
+        solution
+    })
+}
+
+approxdf <- approxSIR(tvec, y, par)
+
+par(mfrow=c(1,2))
+
+plot(tvec, df$I, type="l", lwd=2, ylab="proportion", xlab="time")
+lines(tvec, approxdf$I, col=4, lty=4, lwd=2)
+with(as.list(par),{
+    curve(0.05 * exp(-epsilon * R0*x/2)+epsilon * (1-1/R0), 
+        add=TRUE, col=2, lty=2, lwd=2)
+})
+legend(
+    "topright",
+    col=c(1, 2, 4),
+    lty=c(1, 2, 4),
+    lwd=2,
+    legend=c("SIR prevalence", "exponential", "linearization")
+)
+title("Comparison of prevalence curves")
+
+plot(df$S, df$I, type="l", lwd=2, xlab="S", ylab="I")
+lines(approxdf$S , approxdf$I, col=4, lty=4, lwd=2)
+title("Comparison of phase portraits")
+@
+}\end{proof}}
+
+\item \SIRj
+\BeautifulSolution
+
+\item \SIRk
+\BeautifulSolution
+
+\end{enumerate}
+
+%\newpage
+\bibliographystyle{vancouver}
+\bibliography{DavidEarn,MyPubs}
+
+\bigskip\vfill
+
+\centerline{\bf--- END OF ASSIGNMENT ---}
+
+\bigskip
+Compile time for this document:
+\today\ @ \thistime
+
+\end{document}

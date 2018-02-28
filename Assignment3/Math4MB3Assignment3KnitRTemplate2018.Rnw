@@ -184,11 +184,11 @@ Note that $\lambda_2 < 0$ if and only if
 \end{equation}
 which is when the endemic equilibrium is biologically relevant. \\
 Thus, we have demonstrated that the endemic equilibrium is locally asymptotically stable when $R_0>1$ which is the biologically relevant region for the endemic equilibrium.
-\\\\
+
 We note that we could have done an alternative proof for the disease free equilibrium stability using Lyapunov's Direct Method. We now show that second approach to the proof. Define $L(S, I, R) = I+R$, and let $(S_0, I_0, R_0) = (1- \delta_1, \delta_2, \delta_1 - \delta_2) \in \Delta$. We wish to show that $(S_\ast, I_\ast, R_\ast) = (1, 0, 0)$ is asymptotically stable using Lyapunov's Direct Method (Theorem 1 on Assignment 1).
 
-We begin by checking the first condition in the theorem. We claim that the region  $\mathcal{O} \{(S,I,R) \in \Delta \ | \ I< \varepsilon(1-S)/(\R_0S)\} \subset \Delta$ . Thus, we wish to verify that $L(S,I,R)=0$ when $(S,I,R)=(1,0,0)$, and that $L(S,I,R)>0$ when $(S,I,R) \neq (1,0,0)$ and $(S,I,R) \in \mathcal{O}$. The first part of this condition is clearly true given that $L(S,I,R)=I+R$ and $I=0,\ R=0$ at $(S_\ast, I_\ast, R_\ast)$. We verify the second part of the first condition, as for $(S,I,R) \in \mathcal{O}$ we know that $I=0$ and $R=0$ only occur simultaneously if $S=1$. This is because for $(S,I,R) \in \mathcal{O} \subset \Delta$, we have that $S+I+R=1$. Therefore, one of $S$ or $I$ is non-zero. As $S,I \in \mathcal{O}$ have that $S,I \in [0,1]$, it must be that for $(S,I,R) \neq (S_\ast, I_\ast, R_\ast)$, $L(S,I,R)>0$. \\
-\\
+We begin by checking the first condition in the theorem. We claim that the region  $\mathcal{O} \{(S,I,R) \in \Delta \ | \ I< \varepsilon(1-S)/(\R_0S)\} \subset \Delta$ . Thus, we wish to verify that $L(S,I,R)=0$ when $(S,I,R)=(1,0,0)$, and that $L(S,I,R)>0$ when $(S,I,R) \neq (1,0,0)$ and $(S,I,R) \in \mathcal{O}$. The first part of this condition is clearly true given that $L(S,I,R)=I+R$ and $I=0,\ R=0$ at $(S_\ast, I_\ast, R_\ast)$. We verify the second part of the first condition, as for $(S,I,R) \in \mathcal{O}$ we know that $I=0$ and $R=0$ only occur simultaneously if $S=1$. This is because for $(S,I,R) \in \mathcal{O} \subset \Delta$, we have that $S+I+R=1$. Therefore, one of $S$ or $I$ is non-zero. As $S,I \in \mathcal{O}$ have that $S,I \in [0,1]$, it must be that for $(S,I,R) \neq (S_\ast, I_\ast, R_\ast)$, $L(S,I,R)>0$. 
+
 Next, we check the second condition in the theorem. Namely, we verify that $\dot{L}(S,I,R) <0$ for $\{ (S,I,R) \in \mathcal{O} \ | \ (S,I,R) \neq (1,0,0)\}$. We note that $\dot{L}(S,I,R) = dI/dt + dR/dt$. Thus, we wish to verify that $\R_0 SI - I + (1-\varepsilon) I - \varepsilon R <0$. Cancelling terms and using that $R=1-S-I$, we need to verify that $\R_0 SI - \varepsilon + \varepsilon S <0$. Now, if  $(S, I, R) \in \mathcal{O}$, then $I<\varepsilon(1-S)/\R_0S$, and 
 $$
 \dot L = \R_0 SI - \varepsilon + \varepsilon S < \R_0 S \frac{\varepsilon(1-S)}{\R_0 S}- \varepsilon + \varepsilon S = \varepsilon(1-S) - \varepsilon(1-S) = 0
@@ -224,12 +224,104 @@ as required. Since we have shown this for all $X \in \Delta \setminus \mathcal C
 
 \item \SIRg
 {\color{blue}\begin{proof}{\color{magenta}
-
+Define $L(S, I) = (S+I) - (\Hat{S} \log{S} + \Hat{I} \log{I})$ and let $(S_0, I_0, R_0) = (1 - \delta_1, \delta_2, \delta_1 - \delta_2) \in \Delta$. We wish to show that the endemic equilibrium given by
+$$(\Hat{S}, \Hat{I}) = \left(\frac{1}{\R_0}, \varepsilon \left(1 - \frac{1}{\R_0}\right)\right)$$
+is globally asymptotically stable through the use of Lyapunov's Direct Method. We begin by defining the basin of attraction of the EE as an open, dense subset of $\Delta$. We define this subset as
+\begin{equation*}
+\begin{aligned}
+\mathcal{P} = \left\{(S, I, R) \in \Delta \, | \, I > \frac{\varepsilon (1 - S)}{\R_0 S}\right\},
+\end{aligned}
+\end{equation*}
+and note that $\mathcal{P}=\Delta \setminus \mathcal{O}$ with $\mathcal{O}$ given in part e). We then verify that $L(S, I)$ is positive definite on $\mathcal{P}$, such that $L(S, I) > L(\Hat{S}, \Hat{I})$ for all $(S, I) \in \mathcal{P} \setminus (\Hat{S}, \Hat{I})$. We observe the Hessian matrix of $L(S, I)$, given by
+$$H (S, I) = \begin{bmatrix} -\frac{\Hat{S}}{S^2} & 0 \\ 0 & -\frac{\Hat{I}}{I^2} \end{bmatrix}.$$
+Since the eigenvalues of $H$ are both negative, $L$ is concave up, or more precisely, $L$ is positive definite, with a global minimum on $\mathcal{P}$ at $(\Hat{S}, \Hat{I})$.
+We then demonstrate that $\dot{L}$ is negative definite on $\mathcal{P}$. This proves that $L(S, I) > L(\Hat{S}, \Hat{I})$ for all $(S, I) \in \mathcal{P} \setminus (\Hat{S}, \Hat{I})$. We observe that
+\begin{equation*}
+\begin{aligned}
+\dot{L} (S, I) &= \frac{\partial L}{\partial S} \cdot \frac{dS}{dt} + \frac{\partial L}{\partial I} \cdot \frac{dI}{dt} \\
+&= \left(1 - \frac{\Hat{S}}{S}\right) (\varepsilon - \R_0 SI - \varepsilon S) + \left(1 - \frac{\Hat{I}}{I}\right) (\R_0 SI - I) \\
+&= \left(1 - \frac{1}{\R_0 S}\right) (\varepsilon - \R_0 SI - \varepsilon S) \left(1 - \left(\varepsilon \left(1 - \frac{1}{\R_0}\right)\right) \frac{1}{I}\right) (\R_0 SI - I)
+\end{aligned}
+\end{equation*}
+Simplifying, we obtain
+$$\dot{L} (S, I) = \varepsilon \left(2 - \frac{1}{\R_0 S} - \R_0 S\right).$$
+Examining the behaviour of $L(S, I)$ in some neighbourhood of $(\Hat{S}, \Hat{I}) \in \mathcal{P}$, we observe that when the equilibrium is approached from above, such that
+$$\Hat{I} = \varepsilon\left(1 - \frac{1}{\R_0}\right) < \frac{\varepsilon(1 - S)}{\R_0 S} < I,$$
+we have that $S < 1/\R_0$. This implies that
+$$\dot{L} (S, I) < \varepsilon \left(2 - 1 - \R_0 \frac{1}{\R_0}\right) = \varepsilon(2 - 2) = 0.$$ 
+Alternatively, when the equilibrium is approached from below, such that
+$$\frac{\varepsilon(1 - S)}{\R_0 S} < \varepsilon \left(1 - \frac{1}{\R_0}\right) = \Hat{I} < I,$$
+we have that $1/S < \R_0$. This also implies that
+$$\dot{L} (S, I) < \varepsilon \left(2 - \frac{\R_0}{\R_0} - 1\right) = 0.$$
+This shows that regardless of the approach to the EE, $\dot{L}(S, I)$ is negative definite on $\mathcal{P}$. Therefore, $L$ is a strict Lyapunov function for the EE on $\mathcal{P} \in \Delta$, and so by Lyapunov's Direct Method, we can say that the endemic equilibrium is globally asymptotically stable if $\R_0 > 1$.
 }\end{proof}}
 
 \item \SIRh
 {\color{blue}\begin{proof}{\color{magenta}
+($\Longrightarrow$) We begin our proof by assuming that the approach to the EE occurs via damped oscillations. We must show that under this assumption, $\varepsilon < \varepsilon^{\ast}$, where
+$$\varepsilon^{\ast} = \frac{4(\R_0 - 1)}{\R_0^2}.$$
+Once again, we simplify the model and ignore the $R$ component:
+\begin{equation*}
+\begin{aligned}
+\frac{dS}{dt} &= \varepsilon - \R_0 SI - \varepsilon S \\
+\frac{dI}{dt} &= \R_0 SI - I.
+\end{aligned}
+\end{equation*}
+Through linearization, we obtain the following Jacobian matrix
+\begin{equation}
+\begin{bmatrix}
+-\R_0\varepsilon & -1\\
+\varepsilon(\R_0-1) & 0
+\end{bmatrix}
+\end{equation}
+When evaluated at the endemic equilibrium, we observe that the Jacobian is given by
+\begin{equation} \label{Jacobian}
+J(\Hat{S}, \Hat{I}) = 
+\begin{bmatrix}  
+-\varepsilon \R_0 & -1 \\
+\varepsilon (\R_0 - 1) & 0\\
+\end{bmatrix}
+\end{equation}
+We know that if the equilibrium is approached via oscillatory dynamics, then the eigenvalues of the Jacobian matrix must be complex conjugates. 
+Recall that the eigenvalues are given by
+$$
+\begin{aligned}
+\lambda_1 &= \frac{1}{2} \left(- \sqrt{\varepsilon} \sqrt{\varepsilon\R_0^2 - 4 \R_0 + 4} - \varepsilon \R_0\right)\\
+\lambda_2 &= \frac{1}{2}\left(\sqrt{\varepsilon} \sqrt{\varepsilon\R_0^2 - 4 \R_0 + 4} - \varepsilon \R_0\right).
+\end{aligned}
+$$
+Since the eigenvalues of the Jacobian matrix must be complex conjugates, we must have the following:
+\begin{equation*}
+\varepsilon \R_0 ^2 - 4(\R_0 - 1) < 0 
+\end{equation*}
+Since $\varepsilon > 0$ in $\Delta$, we then have that
+\begin{equation*}
+\varepsilon < \frac{4(\R_0 - 1)}{\R_0 ^2},
+\end{equation*}
+as desired.
 
+
+($\Longleftarrow$) The reverse proof is similar. Suppose we have that $\varepsilon < \varepsilon^{\ast}$, such that
+\begin{equation} \label{cond}
+\begin{aligned}
+\varepsilon &< \frac{4(\R_0 - 1)}{\R_0 ^2}.
+\end{aligned}
+\end{equation}
+Then, solving for the eigenvalues of $J(\Hat{S}, \Hat{I})$, we observe that
+$$
+\begin{aligned}
+\lambda_1 &= \frac{1}{2} \left(- \sqrt{\varepsilon} \sqrt{\varepsilon\R_0^2 - 4 \R_0 + 4} - \varepsilon \R_0\right)\\
+\lambda_2 &= \frac{1}{2}\left(\sqrt{\varepsilon} \sqrt{\varepsilon\R_0^2 - 4 \R_0 + 4} - \varepsilon \R_0\right).
+\end{aligned}
+$$
+When 
+$$
+\varepsilon < \frac{4(\R_0 - 1)}{\R_0 ^2}
+$$
+we know that both eigenvalues are complex. Furthermore, their real parts ($-\varepsilon/2$) are negative.
+Therefore, the endemic equilibrium is reached via damped oscillations. 
+
+When pondering which familiar diseases could exhibit oscillatory dynamics near the endemic equilibrium, we must consider diseases with fluctuations in the growth and decay of the susceptible and infected populations. In other words, from our observations, we determined that infectious diseases with lower values of $\varepsilon$ will exhibit damped oscillatory behaviour near the EE, whereas diseases with higher values of $\varepsilon$ will converge monotonically towards the EE. From this assignment, we discovered that diseases with shorter mean infectious periods result in lower values for $\varepsilon$, and so we thus predict that childhood diseases such as chicken pox, the common cold, measles, and mumps will exhibit some level of damped oscillations near the equilibrium. Conversely, we would expect that a disease with a longer mean infectious period, such as herpes, will converge monotonically towards the endemic equilibrium, due to its significantly higher $\varepsilon$ value.
 }\end{proof}}
 
 \item \SIRi
@@ -279,6 +371,7 @@ S(t)\\
 I(t)
 \end{bmatrix}
 $$
+Note that this model is not a biologically meaningful model but rather a qualitative model that we expect the SIR model to behave like near the endemic equilibrium.
 Then, by the result derived from 3MB3 course, we find that the solution to this linear system is given by
 $$
 \vec{x}(t) = \left[c_1 \left(\cos (\eta t) \vec{a} - \sin (\eta t) \vec{b} \right) + c_2 \left(\sin (\eta t) \vec{a} + \cos (\eta t) \vec{b} \right)  \right] \exp(\alpha t),
@@ -292,7 +385,8 @@ Furthermore, $e$-folding time for decay of the amplitude of oscillation is given
 $$
 -\frac{1}{\alpha} = \frac{2}{\varepsilon \R_0}
 $$
-We expect our original SIR model to have similar $e$-folding time as well as period as this system.
+Near the equilibrium, our original model should behave like the linear model.
+Hence, we expect our original SIR model to have similar $e$-folding time as well as period as this system.
 We want to confirm these facts numerically.
 
 First, we need to load some packages:
@@ -301,7 +395,8 @@ library(deSolve)
 library(dplyr)
 @
 Following the previous assignment, we start by writing the gradient function:
-<<grad>>==2
+<<grad>>==
+## SIR gradient
 SIR.grad <- function(t, y, param) {
     with(as.list(c(param, y)), {
         dS <- epsilon - R0 * S * I - epsilon * S
@@ -322,16 +417,23 @@ $$
 along with the prevalence curve where $c_3$ is found by trial and error to match the second peak in the figure below. 
 
 <<exp_decay, fig.width=8, fig.height=6>>==
+## set parameter
 par <- c(R0=1.5, epsilon=1/20)
+## set initial value
 y <- c(S=1-1e-2, I=1e-2, R=0)
+## set time
 tvec <- seq(0, 150, by=0.1)
 
+## run ode and put it into data frame
 df <- as.data.frame(ode(y, tvec, SIR.grad, par))
 
+## plot ode
 plot(tvec, df$I, type="l", ylab="proportion", xlab="time", lwd=2)
+## draw exponential
 with(as.list(par),{
     curve(0.05 * exp(-epsilon * R0*x/2)+ epsilon * (1-1/R0), add=T, col=2, lty=2, lwd=2)
 })
+## add legend
 legend(
     "topright",
     col=c(1, 2),
@@ -347,25 +449,28 @@ Hence, the discrepancy between the exponential curve and the first peak prevalen
 We expect the exponential curve to match the linear model much better.
 
 To provide stronger evidence, we plot the linearized system along with the numerical solution to the ODE.
-Note that the approximate solution converges to the $(0,0$ equilibrium instead of the endemic equilibrum. 
-Instead of plotting the approximate solution directly, we compute
+Note that the approximate solution converges to the $(0,0)$ equilibrium instead of the endemic equilibrum of the SIR model. 
+Instead of plotting the approximate solution directly, we plot
 $$
 \vec{x} + \begin{bmatrix}
 \frac{1}{\R_0}\\
 \varepsilon(1- 1/\R_0)
 \end{bmatrix}
 $$
-so that the approximate solution converges to the endemic equilibrium. 
+so that the approximate solution converges to the endemic equilibrium of the SIR model. 
 We find $c_1, c_2$ numerically by minimizing the sum of squared difference between the initial condition of the ODE with the initial condition of the approximate solution (so that both curves start at the same place).
 We compare prevalence as well as the phase portrait.
 Once again, we plot the same exponential curve on top of prevalence curves.
 
 <<approx, fig.width=8, fig.height=6>>==
+## approximate SIR model using linearization
 approxSIR <- function(t, y, param) {
     with(as.list(param), {
         
+        ## endemic equilibrium
         eq <- c(1/R0, epsilon * (1-1/R0))
         
+        ## solution
         approxfun <- function(t, c1, c2) {
             (c1 * (cos(eta * t) * avec 
                    - sin(eta * t) * bvec) +
@@ -373,7 +478,10 @@ approxSIR <- function(t, y, param) {
                       + cos(eta * t) * bvec)) * exp(alpha * t) + eq
         }
         
+        ## jacobian
         jac <- matrix(c(-epsilon*R0, epsilon*(R0-1), -1, 0), 2, 2)
+        
+        ## find eigenvalues
         ee <- eigen(jac)
         
         alpha <- Re(ee$values[1])
@@ -382,16 +490,19 @@ approxSIR <- function(t, y, param) {
         avec <- Re(ee$vectors[,1])
         bvec <- Im(ee$vectors[,1])
         
+        ## find c1 and c2 that gives initial values
         res <- optim(par=c(0, 0), fn=function(x) {
             sum((y[c("S", "I")]-approxfun(min(t), c1=x[1], c2=x[2]))^2)
         })
         
         pp <- res$par
         
+        ## compute linear solution
         ss <- sapply(t, function(t) {
             c(t, approxfun(t, c1=pp[1], c2=pp[2]))
         }, simplify=FALSE)
         
+        ## put it in a data frame
         solution <- as.data.frame(do.call('rbind', ss))
         
         names(solution) <- c("time", "S", "I")
@@ -399,11 +510,11 @@ approxSIR <- function(t, y, param) {
         solution
     })
 }
-
+## run function
 approxdf <- approxSIR(tvec, y, par)
 
 par(mfrow=c(1,2))
-
+## plot
 plot(tvec, df$I, type="l", lwd=2, ylab="proportion", xlab="time")
 lines(tvec, approxdf$I, col=4, lwd=2)
 with(as.list(par),{
@@ -424,7 +535,8 @@ lines(approxdf$S , approxdf$I, col=4, lwd=2)
 title("Comparison of phase portraits")
 @
 
-We note that as time increases, the prevalence curve generated by the SIR model behaves like the linear model in both figures, confirming our prediction. Furthermore, the exponential curve we estimated previously agrees with the peaks of the linear model prevalence curve, again confirming our prediction.
+We note that as time increases, the prevalence curve generated by the SIR model behaves like the linear model in both figures, confirming our prediction that the SIR model behaves like the linear model near the endemic equilibrium. Furthermore, the exponential curve we estimated previously agrees with the peaks of the linear model prevalence curve, again confirming our prediction about the $e$-folding time.
+Since the curves (actual SIR and linear) overlap so well near the endemic equilibrium, we can say that their periods must be very similar as well. Hence, the period that we derived above is still valid.
 
 }\end{proof}}
 
@@ -475,17 +587,21 @@ Hence, four intervals that we are interested in are
 $$
 (0, 1), (1, 1.127), (1.127, 8.873), (8.873, \infty)
 $$
+We did not use $\epsilon = 8/9$ as suggested because $e$-folding time becomes much shorter than the period and oscillation becomes hard to observe. However, $\epsilon=8/9$ is a good choice as the bifurcation points are rational (1, 1.5, and 3).
 
 <<phase, fig.width=8, fig.height=8>>==
+## set parameters for each
 par1 <- par2 <- par3 <- par4 <- c(R0 = 0.5, epsilon=0.4)
 par2[["R0"]] <- 1.1
 par3[["R0"]] <- 3
 par4[["R0"]] <- 20
 
+## time
 tvec3 <- seq(1, 20, by=0.01)
 arrowt1 <- 2.1
 arrowt2 <- 2.3
 
+## function that draws phase plots
 phasefun <- function(t, y, param, ...) {
     df <- as.data.frame(ode(y, t, SIR.grad, param))
     lines(df$S, df$I, ...)
@@ -533,7 +649,14 @@ title("Reproductive number: 20")
 }\end{proof}}
 
 \item \SIRk
-\BeautifulSolution
+{\color{blue}\begin{proof}{\color{magenta}
+The model examined in this assignment doesn't describe the behaviour of most real diseases for small $\varepsilon$. The model predicts that for a small $\varepsilon$ value, there should be significant damped oscillations. This model falls short because while in many diseases we see recurrent behaviour that is explained with the oscillatory behaviour in the model, no disease have a clear and consistent decrease in prevalence at each oscillation. For example, if we look at a disease like measles, we note that $\varepsilon$ should be fairly low as the recovery period is short - this means that the probability of dying from natural causes before recovery is low. However, in measles, we see oscillatory behaviour but no clear decrease in prevalence at each oscillation (before vaccines were introduced). Specifically, if we look at the measles data in New York City (as presented in lecture), we found that a relatively high prevalence of the disease cycles either annually or biannually. 
+
+To account for this behaviour and attempt to better fit the model to the data, we could introduce stochasticity. This stochastic behaviour would allow for the model to maintain the oscillatory behaviour while counteracting the dampening at each oscillation. However, as noted in part h, the model may be accurate at large $\varepsilon$, as at large $\varepsilon$, monotonic convergence is visible in many real diseases. For example, herpes has a large $\varepsilon$ value, as the recovery period is long. As would be expected by the model discussed in this assignment, herpes demonstrates monotonic convergence.
+
+We might also consider that disease historically may have shown damped oscillatory behaviour, but has dampened to negligible amplitude since before data was collected. We would then only observe a near constant proportion of population infected, and it would be impossible to determine whether the dynamics of this disease agree with this model.
+}\end{proof}}
+
 
 \end{enumerate}
 

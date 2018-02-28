@@ -45,28 +45,192 @@ This assignment is {\bfseries\color{red} due in class} on \textcolor{red}{\bf We
 \begin{enumerate}[(a)]
 
 \item \SIRa
-\BeautifulSolution
- 
+{\color{blue}\begin{proof}{\color{magenta}
+First, we need to show that the population size ($N=S+I+R$) is constant. We note that the population size is constant if $dN/dt = dS/dt+dI/dt+dR/dt=0$, as this implies that the change in each compartment of the population results in overall no change. 
+\begin{equation}
+\begin{aligned}
+& \frac{dS}{dt}+\frac{dI}{dt}+\frac{dR}{dt}\\
+&=(\mu N-\frac{\beta}{N}SI-\mu S)+(\frac{\beta}{N}SI-\gamma I -\mu I)+(\gamma I-\mu R)\\
+&= \mu (N-S-I-R)\\
+&= \mu (N-N)\\
+&= 0
+\end{aligned}
+\end{equation}
+
+The biologically relevant region $\Delta$ is given by 
+$$
+\Delta = \{(S, I, R) : 0 \leq S,I,R \leq N, S+I+R = N\},
+$$
+since none of the compartments can have negative population nor exceed the total population. In order to show that $\Delta$ is a forward invariant set, we wish to show that if $(S_0, I_0, R_0) = (S(t_0), I(t_0), R(t_0)) \in \Delta$ at some time $t_0$, then $(S(t'), I(t'), R(t'))$ at $t' = t_0 + \varepsilon$. To show this we will prove that if any of the compartments are 0, then its derivative is non-negative, and if any of the compartments holds the entire population $N$, then its derivative is non-positive. This ensures that all compartments remain in $\Delta.$
+\begin{itemize}
+\item Suppose that $S=0$. Then $dS/dt = \mu N >0$.
+\item Suppose that $S=N$. Then this forces $I = 0$ since $S+I+R = N$ and $S, I, R \geq 0$. Then $dS/dt = \mu N - \mu N = 0$.
+\item Suppose that $I = 0$. Then $dI/dt = 0 - 0 - 0 = 0$. 
+\item Suppose that $I = N$. Then this forces $S=0$ since $S+I+R = N$ and $S, I, R \geq 0$. Then $dI/dt = -N (\gamma + \mu) < 0$. 
+\item Suppose that $R=0$. Then, $dR/dt=\gamma I$. As $I \in \Delta$, we have that $I \geq 0$. Thus, $dR/dt \geq 0$.
+\item Suppose that $R=N$. Then this forces that $I=0$ since $S+I+R=N$ and $S,I, R \geq 0$. Thus, $dR/dt=-\mu N < 0$.
+\end{itemize}
+This then shows that none of the compartments can escape the biologically relevant region $\Delta$ provided that the initial condition is in $\Delta$.
+}\end{proof}}
+
 \item \SIRb
-\BeautifulSolution
+{\color{blue}\begin{proof}{\color{magenta}
+To put the equations in the proportional form, we can consider the proportional quantities defined by $\tilde{S}=S/N$, $\tilde{I}=I/N$, and $\tilde{R}=R/N$. We then define a new set of differential equations based on these proportional quantities:
+\begin{equation}
+\begin{aligned}
+\frac{d\tilde{S}}{dt} &= \mu - \frac{\beta}{N^2} SI - \frac{\mu S}{N} \\ 
+&= \mu -\beta\tilde{S}\tilde{I}\\
+\frac{d\tilde{I}}{dt}&=\frac{\beta}{N^2}SI-\frac{\gamma I}{N}-\frac{\mu I}{N} \\
+&= \beta \tilde{S}\tilde{I} -\gamma \tilde{I} -\mu \tilde{I}\\
+\frac{d\tilde{R}}{dt} &= \frac{\gamma I} {N} - \frac{\mu R }{N} \\
+&= \gamma \tilde{I} - \mu \tilde{R} \\
+\end{aligned}
+\end{equation}
+However this is equivalent to a scaled version of the original system:
+\begin{equation}
+\begin{aligned}
+\frac{d\tilde S}{dt} = \frac{1}{N} \frac{dS}{dt} \\
+\frac{d\tilde I}{dt} = \frac{1}{N} \frac{dI}{dt} \\
+\frac{d\tilde R}{dt} = \frac{1}{N} \frac{dR}{dt}
+\end{aligned}
+\end{equation}
+and so this system of population proportions is dynamically equivalent to the original system. 
+}\end{proof}}
 
 \item \SIRc
-\BeautifulSolution
+{\color{blue}\begin{proof}{\color{magenta}
+In order to rewrite the equations using the dimensionless time coordinate $\tau=(\gamma + \mu)t$, we wish to write out the equations for $dS/d\tau$, $dI/d\tau$, and $dR/d\tau$. To do this, we note that $dS/d\tau = dS/dt * dt/d\tau$, $dI/d\tau = dI/dt * dt/d\tau$, and $dR/d\tau = dR/dt * dt/d\tau$. This yields the following equations: 
+
+\begin{equation}
+\begin{aligned}
+\frac{dS}{d\tau} &= \frac{dS}{dt} \frac{dt}{d\tau} = \frac{dS}{dt} \frac{1}{\gamma + \mu} = \frac{\mu}{\gamma + \mu} - \frac{\beta}{\gamma + \mu} SI - \frac{\mu}{\gamma + \mu} S = \varepsilon - \R_0 SI - \varepsilon S\\
+\frac{dI}{d\tau} &= \frac{dI}{dt} \frac{dt}{d\tau} = \frac{dI}{dt} \frac{1}{\gamma + \mu} = \frac{\beta}{\gamma + \mu} SI - \frac{\gamma}{\gamma + \mu} I - \frac{\mu}{\gamma + \mu}I = \R_0 SI - I\\
+\frac{dR}{dt} &= \frac{dR}{d\tau} \frac{dt}{d\tau} = \frac{dR}{dt} \frac{1}{\gamma + \mu} = \frac{\gamma}{\gamma + \mu} I - \frac{\mu}{\gamma + \mu} R = (1-\epsilon) I - \varepsilon R 
+\end{aligned}
+\end{equation}
+These equations demonstrate that $\epsilon$ is the dimensionless birth rate and $\R_0$ is the dimensionless transmission rate. Biologically, we note that $\gamma + \mu$ is the rate at which an individual leaves the infected class. Therefore, $\tau = t(\gamma + \mu)$ is a unitless scaling of time such that one unit is the mean infectious period (which is equal to $1/(\gamma + \mu)$). This implies that $\varepsilon = \mu/(\gamma + \mu)$ is the natural death rate per capita expressed as deaths per individual per mean infectious period. Finally, $\R_0$ is the mean number of secondary cases caused by a primary case in a fully susceptible population. We can see this because $\beta$ is the mean transmission rate and $1/(\gamma + \mu)$ is the mean infectious period. These parameters are good choices for non-dimensionalizing the equations because they have intuitive biological interpretations. This allows us to obtain external estimates for these parameters so that we do not have to estimate them from the data. For $\varepsilon$ for instance, if we can experimentally obtain the mean recovery period $(1/\gamma)$ and obtain a population-wise death rate from census data, we can estimate $\varepsilon$ independently of the data. 
+
+Here we will estimate $\varepsilon$ for chicken pox. For simplicity, we can assume that mean life expectancy is 70 years. Then, $\mu=1/70 \, \textrm{year}^{-1}$.
+Chicken-pox is known for full recovery to take about a week. 
+Then, $\gamma = 1/7 \, \textrm{days}^{-1} = 365/7 \, \textrm{years}^{-1} \approx 52 \, \textrm{years}^{-1}$. 
+Our estimate of $\varepsilon$ for chicken pox is
+$$
+\varepsilon = \frac{1/70}{1/70 + 52} \approx 0.00027
+$$
+For rubella, recovery period is approximately $1.5$ weeks. 
+Then, $\gamma = 1/1.5 \, \textrm{weeks}^{-1} = 52/1.5 \, \textrm{weeks}^{-1} \approx 34.7 \, \textrm{years}^{-1}$.
+Our estimate of $\varepsilon$ for rubella is
+$$
+\varepsilon = \frac{1/70}{1/70 + 34.7} \approx 0.00041
+$$
+}\end{proof}}
 
 \item \SIRd
-\BeautifulSolution
+{\color{blue}\begin{proof}{\color{magenta}
+In this question we take $R, S, I$ to be the proportional quantities; in other words, we take them to be what was previously referred to as $\tilde{R}$, $\tilde{S}$, and $\tilde{I}$.
+The system is at equilibrium iff
+$$
+\frac{dS}{dt} = \frac{dI}{dt} = \frac{dR}{dt} = 0.
+$$
+Note that $dI/dt =0$ if and only if $I(\R_0 S - 1) = 0$ if and only if either $I = 0$ or $\R_0 S - 1 = 0$, (i.e. $S = 1/\R_0$). Note that if  $I = 0$ and $dS/dt = \varepsilon - \R_0 SI - \varepsilon S = 0$, then we must have $S = 1$, which gives the the $(\hat S, \hat I) = (0, 0)$ disease-free equilibrium (DFE).
+
+Using the $dS/dt=0$ expression, we can solve for the corresponding $I$ value when $S=1/\R_0$. This yields $\varepsilon - \R_0I(1/\R_0)-\varepsilon S=0$. After rearranging this expression, we have that $I=\varepsilon (1-(1/\R_0))$. Thus, we note that we only have two equilibria, as $dI/dt=0$ is only satisfied when either $I=0$ or $\R_0S-1=0$, and we have just shown that each of these two conditions only happen at one distinct $(S,I)$ point.\\
+The equilibrium expression $(\hat{S}, \hat{I}) = (1/\R_0, \varepsilon (1- 1/\R_0))$ is biologically relevant when $\R_0 \geq 1$. However, note that this equilibrium expression does not yield a second distinct equilibrium when $\R_0 =1$; in that case, the expression gives the disease free equilibrium. Thus, if $\R_0 = 1$, we have only the disease free equilibrium, while if  $R_0 >1$, we have a distinct endemic equilibrium. If $R_0 <1$, then we have that $\hat S > 1$ and $ \hat I < 0$, which is not biologically relevant. In summary, for all $R_0$, we have the existence of the disease free equilibrium. However, when $\R_0 >1$, we have the additional existence of an endemic equilibrium. 
+}\end{proof}}
 
 \item \SIRe
-\BeautifulSolution
+{\color{blue}\begin{proof}{\color{magenta}
+To prove asymptotic stability for the endemic equilibrium, we examine the Jacobian given by the system $dS/dt=\varepsilon-\R_0SI-\varepsilon S$ and $dI/dt=\R_0SI-I$. We find that the Jacobian of this system is: 
+\begin{equation}
+\begin{bmatrix}
+-\R_0I-\varepsilon & -\R_0S\\
+\R_0 I & \R_0 S -1
+\end{bmatrix}
+\end{equation}
+At the disease free equilibrium $(1, 0)$, this matrix is
+\begin{equation}
+\begin{bmatrix}
+-\varepsilon 	& -\R_0\\
+0				& \R_0  -1
+\end{bmatrix}
+\end{equation}
+which has eigenvalues $\lambda_1 = - \varepsilon < 0 $ and $\lambda_2 = \R_0 - 1 < 0 $ when $\R_0 < 1$. 
+Therefore, when $\R_0 < 1$, the disease-free equilibrium is locally asymptotically stable, since both eigenvalues are negative.
+
+After plugging in the point for endemic equilibrium given by $(\hat{S},\hat{I})=(1/\R_0, \varepsilon(1-(1/\R_0))$, this matrix becomes:
+\begin{equation}
+\begin{bmatrix}
+-\R_0\varepsilon & -1\\
+\varepsilon(\R_0-1) & 0
+\end{bmatrix}
+\end{equation}
+The eigenvalues of this of this matrix are:
+$$
+\lambda_1 = \frac{1}{2} \left( - \sqrt{\varepsilon} \sqrt{\varepsilon\R_0^2 - 4 \R_0 + 4} - \varepsilon \R_0\right) < 0
+$$
+and
+$$
+\lambda_2 = \frac{1}{2}\left(\sqrt{\varepsilon} \sqrt{\varepsilon\R_0^2 - 4 \R_0 + 4} - \varepsilon \R_0\right).
+$$
+Note that $\lambda_2 < 0$ if and only if 
+\begin{equation}
+\begin{aligned}
+\varepsilon \R_0 > \sqrt\varepsilon \sqrt{\varepsilon\R_0^2 - 4 \R_0 + 4} \\
+\varepsilon^2 \R_0^2 > \varepsilon (\varepsilon \R_0^2 - 4\R_0 + 4)\\
+0 > -4 \R_0 + 4\\
+-4 > -4 \R_0\\
+1 < \R_0.
+\end{aligned}
+\end{equation}
+which is when the endemic equilibrium is biologically relevant. \\
+Thus, we have demonstrated that the endemic equilibrium is locally asymptotically stable when $R_0>1$ which is the biologically relevant region for the endemic equilibrium.
+\\\\
+We note that we could have done an alternative proof for the disease free equilibrium stability using Lyapunov's Direct Method. We now show that second approach to the proof. Define $L(S, I, R) = I+R$, and let $(S_0, I_0, R_0) = (1- \delta_1, \delta_2, \delta_1 - \delta_2) \in \Delta$. We wish to show that $(S_\ast, I_\ast, R_\ast) = (1, 0, 0)$ is asymptotically stable using Lyapunov's Direct Method (Theorem 1 on Assignment 1).
+
+We begin by checking the first condition in the theorem. We claim that the region  $\mathcal{O} \{(S,I,R) \in \Delta \ | \ I< \varepsilon(1-S)/(\R_0S)\} \subset \Delta$ . Thus, we wish to verify that $L(S,I,R)=0$ when $(S,I,R)=(1,0,0)$, and that $L(S,I,R)>0$ when $(S,I,R) \neq (1,0,0)$ and $(S,I,R) \in \mathcal{O}$. The first part of this condition is clearly true given that $L(S,I,R)=I+R$ and $I=0,\ R=0$ at $(S_\ast, I_\ast, R_\ast)$. We verify the second part of the first condition, as for $(S,I,R) \in \mathcal{O}$ we know that $I=0$ and $R=0$ only occur simultaneously if $S=1$. This is because for $(S,I,R) \in \mathcal{O} \subset \Delta$, we have that $S+I+R=1$. Therefore, one of $S$ or $I$ is non-zero. As $S,I \in \mathcal{O}$ have that $S,I \in [0,1]$, it must be that for $(S,I,R) \neq (S_\ast, I_\ast, R_\ast)$, $L(S,I,R)>0$. \\
+\\
+Next, we check the second condition in the theorem. Namely, we verify that $\dot{L}(S,I,R) <0$ for $\{ (S,I,R) \in \mathcal{O} \ | \ (S,I,R) \neq (1,0,0)\}$. We note that $\dot{L}(S,I,R) = dI/dt + dR/dt$. Thus, we wish to verify that $\R_0 SI - I + (1-\varepsilon) I - \varepsilon R <0$. Cancelling terms and using that $R=1-S-I$, we need to verify that $\R_0 SI - \varepsilon + \varepsilon S <0$. Now, if  $(S, I, R) \in \mathcal{O}$, then $I<\varepsilon(1-S)/\R_0S$, and 
+$$
+\dot L = \R_0 SI - \varepsilon + \varepsilon S < \R_0 S \frac{\varepsilon(1-S)}{\R_0 S}- \varepsilon + \varepsilon S = \varepsilon(1-S) - \varepsilon(1-S) = 0
+$$
+Thus, as the Lyapunov function $L(S,I,R)=I+R$ in the region $\mathcal{O}=\{(S,I,R) \in \Delta \ | \ I< \varepsilon(1-S)/\R_0S\}$ satisfies the conditions for asymptotic stability in Lyapunov's direct method, we have that the disease free equilibrium is locally asymptotically stable when $\R_0<1$.
+}\end{proof}}
 
 \item \SIRf
-\BeautifulSolution
+{\color{blue}\begin{proof}{\color{magenta}
+Define $L(S, I, R) = I$ and let $(S_0, I_0, R_0) = (1- \delta_1, \delta_2, \delta_1 - \delta_2) \in \Delta$. We wish to show that $\mathcal{C} := \{(S, 0, R) | S+R = 1, S, R \geq 0\} \subset \mathcal{O} = \Delta$ is globally asymptotically stable using Lyapunov's Direct Method for Closed Invariant Sets (Theorem 2 on Assignment 1). 
+First, $L(X) = I = 0$ for all $X = (S, 0, R) \in \mathcal{C}$, and if $X \in \Delta \setminus \mathcal{C}$, then $X = (S, \delta, R)$ for some $\delta >0$. We then have that $L(X) = I = \delta >0$ in $\Delta \setminus \mathcal{C}$. 
+Then, consider $\dot{L}(X)$ where $X \in \Delta \setminus \mathcal{C}$.
+\begin{equation}
+\begin{aligned}
+\dot L(X) = \frac{dL}{dt} = \frac{dI}{dt} = \R_0 S I - I.
+\end{aligned}
+\end{equation}
+We can expand this to obtain 
+\begin{equation}
+\begin{aligned}
+\dot L(X) &= \R_0 S I -  I \\
+&= I \left( \R_0 S - 1 \right).
+\end{aligned}
+\end{equation}
+However, if we assume that $\R_0 \leq 1$ and $X \not \in \mathcal{C}$, then $S < 1$ and therefore $\R_0 S <1$, i.e. $\R_0 S - 1 < 0$. It follows then that  
+\begin{equation}
+\begin{aligned}
+\dot L(X) = I \left( \R_0 S - 1 \right) < 0
+\end{aligned}
+\end{equation}
+as required. Since we have shown this for all $X \in \Delta \setminus \mathcal C$, by Lyapunov's Direct Method for Closed Invariant Sets, $\mathcal{C}$ is globally asymptotically stable.
+}\end{proof}}
 
 \item \SIRg
-\BeautifulSolution
+{\color{blue}\begin{proof}{\color{magenta}
+
+}\end{proof}}
 
 \item \SIRh
-\BeautifulSolution
+{\color{blue}\begin{proof}{\color{magenta}
+
+}\end{proof}}
 
 \item \SIRi
 {\color{blue}\begin{proof}{\color{magenta}
@@ -180,6 +344,7 @@ legend(
 We find that the exponential curve matches subsequent peaks (after the second peak) of the prevalence curve. 
 It does not match the first peak but we do not expect the SIR model to behave like its linearized model immediately.
 Hence, the discrepancy between the exponential curve and the first peak prevalence does not necessarily imply that the rate of exponential is different from what we expected.
+We expect the exponential curve to match the linear model much better.
 
 To provide a stronger evidence, we plot the approximate solution (solution to the linear equation) along with the solution to the ODE.
 Note that the approximate solution converges to $(0,0)$ equilibrium instead of the endemic equilibrum. 
@@ -258,6 +423,9 @@ plot(df$S, df$I, type="l", lwd=2, xlab="S", ylab="I")
 lines(approxdf$S , approxdf$I, col=4, lwd=2)
 title("Comparison of phase portraits")
 @
+
+We note that as time increases, prevalence curve generated by the SIR model behaves like the linear model in both figures, confirming our prediction. Furthermore, exponential curve we estimated previously lies with every peaks of the linear model, again confirming our prediction.
+
 }\end{proof}}
 
 \item \SIRj

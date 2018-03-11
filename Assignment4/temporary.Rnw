@@ -43,22 +43,36 @@ plot((s$freq)^(-1), s$spec, type='l')
 
 <<>>=
 SI.Gillespie <- function(beta = 1, N = 100, I0 = 1, tmax=10) {
+  set.seed(8)
+  
+  # initialize variables
   t <- 0 
   I <- I0
   S <- N - I0
+  n <- 1
   
-  while(t[length(t)] < tmax & I[length(I)] < N) {
-    a <- beta*S[length(S)]*I[length(I)]
+  while(t[n] < tmax & I[n] < N) {
+    # calculate event rate
+    a <- beta*S[n]*I[n]
     
+    # generate uniform random variable
     u <- runif(1)
+    
+    # time until next event
     dt <- (1/a)*log(1/(1-u))
     
-    t[length(t) + 1] <- t[length(t)] + dt
+    # record time
+    t[n + 1] <- t[n] + dt
     
-    S[length(S) + 1] <- S[length(S)] - 1
-    I[length(I) + 1] <- I[length(I)] + 1
+    # update state
+    S[n+ 1] <- S[n] - 1
+    I[n + 1] <- I[n] + 1
     
+    # increment counter
+    n <- n+1
   }
+  
+  # return time series
   tibble(time = t[1:(length(t) - 1)], infected = I[1:(length(I) - 1)], susceptible = S[1:(length(S) - 1)])
   
 }

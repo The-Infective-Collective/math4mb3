@@ -40,4 +40,28 @@ s <- spectrum(df$cases, plot = FALSE)
 plot((s$freq)^(-1), s$spec, type='l')
 }
 @
+
+<<>>=
+SI.Gillespie <- function(beta = 1, N = 100, I0 = 1, tmax=10) {
+  t <- 0 
+  I <- I0
+  S <- N - I0
+  
+  while(t[length(t)] < tmax & I[length(I)] < N) {
+    a <- beta*S[length(S)]*I[length(I)]
+    
+    u <- runif(1)
+    dt <- (1/a)*log(1/(1-u))
+    
+    t[length(t) + 1] <- t[length(t)] + dt
+    
+    S[length(S) + 1] <- S[length(S)] - 1
+    I[length(I) + 1] <- I[length(I)] + 1
+    
+  }
+  tibble(time = t[1:(length(t) - 1)], infected = I[1:(length(I) - 1)], susceptible = S[1:(length(S) - 1)])
+  
+}
+@
+
 \end{document}

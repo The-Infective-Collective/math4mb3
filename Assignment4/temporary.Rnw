@@ -4,8 +4,40 @@
 
 
 <<>>=
-
+library(tidyverse,stringr)
+read.ymdc <- function(filename) {
+  df<- read.csv(filename, skip=6)
+  df %>% mutate(date= as.Date(str_c(year,month,day,sep='-'))) %>% 
+    select(-year,-month,-day)
+}
+londondata <- read.ymdc('meas_uk__lon_1944-94_wk.csv') 
+class(londondata$date[1]) #verify that we have a date object
 @
 
+<<>>=
+time.plot<- function(df, s, add=FALSE, ...) {
+  df2 <- df
+  for (i in (s+1):(nrow(df2)-s)) {
+  df2$cases[i]<-mean(df$cases[(i-s):(i+s)])
+  }
+  df2$cases[1:s]<-NA
+  df2$cases[(nrow(df2)-s):(nrow(df2))] <-NA
+  
+  if(add) {
+    lines(df2$date,df2$cases, ...)
+  } else {
+  plot(df2$date, df2$cases,type="l", ...)
+  }
+}
+@
 
+<<>>=
+periodogram<-function(df, start.date=as.Date(df$date[1]),end.date=as.Date(df$date[nrow(df)]), add=FALSE, ...) {
+   df <- df %>%
+    filter(date >= start.date & date<=end.date)
+
+s <- spectrum(df$cases, plot = FALSE)
+plot((s$freq)^(-1), s$spec, type='l')
+}
+@
 \end{document}

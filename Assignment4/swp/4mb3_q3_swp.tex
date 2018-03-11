@@ -1,0 +1,184 @@
+\documentclass{article}
+
+\input{../4mbapreamble}
+
+\begin{document}
+
+\section{$\R_0$ for small pox}
+
+\subsection*{(a)}
+
+Denote susceptible state by $S$, indubation state by $E$, recovered state by $R$ and infectious stages by $I_1, I_2, I_3, I_4$. For simplicity, we consider pustules \& scabs stage and resolving scabs stage as one stage due to common infectiousness.
+Note that all states are repsented by proportions.
+
+Let $\sigma$ be percapita rate at which an infected individual develops symptom and $\gamma_i$ be the per capita rate at which an infected individual in stage $i$ progresses to next stage. Note that $\gamma_4$ corresponds to per capita recovery rate. 
+Finally, let $\beta_i$ be infectiousness (per contact transmission rate) of an infected individual in stage $i$ and $\mu$ be per capita natural birth/death rate. Then, we can write an ODE model for this system as follows:
+$$
+\begin{aligned}
+\frac{dS}{dt} &= \mu (1-S) - (\beta_1 I_1 + \beta_2 I_2 + \beta_3 I_3 + \beta_4 I_4) S\\
+\frac{dE}{dt} &= (\beta_1 I_1 + \beta_2 I_2 + \beta_3 I_3 + \beta_4 I_4) S - (\sigma + \mu) E \\
+\frac{dI_1}{dt} &= \sigma E - (\gamma_1 + \mu) I_1\\
+\frac{dI_2}{dt} &= \gamma_1 I_1 - (\gamma_2 + \mu) I_1\\
+\frac{dI_3}{dt} &= \gamma_2 I_2 - (\gamma_3 + \mu) I_1\\
+\frac{dI_4}{dt} &= \gamma_3 I_3 - (\gamma_4 + \mu) I_1\\
+\frac{dR}{dt} &= \gamma_1 I_4 - \mu R\\
+\end{aligned}
+$$
+
+\subsection*{(b)}
+
+In order for an infected individual to infect another susceptible individual, it must survivde through incubation period and become infectious. 
+Then, we can think of infection occuring in each infectious stage contributing to $\R_0$. For example, contribution of infection from first stage would be equivalent to $\R_0$ of an SEIR model:
+$$
+\beta_1 \times \frac{\sigma}{\sigma + \mu} \times \frac{1}{\gamma_1 + \mu}
+$$
+where $\beta_1/(\gamma_1 + \mu)$ represent average number of infections that occur in stage 1 and $\sigma/(\sigma+\mu)$ is the probability that an infected individual does not die before incubation period is over.
+In order for infection to occur in stage $i>1$, an infected individual must not die from natural mortality before reaching stage $i$. Then, contribution of infection during the second stage to $\R_0$ is
+$$
+\beta_2 \times \frac{\sigma}{\sigma + \mu} \times \frac{\gamma_1}{\gamma_1 + \mu} \times \frac{1}{\gamma_2 + \mu}
+$$
+Note that we now ahve $\gamma_1/(\gamma_1+\mu)$ to account for probability of progressing to stage 2 without dying from natural mortality while in stage 1.
+Likewise, we can do a similar computation for all other stages. Then, we have
+$$
+\begin{aligned}
+\R_0 &= \beta_1 \times \frac{\sigma}{\sigma + \mu} \times \frac{1}{\gamma_1 + \mu}\\
+&+ \beta_2 \times \frac{\sigma}{\sigma + \mu} \times \frac{\gamma_1}{\gamma_1 + \mu} \times \frac{1}{\gamma_2 + \mu}\\
+&+ \beta_3 \times \frac{\sigma}{\sigma + \mu} \times \frac{\gamma_1}{\gamma_1 + \mu} \times \frac{\gamma_2}{\gamma_2 + \mu} \times \frac{1}{\gamma_3 + \mu}\\
+&+ \beta_4 \times \frac{\sigma}{\sigma + \mu} \times \frac{\gamma_1}{\gamma_1 + \mu} \times \frac{\gamma_2}{\gamma_2 + \mu} \times \frac{\gamma_3}{\gamma_3 + \mu} \times \frac{1}{\gamma_4 + \mu}\\
+\end{aligned}
+$$
+
+\subsection*{(c)}
+
+For this particular system, we have
+$$
+\mathcal{F} = \begin{pmatrix}
+(\beta_1 I_1 + \beta_2 I_2 + \beta_3 I_3 + \beta_4 I_4) S\\
+0\\
+0\\
+0\\
+0
+\end{pmatrix}, \mathcal{V} = \begin{pmatrix}
+(\sigma + \mu) E \\
+- \sigma E + (\gamma_1 + \mu) I_1\\
+- \gamma_1 I_1 + (\gamma_2 + \mu) I_1\\
+- \gamma_2 I_2 + (\gamma_3 + \mu) I_1\\
+- \gamma_3 I_3 + (\gamma_4 + \mu) I_1\\
+\end{pmatrix}
+$$
+Linearizing at the disease free equilibrium, we have
+$$
+F = \begin{pmatrix}
+0 & \beta_1 & \beta_2 & \beta_3 & \beta_4\\
+0 & 0 & 0 & 0 & 0\\
+0 & 0 & 0 & 0 & 0\\
+0 & 0 & 0 & 0 & 0\\
+0 & 0 & 0 & 0 & 0\\
+\end{pmatrix},
+V = \begin{pmatrix}
+(\sigma + \mu) & 0 & 0 & 0 & 0\\
+- \sigma & \gamma_1 + \mu & 0 & 0 & 0\\
+0 & - \gamma_1 & \gamma_2 + \mu & 0 & 0\\
+0 & 0 & - \gamma_2 & \gamma_3 + \mu & 0\\
+0 & 0 & 0 & - \gamma_3 & \gamma_4 + \mu\\
+\end{pmatrix}
+$$
+We want to invert this matrix by hand
+$$
+\begin{aligned}
+&\left(\begin{array}{ccccc|ccccc}
+(\sigma + \mu) & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0\\
+- \sigma & \gamma_1 + \mu & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0\\
+0 & - \gamma_1 & \gamma_2 + \mu & 0 & 0 & 0 & 0 & 1 & 0 & 0\\
+0 & 0 & - \gamma_2 & \gamma_3 + \mu & 0 & 0 & 0 & 0 & 1 & 0\\
+0 & 0 & 0 & - \gamma_3 & \gamma_4 + \mu & 0 & 0 & 0 & 0 & 1\\
+\end{array}\right)\\
+\implies
+&\left(\begin{array}{ccccc|ccccc}
+1 & 0 & 0 & 0 & 0 & \frac{1}{\sigma + \mu} & 0 & 0 & 0 & 0\\
+- \sigma & \gamma_1 + \mu & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0\\
+0 & - \gamma_1 & \gamma_2 + \mu & 0 & 0 & 0 & 0 & 1 & 0 & 0\\
+0 & 0 & - \gamma_2 & \gamma_3 + \mu & 0 & 0 & 0 & 0 & 1 & 0\\
+0 & 0 & 0 & - \gamma_3 & \gamma_4 + \mu & 0 & 0 & 0 & 0 & 1\\
+\end{array}\right)\\
+\implies
+&\left(\begin{array}{ccccc|ccccc}
+1 & 0 & 0 & 0 & 0 & \frac{1}{\sigma + \mu} & 0 & 0 & 0 & 0\\
+0 & 1 & 0 & 0 & 0 & \frac{\sigma}{(\sigma + \mu)(\gamma_1 + \mu)} & \frac{1}{\gamma_1 + \mu} & 0 & 0 & 0\\
+0 & - \gamma_1 & \gamma_2 + \mu & 0 & 0 & 0 & 0 & 1 & 0 & 0\\
+0 & 0 & - \gamma_2 & \gamma_3 + \mu & 0 & 0 & 0 & 0 & 1 & 0\\
+0 & 0 & 0 & - \gamma_3 & \gamma_4 + \mu & 0 & 0 & 0 & 0 & 1\\
+\end{array}\right)\\
+\implies
+&\left(\begin{array}{ccccc|ccccc}
+1 & 0 & 0 & 0 & 0 & \frac{1}{\sigma + \mu} & 0 & 0 & 0 & 0\\
+0 & 1 & 0 & 0 & 0 & \frac{\sigma}{(\sigma + \mu)(\gamma_1 + \mu)} & \frac{1}{\gamma_1 + \mu} & 0 & 0 & 0\\
+0 & 0 & 1 & 0 & 0 & \frac{\sigma \gamma_1}{(\sigma + \mu)(\gamma_1 + \mu)(\gamma_2 + \mu)} & \frac{\gamma_1}{(\gamma_1 + \mu)(\gamma_2 + \mu)} & \frac{1}{\gamma_2 + \mu} & 0 & 0\\
+0 & 0 & - \gamma_2 & \gamma_3 + \mu & 0 & 0 & 0 & 0 & 1 & 0\\
+0 & 0 & 0 & - \gamma_3 & \gamma_4 + \mu & 0 & 0 & 0 & 0 & 1\\
+\end{array}\right)\\
+\implies
+&\left(\begin{array}{ccccc|ccccc}
+1 & 0 & 0 & 0 & 0 & \frac{1}{\sigma + \mu} & 0 & 0 & 0 & 0\\
+0 & 1 & 0 & 0 & 0 & \frac{\sigma}{(\sigma + \mu)(\gamma_1 + \mu)} & \frac{1}{\gamma_1 + \mu} & 0 & 0 & 0\\
+0 & 0 & 1 & 0 & 0 & \frac{\sigma \gamma_1}{(\sigma + \mu)(\gamma_1 + \mu)(\gamma_2 + \mu)} & \frac{\gamma_1}{(\gamma_1 + \mu)(\gamma_2 + \mu)} & \frac{1}{\gamma_2 + \mu} & 0 & 0\\
+0 & 0 & 0 & 1 & 0 & \frac{\sigma \gamma_1 \gamma_2}{(\sigma + \mu)(\gamma_1 + \mu)(\gamma_2 + \mu)(\gamma_3 + \mu)} & \frac{\gamma_1 \gamma_2}{(\gamma_1 + \mu)(\gamma_2 + \mu)(\gamma_3 + \mu)} & \frac{\gamma_2}{(\gamma_2 + \mu)(\gamma_3 + \mu)} & \frac{1}{\gamma_3 + \mu} & 0\\
+0 & 0 & 0 & - \gamma_3 & \gamma_4 + \mu & 0 & 0 & 0 & 0 & 1\\
+\end{array}\right)\\
+\implies
+&\tiny\left(\begin{array}{ccccc|ccccc}
+1 & 0 & 0 & 0 & 0 & \frac{1}{\sigma + \mu} & 0 & 0 & 0 & 0\\
+0 & 1 & 0 & 0 & 0 & \frac{\sigma}{(\sigma + \mu)(\gamma_1 + \mu)} & \frac{1}{\gamma_1 + \mu} & 0 & 0 & 0\\
+0 & 0 & 1 & 0 & 0 & \frac{\sigma \gamma_1}{(\sigma + \mu)(\gamma_1 + \mu)(\gamma_2 + \mu)} & \frac{\gamma_1}{(\gamma_1 + \mu)(\gamma_2 + \mu)} & \frac{1}{\gamma_2 + \mu} & 0 & 0\\
+0 & 0 & 0 & 1 & 0 & \frac{\sigma \gamma_1 \gamma_2}{(\sigma + \mu)(\gamma_1 + \mu)(\gamma_2 + \mu)(\gamma_3 + \mu)} & \frac{\gamma_1 \gamma_2}{(\gamma_1 + \mu)(\gamma_2 + \mu)(\gamma_3 + \mu)} & \frac{\gamma_2}{(\gamma_2 + \mu)(\gamma_3 + \mu)} & \frac{1}{\gamma_3 + \mu} & 0\\
+0 & 0 & 0 & 0 & 1    & \frac{\sigma \gamma_1 \gamma_2 \gamma_3}{(\sigma + \mu)(\gamma_1 + \mu)(\gamma_2 + \mu)(\gamma_3 + \mu)(\gamma_4  +\mu)} & \frac{\gamma_1 \gamma_2 \gamma_3}{(\gamma_1 + \mu)(\gamma_2 + \mu)(\gamma_3 + \mu)(\gamma_4  +\mu)} & \frac{\gamma_2 \gamma_3}{(\gamma_2 + \mu)(\gamma_3 + \mu)(\gamma_4  +\mu)} & \frac{\gamma_3}{(\gamma_3 + \mu)(\gamma_4  +\mu)} & \frac{1}{\gamma_4  +\mu}\\
+\end{array}\right)\\
+\end{aligned}
+$$
+Then,
+$$
+V^{-1} = \begin{pmatrix}
+\frac{1}{\sigma + \mu} & 0 & 0 & 0 & 0\\
+\frac{\sigma}{(\sigma + \mu)(\gamma_1 + \mu)} & \frac{1}{\gamma_1 + \mu} & 0 & 0 & 0\\
+\frac{\sigma \gamma_1}{(\sigma + \mu)(\gamma_1 + \mu)(\gamma_2 + \mu)} & \frac{\gamma_1}{(\gamma_1 + \mu)(\gamma_2 + \mu)} & \frac{1}{\gamma_2 + \mu} & 0 & 0\\
+\frac{\sigma \gamma_1 \gamma_2}{(\sigma + \mu)(\gamma_1 + \mu)(\gamma_2 + \mu)(\gamma_3 + \mu)} & \frac{\gamma_1 \gamma_2}{(\gamma_1 + \mu)(\gamma_2 + \mu)(\gamma_3 + \mu)} & \frac{\gamma_2}{(\gamma_2 + \mu)(\gamma_3 + \mu)} & \frac{1}{\gamma_3 + \mu} & 0\\
+\frac{\sigma \gamma_1 \gamma_2 \gamma_3}{(\sigma + \mu)(\gamma_1 + \mu)(\gamma_2 + \mu)(\gamma_3 + \mu)(\gamma_4  +\mu)} & \frac{\gamma_1 \gamma_2 \gamma_3}{(\gamma_1 + \mu)(\gamma_2 + \mu)(\gamma_3 + \mu)(\gamma_4  +\mu)} & \frac{\gamma_2 \gamma_3}{(\gamma_2 + \mu)(\gamma_3 + \mu)(\gamma_4  +\mu)} & \frac{\gamma_3}{(\gamma_3 + \mu)(\gamma_4  +\mu)} & \frac{1}{\gamma_4  +\mu}\\
+\end{pmatrix}
+$$
+Then, it is clear that matrix $FV^{-1}$ consists of 0 entries except its first row.
+Hence, its eigenvalues are on its diagonal, four of which are zero. The only non-zero entry on the diagonal is the first column entry in first row, which is equal to previously derived $\R_0$ value:
+$$
+\begin{aligned}
+&\beta_1 \times \frac{\sigma}{\sigma + \mu} \times \frac{1}{\gamma_1 + \mu}\\
+&+ \beta_2 \times \frac{\sigma}{\sigma + \mu} \times \frac{\gamma_1}{\gamma_1 + \mu} \times \frac{1}{\gamma_2 + \mu}\\
+&+ \beta_3 \times \frac{\sigma}{\sigma + \mu} \times \frac{\gamma_1}{\gamma_1 + \mu} \times \frac{\gamma_2}{\gamma_2 + \mu} \times \frac{1}{\gamma_3 + \mu}\\
+&+ \beta_4 \times \frac{\sigma}{\sigma + \mu} \times \frac{\gamma_1}{\gamma_1 + \mu} \times \frac{\gamma_2}{\gamma_2 + \mu} \times \frac{\gamma_3}{\gamma_3 + \mu} \times \frac{1}{\gamma_4 + \mu}\\
+\end{aligned}
+$$
+Therefore, $\R_0$ derived using next generation method is consistent with $\R_0$ from a biological argument.
+
+\subsection*{(d)}
+
+Note that for unaltered small pox, time scale of disease is much shorter than average life span of a person. Then, we can approximate $\R_0$ by assuming that $\mu \approx 0$. Then, the expression for $\R_0$ becomes
+$$
+\R_0 \approx \frac{\beta_1}{\gamma_1} + \frac{\beta_2}{\gamma_2} + \frac{\beta_3}{\gamma_3} + \frac{\beta_4}{\gamma_4}
+$$
+The alteration causes the early rash stage to be twice as long and so $\gamma_2^{-1}$ changes from 4 days to 8 days.
+It is evident that increasing $\gamma_2^{-1}$ will lead to increase in $\R_0$.
+
+Provided that infectiousness during the early rash stage is extreme, we can assume that at least half of the infection occurs during this stage. In the worst case scenario, all infections occur during the early rash stage. These assumptions are reasonable given that disease-induced death can occur in later stages (and so there would be little contribution to infection).
+Based on these assumptions, we have
+$$
+2.5 < \frac{\beta_2}{\gamma_2} < 5
+$$
+Since altering doubles $\gamma_2$, we get
+$$
+5 < \frac{\beta_2}{\gamma_{2,\tiny{\textrm{altered}}}} < 10
+$$
+This translates to
+$$
+7.5 < \R_{0, \tiny{\textrm{altered}}}} <10
+$$
+
+
+\end{document}

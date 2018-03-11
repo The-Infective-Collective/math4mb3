@@ -61,7 +61,7 @@ s <- spectrum(v, plot=FALSE)
 plot( s$freq, s$spec, type="l")
 @ 
 
-\BeautifulSolution
+
 
 \end{enumerate}
 
@@ -79,11 +79,93 @@ plot( s$freq, s$spec, type="l")
 
 \item \SEa
 
-\BeautifulSolution
+<<>>=
+library(tidyverse)
+SI.Gillespie <- function(beta = 1, N = 100, I0 = 1, tmax=10) {
+  
+  # initialize variables
+  t <- 0 
+  I <- I0
+  S <- N - I0
+  n <- 1
+  
+  while(t[n] < tmax & I[n] < N) {
+    # calculate event rate
+    a <- beta*S[n]*I[n]
+    
+    # generate uniform random variable
+    u <- runif(1)
+    
+    # time until next event
+    dt <- (1/a)*log(1/(1-u))
+    
+    # record time
+    t[n + 1] <- t[n] + dt
+    
+    # update state
+    S[n+ 1] <- S[n] - 1
+    I[n + 1] <- I[n] + 1
+    
+    # increment counter
+    n <- n+1
+  }
+  
+  # return time series
+  tibble(time = t[1:(length(t) - 1)], infected = I[1:(length(I) - 1)], susceptible = S[1:(length(S) - 1)])
+  
+}
+@
 
 \item \SEb
 
-\BeautifulSolution
+<<>>=
+library(deSolve)
+# Function to describe 
+SI.d <- function(t, y, p) {
+  with(as.list(c(y, p)), {
+    dI <- beta*(N-I)*I
+      
+    return(list(c(dI)))
+  })
+}
+
+
+  
+@
+
+<<>>==
+set.seed(8)
+test.sizes <- tribble(
+  ~pop, ~tmax,
+  32, 0.35,
+  100, 0.15,
+  1000, 0.02,
+  10000, 0.0025
+)
+
+par(mfrow = c(2, 2))
+
+initial <- c(I = 1)
+
+
+for (i in 1:4) {
+  size <- test.sizes$pop[i]
+  tmax <- test.sizes$tmax[i]
+  
+  timesteps <- seq(0, tmax, length.out = 300)
+  
+  params <- c(beta = 1, N = size)
+  sol <- ode(initial, timesteps, SI.d, params)
+  plot(as.data.frame(sol), type = "l", lwd = 3)
+  
+  for (j in 1:30){
+    lines(SI.Gillespie(beta = params["beta"], 
+                       N = params["N"], 
+                       I0 = initial["I"], 
+                       tmax = tmax), col = j)
+  }
+}
+@
 
 \end{enumerate}
 

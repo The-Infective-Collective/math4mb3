@@ -8,11 +8,10 @@
 
 \subsection*{(a)}
 
-Denote susceptible state by $S$, indubation state by $E$, recovered state by $R$ and infectious stages by $I_1, I_2, I_3, I_4$. For simplicity, we consider pustules \& scabs stage and resolving scabs stage as one stage due to common infectiousness.
-Note that all states are repsented by proportions.
+Denote the susceptible state by $S$, the incubation state by $E$, and the recovered state by $R$. Furthermore, denote the four infectious stages by $I_1, I_2, I_3$, and $I_4$, respectively, and let the each of the stages represent the four different levels of infectiousness exhibited by infected individuals. For example, the $I_1$ stage corresponds to the prodrom stage, in which infectiousness is rare, while $I_4$ stage represents both the pustules \& scabs stage and the resolving scabs stage, as both of these stages share a low level of infectiousness. Note that all states are repsented by proportions.
 
-Let $\sigma$ be percapita rate at which an infected individual develops symptom and $\gamma_i$ be the per capita rate at which an infected individual in stage $i$ progresses to next stage. Note that $\gamma_4$ corresponds to per capita recovery rate. 
-Finally, let $\beta_i$ be infectiousness (per contact transmission rate) of an infected individual in stage $i$ and $\mu$ be per capita natural birth/death rate. Then, we can write an ODE model for this system as follows:
+Let $\sigma$ represent the per capita rate at which an infected individual develops symptoms and let $\gamma_i$ represent the per capita rate at which an infected individual in stage $i$ progresses to the next stage. In other words, $\gamma_i$ is considered to be the removal rate from stage $I_i$, such that the individual progresses to an infectiousness level exhibited in $I_{i+1}$. Moreover, note that $\gamma_4$ corresponds to the per capita recovery rate. 
+Finally, let $\beta_i$ represent the infectiousness (per contact transmission rate) of an infected individual in stage $i$ and $\mu$ represent the per capita natural birth/death rate (they are assumed to be equal). Then, we can write an ODE model for this system as follows:
 $$
 \begin{aligned}
 \frac{dS}{dt} &= \mu (1-S) - (\beta_1 I_1 + \beta_2 I_2 + \beta_3 I_3 + \beta_4 I_4) S\\
@@ -27,24 +26,24 @@ $$
 
 \subsection*{(b)}
 
-In order for an infected individual to infect another susceptible individual, it must survivde through incubation period and become infectious. 
-Then, we can think of infection occuring in each infectious stage contributing to $\R_0$. For example, contribution of infection from first stage would be equivalent to $\R_0$ of an SEIR model:
+In order for an infected individual to infect a susceptible individual, it must survive the incubation period and become infectious. 
+Then, we can think of $\R_0$ as a sum of the basic reproductive numbers from each stage, such that the final number of secondary cases caused by a typical infective individual is merely equal to the number of infections caused by an infective at each stage. For example, the contribution of infection from the first stage would be equivalent to $\R_0$ of an SEIR model. We denote this value as $\R_{0_1}$:
 $$
 \beta_1 \times \frac{\sigma}{\sigma + \mu} \times \frac{1}{\gamma_1 + \mu}
 $$
-where $\beta_1/(\gamma_1 + \mu)$ represent average number of infections that occur in stage 1 and $\sigma/(\sigma+\mu)$ is the probability that an infected individual does not die before incubation period is over.
-In order for infection to occur in stage $i>1$, an infected individual must not die from natural mortality before reaching stage $i$. Then, contribution of infection during the second stage to $\R_0$ is
+where $\beta_1/(\gamma_1 + \mu)$ represent the average number of infections that occur in stage 1 and $\sigma/(\sigma+\mu)$ is the probability that an infected individual does not die before the incubation period is over.
+In order for infection to occur in stage $i>1$, an infected individual must not die from natural mortality before reaching stage $i$. Then, the contribution of infection during the second stage would be defined as $\R_{0_2}$, such that
 $$
-\beta_2 \times \frac{\sigma}{\sigma + \mu} \times \frac{\gamma_1}{\gamma_1 + \mu} \times \frac{1}{\gamma_2 + \mu}
+\beta_2 \times \frac{\sigma}{\sigma + \mu} \times \frac{\gamma_1}{\gamma_1 + \mu} \times \frac{1}{\gamma_2 + \mu}.
 $$
-Note that we now ahve $\gamma_1/(\gamma_1+\mu)$ to account for probability of progressing to stage 2 without dying from natural mortality while in stage 1.
-Likewise, we can do a similar computation for all other stages. Then, we have
+Note that we now have $\gamma_1/(\gamma_1+\mu)$ to account for probability the of progressing to stage 2 without dying from natural causes while in stage 1.
+Likewise, we can do a similar computation for all other stages. Summing each of our values for $\R_{0_i}$, we ultimately obtain
 $$
 \begin{aligned}
 \R_0 &= \beta_1 \times \frac{\sigma}{\sigma + \mu} \times \frac{1}{\gamma_1 + \mu}\\
 &+ \beta_2 \times \frac{\sigma}{\sigma + \mu} \times \frac{\gamma_1}{\gamma_1 + \mu} \times \frac{1}{\gamma_2 + \mu}\\
 &+ \beta_3 \times \frac{\sigma}{\sigma + \mu} \times \frac{\gamma_1}{\gamma_1 + \mu} \times \frac{\gamma_2}{\gamma_2 + \mu} \times \frac{1}{\gamma_3 + \mu}\\
-&+ \beta_4 \times \frac{\sigma}{\sigma + \mu} \times \frac{\gamma_1}{\gamma_1 + \mu} \times \frac{\gamma_2}{\gamma_2 + \mu} \times \frac{\gamma_3}{\gamma_3 + \mu} \times \frac{1}{\gamma_4 + \mu}\\
+&+ \beta_4 \times \frac{\sigma}{\sigma + \mu} \times \frac{\gamma_1}{\gamma_1 + \mu} \times \frac{\gamma_2}{\gamma_2 + \mu} \times \frac{\gamma_3}{\gamma_3 + \mu} \times \frac{1}{\gamma_4 + \mu}.
 \end{aligned}
 $$
 
@@ -83,7 +82,7 @@ V = \begin{pmatrix}
 0 & 0 & 0 & - \gamma_3 & \gamma_4 + \mu\\
 \end{pmatrix}
 $$
-We want to invert this matrix by hand
+Inverting this matrix by hand, we observe:
 $$
 \begin{aligned}
 &\left(\begin{array}{ccccc|ccccc}
@@ -146,7 +145,7 @@ V^{-1} = \begin{pmatrix}
 \end{pmatrix}
 $$
 Then, it is clear that matrix $FV^{-1}$ consists of 0 entries except its first row.
-Hence, its eigenvalues are on its diagonal, four of which are zero. The only non-zero entry on the diagonal is the first column entry in first row, which is equal to previously derived $\R_0$ value:
+Hence, its eigenvalues are on its diagonal, four of which are zero. The only non-zero entry on the diagonal is the first column entry of the first row, which is equal to the previously derived $\R_0$ value:
 $$
 \begin{aligned}
 &\beta_1 \times \frac{\sigma}{\sigma + \mu} \times \frac{1}{\gamma_1 + \mu}\\
@@ -155,29 +154,29 @@ $$
 &+ \beta_4 \times \frac{\sigma}{\sigma + \mu} \times \frac{\gamma_1}{\gamma_1 + \mu} \times \frac{\gamma_2}{\gamma_2 + \mu} \times \frac{\gamma_3}{\gamma_3 + \mu} \times \frac{1}{\gamma_4 + \mu}\\
 \end{aligned}
 $$
-Therefore, $\R_0$ derived using next generation method is consistent with $\R_0$ from a biological argument.
+Therefore, the derivation of $\R_0$ using the next generation method is consistent with the derivation of $\R_0$ from a biological argument.
 
 \subsection*{(d)}
 
-Note that for unaltered small pox, time scale of disease is much shorter than average life span of a person. Then, we can approximate $\R_0$ by assuming that $\mu \approx 0$. Then, the expression for $\R_0$ becomes
+Note that for unaltered small pox, the time scale of disease is much shorter than average life span of a person. Then, we can approximate $\R_0$ by assuming that $\mu \approx 0$. The expression for $\R_0$ thus becomes
 $$
 \R_0 \approx \frac{\beta_1}{\gamma_1} + \frac{\beta_2}{\gamma_2} + \frac{\beta_3}{\gamma_3} + \frac{\beta_4}{\gamma_4}
 $$
 The alteration causes the early rash stage to be twice as long and so $\gamma_2^{-1}$ changes from 4 days to 8 days.
 It is evident that increasing $\gamma_2^{-1}$ will lead to increase in $\R_0$.
 
-Provided that infectiousness during the early rash stage is extreme, we can assume that at least half of the infection occurs during this stage. In the worst case scenario, all infections occur during the early rash stage. These assumptions are reasonable given that disease-induced death can occur in later stages (and so there would be little contribution to infection).
-Based on these assumptions, we have
+Provided that infectiousness during the early rash stage is extreme, we can assume that at least half of the infection occurs during this stage. In the worst case scenario, all infections occur during the early rash stage. These assumptions are reasonable given that disease-induced death can occur in later stages, and so there would be little contribution to infection.
+Based on these assumptions, we have that
 $$
-2.5 < \frac{\beta_2}{\gamma_2} < 5
+2.5 < \frac{\beta_2}{\gamma_{2,\tiny{\textrm{original}}}} < 5.
 $$
-Since altering doubles $\gamma_2$, we get
+Since altering doubles $\gamma_2^{-1}$, we get
 $$
-5 < \frac{\beta_2}{\gamma_{2,\tiny{\textrm{altered}}}} < 10
+5 < \frac{\beta_2}{\gamma_{2,\tiny{\textrm{altered}}}} < 10.
 $$
 This translates to
 $$
-7.5 < \R_{0, \tiny{\textrm{altered}}} <10
+7.5 < \R_{0, \tiny{\textrm{altered}}} <10.
 $$
 
 \subsection*{(e)}

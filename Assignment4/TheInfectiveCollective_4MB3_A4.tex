@@ -77,9 +77,9 @@
 \smallskip
 2016 ASSIGNMENT \textcolor{blue}{4}}\\
 \medskip
-\underline{\emph{Group Name}}: \texttt{{\color{blue}Muse}}\\
+\underline{\emph{Group Name}}: \texttt{{\color{blue}The Infective Collective}}\\
 \medskip
-\underline{\emph{Group Members}}: {\color{blue}Matt Bellamy, Chris Wolstenholme, Dominic Howard}
+\underline{\emph{Group Members}}: {\color{blue}Aurora Basinski-Ferris, Michael Chong, Daniel Park, Daniel Presta}
 \end{center}
 
 \bigskip
@@ -97,31 +97,135 @@
 \begin{enumerate}[(i)]
 
 \item \TSai
-
-\BeautifulSolution
-
-\item \TSaii
-
-\BeautifulSolution
-
-\item \TSaiii
-
+{\color{blue}{Below, we create a function which returns a data frame with a date column and an associated data column. This is done by mutating the initial dataframe from the csv file. We string together the year, month, and day that are originally in three separate columns and then make this string part of the Date class.}}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{s} \hlkwb{<-} \hlkwd{spectrum}\hlstd{(v,} \hlkwc{plot}\hlstd{=}\hlnum{FALSE}\hlstd{)}
-\hlkwd{plot}\hlstd{( s}\hlopt{$}\hlstd{freq, s}\hlopt{$}\hlstd{spec,} \hlkwc{type}\hlstd{=}\hlstr{"l"}\hlstd{)}
+\hlkwd{library}\hlstd{(tidyverse,stringr)} \hlcom{#load necessary packages}
+\end{alltt}
+
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# -- Attaching packages --------------------------------------------------- tidyverse 1.2.1 --}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# v ggplot2 2.2.1\ \ \ \  v purrr\ \  0.2.4\\\#\# v tibble\ \ 1.4.2\ \ \ \  v dplyr\ \  0.7.4\\\#\# v tidyr\ \  0.8.0\ \ \ \  v stringr 1.3.0\\\#\# v readr\ \  1.1.1\ \ \ \  v forcats 0.2.0}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# -- Conflicts ------------------------------------------------------ tidyverse\_conflicts() --\\\#\# x dplyr::filter() masks stats::filter()\\\#\# x dplyr::lag()\ \ \ \ masks stats::lag()}}\begin{alltt}
+\hlstd{read.ymdc} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{filename}\hlstd{) \{}
+  \hlstd{df}\hlkwb{<-} \hlkwd{read.csv}\hlstd{(filename,} \hlkwc{skip}\hlstd{=}\hlnum{6}\hlstd{)} \hlcom{#skip 6 because 6 lines }
+  \hlcom{#at top of csv file that aren't data}
+  \hlstd{df} \hlopt{%>%} \hlkwd{mutate}\hlstd{(}\hlkwc{date}\hlstd{=} \hlkwd{as.Date}\hlstd{(}\hlkwd{str_c}\hlstd{(year,month,day,}\hlkwc{sep}\hlstd{=}\hlstr{'-'}\hlstd{)))} \hlopt{%>%}
+    \hlkwd{select}\hlstd{(}\hlopt{-}\hlstd{year,}\hlopt{-}\hlstd{month,}\hlopt{-}\hlstd{day)}
+\hlstd{\}}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
 
-\BeautifulSolution
+\item \TSaii
+{\color{blue}{Next, we create a function which produces a moving average time plot. We modify the data frame that the user supplies when calling the function such that each row is an average of the following s rows and the prior s rows (if s is the value that the user specifies to compute the moving average over). We also delete the first s rows and the last s rows. By default, the plot is separate from any previous plots that the user may have created, but you may add the plot to an existing plot by inputting 'TRUE' in the third argument of the function.}}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{time.plot}\hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{df}\hlstd{,} \hlkwc{s}\hlstd{,} \hlkwc{add}\hlstd{=}\hlnum{FALSE}\hlstd{,} \hlkwc{...}\hlstd{) \{}
+  \hlstd{df2} \hlkwb{<-} \hlstd{df}
+  \hlkwa{for} \hlstd{(i} \hlkwa{in} \hlstd{(s}\hlopt{+}\hlnum{1}\hlstd{)}\hlopt{:}\hlstd{(}\hlkwd{nrow}\hlstd{(df2)}\hlopt{-}\hlstd{s)) \{}
+  \hlstd{df2}\hlopt{$}\hlstd{cases[i]}\hlkwb{<-}\hlkwd{mean}\hlstd{(df}\hlopt{$}\hlstd{cases[(i}\hlopt{-}\hlstd{s)}\hlopt{:}\hlstd{(i}\hlopt{+}\hlstd{s)])}
+  \hlstd{\}}
+  \hlstd{df2}\hlopt{$}\hlstd{cases[}\hlnum{1}\hlopt{:}\hlstd{s]}\hlkwb{<-}\hlnum{NA}
+  \hlstd{df2}\hlopt{$}\hlstd{cases[(}\hlkwd{nrow}\hlstd{(df2)}\hlopt{-}\hlstd{s)}\hlopt{:}\hlstd{(}\hlkwd{nrow}\hlstd{(df2))]} \hlkwb{<-}\hlnum{NA}
+
+  \hlkwa{if}\hlstd{(add) \{}
+    \hlkwd{lines}\hlstd{(df2}\hlopt{$}\hlstd{date,df2}\hlopt{$}\hlstd{cases, ...)}
+  \hlstd{\}} \hlkwa{else} \hlstd{\{}
+  \hlkwd{plot}\hlstd{(df2}\hlopt{$}\hlstd{date, df2}\hlopt{$}\hlstd{cases,}\hlkwc{type}\hlstd{=}\hlstr{"l"}\hlstd{, ...)}
+  \hlstd{\}}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\item \TSaiii
+{\color{blue}{Finally, we create a function which produces a periodogram on a specific date range of a time series. By default, we have that the begin date is the beginning of the time series and the end date is the end of the time series. However, these can be modified by the user. The fucntion filters the dataframe to only include the date range specified by the user. Then it performs a periodogram on that filtered dataframe using the commands given in the assignment. Similar to the last function, by default, the plot is separate from any previous plots the user may have created, but the plot may be added to an existing plot by specifiying 'TRUE' in the fourth argument of the function.}}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{periodogram}\hlkwb{<-}\hlkwa{function}\hlstd{(}\hlkwc{df}\hlstd{,} \hlkwc{start.date}\hlstd{=}\hlkwd{as.Date}\hlstd{(df}\hlopt{$}\hlstd{date[}\hlnum{1}\hlstd{]),}\hlkwc{end.date}\hlstd{=}\hlkwd{as.Date}\hlstd{(df}\hlopt{$}\hlstd{date[}\hlkwd{nrow}\hlstd{(df)]),} \hlkwc{add}\hlstd{=}\hlnum{FALSE}\hlstd{,} \hlkwc{...}\hlstd{) \{}
+   \hlstd{df} \hlkwb{<-} \hlstd{df} \hlopt{%>%}
+    \hlkwd{filter}\hlstd{(date} \hlopt{>=} \hlstd{start.date} \hlopt{&} \hlstd{date}\hlopt{<=}\hlstd{end.date)}
+
+\hlstd{s} \hlkwb{<-} \hlkwd{spectrum}\hlstd{(df}\hlopt{$}\hlstd{cases,} \hlkwc{plot} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+\hlkwd{plot}\hlstd{((s}\hlopt{$}\hlstd{freq)}\hlopt{^}\hlstd{(}\hlopt{-}\hlnum{1}\hlstd{), s}\hlopt{$}\hlstd{spec,} \hlkwc{type}\hlstd{=}\hlstr{'l'}\hlstd{, ...)}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
 
 \end{enumerate}
 
 \item \TSb
 
-\BeautifulSolution
+{\color{blue}{First, we perform analysis on the London time series. Our first step is to plot the time series, as well as a plot smoothed by a 10 week moving average. This smoothed data helps us identify areas of the time series that appear to have similar patterns. Namely, we note that the beginning of the time series until around 1950 appears to have consistent patterns. We also note that the data from around 1950 to 1975 and 1975 until the end of the time series appeared to have similar structure. To investigate these claims, we plot periodograms. Our first periodogram looks at the entire time series (we cut it off at 250 weeks as when we plotted the whole 2500 weeks, we stop seeing patterns after around 200 weeks). This first periodogram tells us that across the whole time series, the most power is at around the 100 week mark, and the next most power is located around the 50 week mark. We note that these roughly correlate to 1 and 2 year cycles. Next, to investigate how these cycles may change over the time series, we plot periodograms for the intervals mentioned earlier which we identified through the initial moving average plot. The plot in the upper right corner shows the periodogram for the period from the beginning of the time series until 1 January 1950. We see that in this time period, the most power is located around the 50 week mark. Next, we plot the time interval from 1 January 1950 until 1 January 1975. Here, we see that the most power is located around the 2 year mark, while there is also a significant amount of power located around the 1 year mark. This tells us that in this period, there are mostly 2 year cycles, with a less significant 1 year cycle. Finally, we look at the end of the time series (from 1 January 1975 until the end of the data). In this periodogram, we see that the most power is located around the 140 week mark, with the next most significant power around the 50 week mark. This suggests that in this time period, the most significant cycle is around a three year cycle. Hwever, if we look at the periodogram for the whole time series, we see that that cycle is insignificant overall compared to the 1 year and 2 year cycles. This may be because the three year cycle only appares in the last part of the time series. It also may be because the magnitude of power behind this cycle is much lower than the other cycles in other sections of data.}}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{londondata}\hlkwb{<-}\hlkwd{read.ymdc}\hlstd{(}\hlstr{'meas_uk__lon_1944-94_wk.csv'}\hlstd{)} \hlcom{#load london time series using function from 1a(i)}
+\hlkwd{plot}\hlstd{(londondata}\hlopt{$}\hlstd{date, londondata}\hlopt{$}\hlstd{cases)}
+\hlkwd{time.plot}\hlstd{(londondata,}\hlnum{10}\hlstd{,}\hlkwc{add}\hlstd{=} \hlnum{TRUE}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{'red'}\hlstd{)} \hlcom{#plot using 10 week moving average using function from 1a(ii)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-1} 
+\begin{kframe}\begin{alltt}
+\hlkwd{par}\hlstd{(}\hlkwc{mfrow}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,}\hlnum{2}\hlstd{))} \hlcom{#create multiplot. two columns and two rows}
+
+\hlkwd{periodogram}\hlstd{(londondata,}\hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{250}\hlstd{),} \hlkwc{main}\hlstd{=}\hlstr{"Entire time series"}\hlstd{)}
+
+\hlkwd{periodogram}\hlstd{(londondata,}\hlkwc{end.date}\hlstd{=}\hlkwd{as.Date}\hlstd{(}\hlstr{'1950-01-01'}\hlstd{),}\hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{250}\hlstd{),} \hlkwc{main}\hlstd{=}\hlstr{"Beginning timeseries to 1950-01-01"}\hlstd{,}\hlkwc{xlab}\hlstd{=}\hlstr{"Weeks"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Power"}\hlstd{)}
+
+\hlkwd{periodogram}\hlstd{(londondata,}\hlkwd{as.Date}\hlstd{(}\hlstr{'1950-01-01'}\hlstd{),}\hlkwd{as.Date}\hlstd{(}\hlstr{'1975-01-01'}\hlstd{),}\hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{250}\hlstd{),} \hlkwc{main}\hlstd{=}\hlstr{"1950-01-01 to 1975-01-01"}\hlstd{,}\hlkwc{xlab}\hlstd{=}\hlstr{"Weeks"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Power"}\hlstd{)}
+
+\hlkwd{periodogram}\hlstd{(londondata,}\hlkwd{as.Date}\hlstd{(}\hlstr{'1975-01-01'}\hlstd{),}\hlkwd{as.Date}\hlstd{(}\hlstr{'1990-01-01'}\hlstd{),}\hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{250}\hlstd{),} \hlkwc{main}\hlstd{=}\hlstr{"1975-01-01 to 1990-01-01"}\hlstd{,}\hlkwc{xlab}\hlstd{=}\hlstr{"Weeks"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Power"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-2} 
+
+\end{knitrout}
+
+{\color{blue}{Next, we perform analysis on the Liverpool time series. Again, our first step is to plot the time series, as well as a plot smoothed by a 10 week moving average. Based on this smoothed data, we identify intervals of interest again, which will be tweaked and investigated with periodograms. These intervals identified are from the beginning of the data set to 1950, from 1950 until just before 1970, and from just before 1970 until the end of the time series. Our first plot is a periodogram of the whole time series. In this plot, we can see that the patterns across the whole time series aren't as clear as in the London data series. However, there appear to be strong 1 year and 2 year cycles despite some other less significant cycles present. We then investigate the intervals of interest which we identified through visual patterns in the moving average plot. First, we looked at the time interval from the beginning of the time series until 1 January 1950. The periodogram for this time revealed that the the strongest cycle in this time was around 1 year. Next, we found that the strongest cycle in the time period from 1 January 1950 until 1 January 1968 was two years. However, there was also a weak 1 year cycle present. Finally, in the time period from 1 January 1968 until the end of the data set, we find that the most power is around the 130 week mark. However, there is also a significant amount of power aroudn the 50 week mark.}}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{#Perform analysis on the lpl time series}
+\hlstd{lpldata}\hlkwb{<-}\hlkwd{read.ymdc}\hlstd{(}\hlstr{'meas_uk__lpl_1944-94_wk.csv'}\hlstd{)} \hlcom{#load liverpool time series}
+\hlkwd{plot}\hlstd{(lpldata}\hlopt{$}\hlstd{date, lpldata}\hlopt{$}\hlstd{cases)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-5-1} 
+\begin{kframe}\begin{alltt}
+\hlkwd{time.plot}\hlstd{(lpldata,}\hlnum{10}\hlstd{,}\hlkwc{col}\hlstd{=}\hlstr{'red'}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-5-2} 
+\begin{kframe}\begin{alltt}
+\hlkwd{periodogram}\hlstd{(lpldata,} \hlkwc{main}\hlstd{=}\hlstr{"Entire timeseries"}\hlstd{,}\hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{300}\hlstd{),}\hlkwc{xlab}\hlstd{=}\hlstr{"Weeks"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Power"}\hlstd{)} \hlcom{#periodogram of full time series}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-5-3} 
+\begin{kframe}\begin{alltt}
+\hlkwd{periodogram}\hlstd{(londondata,}\hlkwc{end.date}\hlstd{=}\hlkwd{as.Date}\hlstd{(}\hlstr{'1950-01-01'}\hlstd{),}\hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{250}\hlstd{),} \hlkwc{main}\hlstd{=}\hlstr{"Beginning timeseries to 1950-01-01"}\hlstd{,}\hlkwc{xlab}\hlstd{=}\hlstr{"Weeks"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Power"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-5-4} 
+\begin{kframe}\begin{alltt}
+\hlkwd{periodogram}\hlstd{(londondata,}\hlkwd{as.Date}\hlstd{(}\hlstr{'1950-01-01'}\hlstd{),}\hlkwd{as.Date}\hlstd{(}\hlstr{'1968-01-01'}\hlstd{),}\hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{250}\hlstd{),} \hlkwc{main}\hlstd{=}\hlstr{"1950-01-01 to 1968-01-01"}\hlstd{,}\hlkwc{xlab}\hlstd{=}\hlstr{"Weeks"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Power"}\hlstd{)} \hlcom{#strongest 2 year cycle. slightly less strong 1 year cycle}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-5-5} 
+\begin{kframe}\begin{alltt}
+\hlkwd{periodogram}\hlstd{(londondata,}\hlkwd{as.Date}\hlstd{(}\hlstr{'1968-01-01'}\hlstd{),}\hlkwd{as.Date}\hlstd{(}\hlstr{'1990-01-01'}\hlstd{),}\hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{250}\hlstd{),} \hlkwc{main}\hlstd{=}\hlstr{"1968-01-01 to End of Time Series"}\hlstd{,}\hlkwc{xlab}\hlstd{=}\hlstr{"Weeks"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Power"}\hlstd{)}  \hlcom{#strong 3 year cycle. less strong 1 year cycle}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-5-6} 
+
+\end{knitrout}
 
 \end{enumerate}
 
@@ -133,11 +237,104 @@
 
 \item \SEa
 
-\BeautifulSolution
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{library}\hlstd{(tidyverse)}
+\hlstd{SI.Gillespie} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{beta} \hlstd{=} \hlnum{1}\hlstd{,} \hlkwc{N} \hlstd{=} \hlnum{100}\hlstd{,} \hlkwc{I0} \hlstd{=} \hlnum{1}\hlstd{,} \hlkwc{tmax}\hlstd{=}\hlnum{10}\hlstd{) \{}
+
+  \hlcom{# initialize variables}
+  \hlstd{t} \hlkwb{<-} \hlnum{0}
+  \hlstd{I} \hlkwb{<-} \hlstd{I0}
+  \hlstd{S} \hlkwb{<-} \hlstd{N} \hlopt{-} \hlstd{I0}
+  \hlstd{n} \hlkwb{<-} \hlnum{1}
+
+  \hlkwa{while}\hlstd{(t[n]} \hlopt{<} \hlstd{tmax} \hlopt{&} \hlstd{I[n]} \hlopt{<} \hlstd{N) \{}
+    \hlcom{# calculate event rate}
+    \hlstd{a} \hlkwb{<-} \hlstd{beta}\hlopt{*}\hlstd{S[n]}\hlopt{*}\hlstd{I[n]}
+
+    \hlcom{# generate uniform random variable}
+    \hlstd{u} \hlkwb{<-} \hlkwd{runif}\hlstd{(}\hlnum{1}\hlstd{)}
+
+    \hlcom{# time until next event}
+    \hlstd{dt} \hlkwb{<-} \hlstd{(}\hlnum{1}\hlopt{/}\hlstd{a)}\hlopt{*}\hlkwd{log}\hlstd{(}\hlnum{1}\hlopt{/}\hlstd{(}\hlnum{1}\hlopt{-}\hlstd{u))}
+
+    \hlcom{# record time}
+    \hlstd{t[n} \hlopt{+} \hlnum{1}\hlstd{]} \hlkwb{<-} \hlstd{t[n]} \hlopt{+} \hlstd{dt}
+
+    \hlcom{# update state}
+    \hlstd{S[n}\hlopt{+} \hlnum{1}\hlstd{]} \hlkwb{<-} \hlstd{S[n]} \hlopt{-} \hlnum{1}
+    \hlstd{I[n} \hlopt{+} \hlnum{1}\hlstd{]} \hlkwb{<-} \hlstd{I[n]} \hlopt{+} \hlnum{1}
+
+    \hlcom{# increment counter}
+    \hlstd{n} \hlkwb{<-} \hlstd{n}\hlopt{+}\hlnum{1}
+  \hlstd{\}}
+
+  \hlcom{# return time series}
+  \hlkwd{tibble}\hlstd{(}\hlkwc{time} \hlstd{= t[}\hlnum{1}\hlopt{:}\hlstd{(}\hlkwd{length}\hlstd{(t)} \hlopt{-} \hlnum{1}\hlstd{)],} \hlkwc{infected} \hlstd{= I[}\hlnum{1}\hlopt{:}\hlstd{(}\hlkwd{length}\hlstd{(I)} \hlopt{-} \hlnum{1}\hlstd{)],} \hlkwc{susceptible} \hlstd{= S[}\hlnum{1}\hlopt{:}\hlstd{(}\hlkwd{length}\hlstd{(S)} \hlopt{-} \hlnum{1}\hlstd{)])}
+
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
 
 \item \SEb
 
-\BeautifulSolution
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{library}\hlstd{(deSolve)}
+\hlcom{# Function to describe }
+\hlstd{SI.d} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{t}\hlstd{,} \hlkwc{y}\hlstd{,} \hlkwc{p}\hlstd{) \{}
+  \hlkwd{with}\hlstd{(}\hlkwd{as.list}\hlstd{(}\hlkwd{c}\hlstd{(y, p)), \{}
+    \hlstd{dI} \hlkwb{<-} \hlstd{beta}\hlopt{*}\hlstd{(N}\hlopt{-}\hlstd{I)}\hlopt{*}\hlstd{I}
+
+    \hlkwd{return}\hlstd{(}\hlkwd{list}\hlstd{(}\hlkwd{c}\hlstd{(dI)))}
+  \hlstd{\})}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{set.seed}\hlstd{(}\hlnum{8}\hlstd{)}
+\hlstd{test.sizes} \hlkwb{<-} \hlkwd{tribble}\hlstd{(}
+  \hlopt{~}\hlstd{pop,} \hlopt{~}\hlstd{tmax,}
+  \hlnum{32}\hlstd{,} \hlnum{0.35}\hlstd{,}
+  \hlnum{100}\hlstd{,} \hlnum{0.15}\hlstd{,}
+  \hlnum{1000}\hlstd{,} \hlnum{0.02}\hlstd{,}
+  \hlnum{10000}\hlstd{,} \hlnum{0.0025}
+\hlstd{)}
+
+\hlkwd{par}\hlstd{(}\hlkwc{mfrow} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,} \hlnum{2}\hlstd{))}
+
+\hlstd{initial} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlkwc{I} \hlstd{=} \hlnum{1}\hlstd{)}
+
+
+\hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlnum{4}\hlstd{) \{}
+  \hlstd{size} \hlkwb{<-} \hlstd{test.sizes}\hlopt{$}\hlstd{pop[i]}
+  \hlstd{tmax} \hlkwb{<-} \hlstd{test.sizes}\hlopt{$}\hlstd{tmax[i]}
+
+  \hlstd{timesteps} \hlkwb{<-} \hlkwd{seq}\hlstd{(}\hlnum{0}\hlstd{, tmax,} \hlkwc{length.out} \hlstd{=} \hlnum{300}\hlstd{)}
+
+  \hlstd{params} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlkwc{beta} \hlstd{=} \hlnum{1}\hlstd{,} \hlkwc{N} \hlstd{= size)}
+  \hlstd{sol} \hlkwb{<-} \hlkwd{ode}\hlstd{(initial, timesteps, SI.d, params)}
+  \hlkwd{plot}\hlstd{(}\hlkwd{as.data.frame}\hlstd{(sol),} \hlkwc{type} \hlstd{=} \hlstr{"l"}\hlstd{,} \hlkwc{lwd} \hlstd{=} \hlnum{3}\hlstd{)}
+
+  \hlkwa{for} \hlstd{(j} \hlkwa{in} \hlnum{1}\hlopt{:}\hlnum{30}\hlstd{)\{}
+    \hlkwd{lines}\hlstd{(}\hlkwd{SI.Gillespie}\hlstd{(}\hlkwc{beta} \hlstd{= params[}\hlstr{"beta"}\hlstd{],}
+                       \hlkwc{N} \hlstd{= params[}\hlstr{"N"}\hlstd{],}
+                       \hlkwc{I0} \hlstd{= initial[}\hlstr{"I"}\hlstd{],}
+                       \hlkwc{tmax} \hlstd{= tmax),} \hlkwc{col} \hlstd{= j)}
+  \hlstd{\}}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-8-1} 
+
+\end{knitrout}
 
 \end{enumerate}
 
@@ -149,11 +346,47 @@
 
   \item \Ra
 
-    \BeautifulSolution
+    {\color{blue}{
+Denote the susceptible state by $S$, the incubation state by $E$, and the recovered state by $R$. Furthermore, denote the four infectious stages by $I_1, I_2, I_3$, and $I_4$, respectively, and let the each of the stages represent the four different levels of infectiousness exhibited by infected individuals. For example, the $I_1$ stage corresponds to the prodrom stage, in which infectiousness is rare, while $I_4$ stage represents both the pustules \& scabs stage and the resolving scabs stage, as both of these stages share a low level of infectiousness. Note that all states are repsented by proportions.
 
+Let $\sigma$ represent the per capita rate at which an infected individual develops symptoms and let $\gamma_i$ represent the per capita rate at which an infected individual in stage $i$ progresses to the next stage. In other words, $\gamma_i$ is considered to be the removal rate from stage $I_i$, such that the individual progresses to an infectiousness level exhibited in $I_{i+1}$. Moreover, note that $\gamma_4$ corresponds to the per capita recovery rate. 
+Finally, let $\beta_i$ represent the infectiousness (per contact transmission rate) of an infected individual in stage $i$ and $\mu$ represent the per capita natural birth/death rate (they are assumed to be equal). Then, we can write an ODE model for this system as follows:
+$$
+\begin{aligned}
+\frac{dS}{dt} &= \mu (1-S) - (\beta_1 I_1 + \beta_2 I_2 + \beta_3 I_3 + \beta_4 I_4) S\\
+\frac{dE}{dt} &= (\beta_1 I_1 + \beta_2 I_2 + \beta_3 I_3 + \beta_4 I_4) S - (\sigma + \mu) E \\
+\frac{dI_1}{dt} &= \sigma E - (\gamma_1 + \mu) I_1\\
+\frac{dI_2}{dt} &= \gamma_1 I_1 - (\gamma_2 + \mu) I_1\\
+\frac{dI_3}{dt} &= \gamma_2 I_2 - (\gamma_3 + \mu) I_1\\
+\frac{dI_4}{dt} &= \gamma_3 I_3 - (\gamma_4 + \mu) I_1\\
+\frac{dR}{dt} &= \gamma_1 I_4 - \mu R\\
+\end{aligned}
+$$
+}}
   \item \Rb
 
-    \BeautifulSolution
+{\color{blue}{
+In order for an infected individual to infect a susceptible individual, it must survive the incubation period and become infectious. 
+Then, we can think of $\R_0$ as a sum of the basic reproductive numbers from each stage, such that the final number of secondary cases caused by a typical infective individual is merely equal to the number of infections caused by an infective at each stage. For example, the contribution of infection from the first stage would be equivalent to $\R_0$ of an SEIR model. We denote this value as $\R_{0_1}$:
+$$
+\beta_1 \times \frac{\sigma}{\sigma + \mu} \times \frac{1}{\gamma_1 + \mu}
+$$
+where $\beta_1/(\gamma_1 + \mu)$ represent the average number of infections that occur in stage 1 and $\sigma/(\sigma+\mu)$ is the probability that an infected individual does not die before the incubation period is over.
+In order for infection to occur in stage $i>1$, an infected individual must not die from natural mortality before reaching stage $i$. Then, the contribution of infection during the second stage would be defined as $\R_{0_2}$, such that
+$$
+\beta_2 \times \frac{\sigma}{\sigma + \mu} \times \frac{\gamma_1}{\gamma_1 + \mu} \times \frac{1}{\gamma_2 + \mu}.
+$$
+Note that we now have $\gamma_1/(\gamma_1+\mu)$ to account for probability the of progressing to stage 2 without dying from natural causes while in stage 1.
+Likewise, we can do a similar computation for all other stages. Summing each of our values for $\R_{0_i}$, we ultimately obtain
+$$
+\begin{aligned}
+\R_0 &= \beta_1 \times \frac{\sigma}{\sigma + \mu} \times \frac{1}{\gamma_1 + \mu}\\
+&+ \beta_2 \times \frac{\sigma}{\sigma + \mu} \times \frac{\gamma_1}{\gamma_1 + \mu} \times \frac{1}{\gamma_2 + \mu}\\
+&+ \beta_3 \times \frac{\sigma}{\sigma + \mu} \times \frac{\gamma_1}{\gamma_1 + \mu} \times \frac{\gamma_2}{\gamma_2 + \mu} \times \frac{1}{\gamma_3 + \mu}\\
+&+ \beta_4 \times \frac{\sigma}{\sigma + \mu} \times \frac{\gamma_1}{\gamma_1 + \mu} \times \frac{\gamma_2}{\gamma_2 + \mu} \times \frac{\gamma_3}{\gamma_3 + \mu} \times \frac{1}{\gamma_4 + \mu}.
+\end{aligned}
+$$
+}}
 
   \item \Rc
 
@@ -161,8 +394,28 @@
 
   \item \Rd
 
-    \BeautifulSolution
+{\color{blue} {    
+Note that for unaltered small pox, the time scale of disease is much shorter than average life span of a person. Then, we can approximate $\R_0$ by assuming that $\mu \approx 0$. The expression for $\R_0$ thus becomes
+$$
+\R_0 \approx \frac{\beta_1}{\gamma_1} + \frac{\beta_2}{\gamma_2} + \frac{\beta_3}{\gamma_3} + \frac{\beta_4}{\gamma_4}
+$$
+The alteration causes the early rash stage to be twice as long and so $\gamma_2^{-1}$ changes from 4 days to 8 days.
+It is evident that increasing $\gamma_2^{-1}$ will lead to increase in $\R_0$.
 
+Provided that infectiousness during the early rash stage is extreme, we can assume that at least half of the infection occurs during this stage. In the worst case scenario, all infections occur during the early rash stage. These assumptions are reasonable given that disease-induced death can occur in later stages, and so there would be little contribution to infection.
+Based on these assumptions, we have that
+$$
+2.5 < \frac{\beta_2}{\gamma_{2,\tiny{\textrm{original}}}} < 5.
+$$
+Since altering doubles $\gamma_2^{-1}$, we get
+$$
+5 < \frac{\beta_2}{\gamma_{2,\tiny{\textrm{altered}}}} < 10.
+$$
+This translates to
+$$
+7.5 < \R_{0, \tiny{\textrm{altered}}} <10.
+$$
+}}
   \item \qRe
 
     \BeautifulSolution

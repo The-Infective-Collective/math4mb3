@@ -37,9 +37,56 @@ periodogram<-function(df, start.date=as.Date(df$date[1]),end.date=as.Date(df$dat
     filter(date >= start.date & date<=end.date)
 
 s <- spectrum(df$cases, plot = FALSE)
-plot((s$freq)^(-1), s$spec, type='l')
+plot((s$freq)^(-1), s$spec, type='l', ...)
 }
 @
+
+<<>>=
+#Perform analysis on the lon time series first
+londondata<-read.ymdc('meas_uk__lon_1944-94_wk.csv') #load london time series
+plot(londondata$date, londondata$cases)
+time.plot(londondata,10,col='red')
+
+par(mfrow=c(2,2)) #create multiplot
+
+#periodogram(londondata, main="Entire timeseries",xlab="Weeks", ylab="Power")#periodogram of full time series
+periodogram(londondata,xlim=c(0,200)) #zoom in
+
+periodogram(londondata,end.date=as.Date('1950-01-01'),xlim=c(1,250), main="Beginning timeseries to 1950-01-01",xlab="Weeks", ylab="Power") #strong 1 year cycle
+
+periodogram(londondata,as.Date('1950-01-01'),as.Date('1975-01-01'),xlim=c(1,250), main="1950-01-01 to 1975-01-01",xlab="Weeks", ylab="Power") #strongest 2 year cycle. slightly less strong 1 year cycle
+
+periodogram(londondata,start.date=as.Date('1975-01-01'),xlim=c(1,250), main="1975-01-01 to 1990-01-01",xlab="Weeks", ylab="Power")  #strong 3 year cycle. less strong 1 year cycle
+@
+
+
+
+<<>>=
+#Perform analysis on the lpl time series
+lpldata<-read.ymdc('meas_uk__lpl_1944-94_wk.csv') #load london time series
+#plot(lpldata$date, lpldata$cases)
+#time.plot(lpldata,10,col='red')
+
+periodogram(lpldata, main="Entire timeseries",xlim=c(0,300),xlab="Weeks", ylab="Power") #periodogram of full time series
+periodogram(londondata,end.date=as.Date('1950-01-01'),xlim=c(1,250), main="Beginning timeseries to 1950-01-01",xlab="Weeks", ylab="Power")
+periodogram(londondata,as.Date('1950-01-01'),as.Date('1968-01-01'),xlim=c(1,250), main="1950-01-01 to 1975-01-01",xlab="Weeks", ylab="Power") #strongest 2 year cycle. slightly less strong 1 year cycle
+periodogram(londondata,start.date=as.Date('1968-01-01'),xlim=c(1,250), main="1975-01-01 to 1990-01-01",xlab="Weeks", ylab="Power")  #strong 3 year cycle. less strong 1 year cycle
+
+@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <<>>=
 SI.Gillespie <- function(beta = 1, N = 100, I0 = 1, tmax=10) {

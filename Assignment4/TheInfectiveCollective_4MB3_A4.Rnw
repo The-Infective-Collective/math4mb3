@@ -185,7 +185,6 @@ periodogram(londondata,
 \item \SEa
 
 <<>>=
-library(tidyverse)
 SI.Gillespie <- function(beta = 1, N = 100, I0 = 1, tmax=10) {
   
   # initialize variables
@@ -369,7 +368,7 @@ V = \begin{pmatrix}
 0 & 0 & 0 & - \gamma_3 & \gamma_4 + \mu\\
 \end{pmatrix}
 $$
-Inverting this matrix, we observe:
+Inverting matrix $V$ (by hand; steps not presnted), we observe:
 $$
 V^{-1} = \begin{pmatrix}
 \frac{1}{\sigma + \mu} & 0 & 0 & 0 & 0\\

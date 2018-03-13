@@ -266,7 +266,6 @@
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{library}\hlstd{(tidyverse)}
 \hlstd{SI.Gillespie} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{beta} \hlstd{=} \hlnum{1}\hlstd{,} \hlkwc{N} \hlstd{=} \hlnum{100}\hlstd{,} \hlkwc{I0} \hlstd{=} \hlnum{1}\hlstd{,} \hlkwc{tmax}\hlstd{=}\hlnum{10}\hlstd{) \{}
 
   \hlcom{# initialize variables}
@@ -463,7 +462,7 @@ V = \begin{pmatrix}
 0 & 0 & 0 & - \gamma_3 & \gamma_4 + \mu\\
 \end{pmatrix}
 $$
-Inverting this matrix, we observe:
+Inverting matrix $V$ (by hand; steps not presnted), we observe:
 $$
 V^{-1} = \begin{pmatrix}
 \frac{1}{\sigma + \mu} & 0 & 0 & 0 & 0\\

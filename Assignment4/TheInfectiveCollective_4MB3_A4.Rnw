@@ -225,6 +225,10 @@ for (i in 1:4) {
 }
 @
 
+The Gillespie simulation was run 30 times for each of the 4 population sizes: N = 32 (top left), N = 100 (top right), N = 1000 (bottom left) and N = 10000 (bottom right). Different runs of the simulation are shown in different colors, while the deterministic solution (using the \texttt{deSolve} package) is shown with a thick black line. 
+
+As $N$ increases, we see that the Gillespie simulation becomes smoother, and agrees more closely with the deterministic solution in shape. 
+
 \end{enumerate}
 
 \section{$\R_0$ for smallpox}

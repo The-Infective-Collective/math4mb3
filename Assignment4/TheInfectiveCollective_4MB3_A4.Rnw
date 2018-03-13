@@ -49,8 +49,9 @@
 \item \TSai
 
 {\color{blue}{Below, we create a function which returns a data frame with a date column and an associated data column. This is done by mutating the initial dataframe from the csv file. We string together the year, month, and day that are originally in three separate columns and then make this string part of the Date class.}}
-<<>>=
-library(tidyverse,stringr) #load necessary packages
+<<message=FALSE, warning=FALSE>>=
+library(tidyverse) #load necessary packages
+library(stringr)
 read.ymdc <- function(filename) {
   df<- read.csv(filename, skip=6) #skip 6 because 6 lines 
   #at top of csv file that aren't data
@@ -63,7 +64,7 @@ read.ymdc <- function(filename) {
 
 {\color{blue}{Next, we create a function which produces a moving average time plot. We modify the data frame that the user supplies when calling the function such that each row is an average of the following s rows and the prior s rows (if s is the value that the user specifies to compute the moving average over). We also delete the first s rows and the last s rows. By default, the plot is separate from any previous plots that the user may have created, but you may add the plot to an existing plot by inputting 'TRUE' in the third argument of the function.}}
 <<>>=
-time.plot<- function(df, s, add=FALSE, ...) {
+time.plot <- function(df, s, add=FALSE, ...) {
   df2 <- df
   for (i in (s+1):(nrow(df2)-s)) {
   df2$cases[i]<-mean(df$cases[(i-s):(i+s)])
@@ -83,7 +84,10 @@ time.plot<- function(df, s, add=FALSE, ...) {
 
 {\color{blue}{Finally, we create a function which produces a periodogram on a specific date range of a time series. By default, we have that the begin date is the beginning of the time series and the end date is the end of the time series. However, these can be modified by the user. The fucntion filters the dataframe to only include the date range specified by the user. Then it performs a periodogram on that filtered dataframe using the commands given in the assignment. Similar to the last function, by default, the plot is separate from any previous plots the user may have created, but the plot may be added to an existing plot by specifiying 'TRUE' in the fourth argument of the function.}}
 <<>>=
-periodogram<-function(df, start.date=as.Date(df$date[1]),end.date=as.Date(df$date[nrow(df)]), add=FALSE, ...) {
+periodogram <-function(df, 
+                       start.date=as.Date(df$date[1]),
+                       end.date=as.Date(df$date[nrow(df)]), 
+                       add=FALSE, ...) {
    df <- df %>%
     filter(date >= start.date & date<=end.date)
 
@@ -98,34 +102,75 @@ plot((s$freq)^(-1), s$spec, type='l', ...)
 
 {\color{blue}{First, we perform analysis on the London time series. Our first step is to plot the time series, as well as a plot smoothed by a 10 week moving average. This smoothed data helps us identify areas of the time series that appear to have similar patterns. Namely, we note that the beginning of the time series until around 1950 appears to have consistent patterns. We also note that the data from around 1950 to 1975 and 1975 until the end of the time series appeared to have similar structure. To investigate these claims, we plot periodograms. Our first periodogram looks at the entire time series (we cut it off at 250 weeks as when we plotted the whole 2500 weeks, we stop seeing patterns after around 200 weeks). This first periodogram tells us that across the whole time series, the most power is at around the 100 week mark, and the next most power is located around the 50 week mark. We note that these roughly correlate to 1 and 2 year cycles. Next, to investigate how these cycles may change over the time series, we plot periodograms for the intervals mentioned earlier which we identified through the initial moving average plot. The plot in the upper right corner shows the periodogram for the period from the beginning of the time series until 1 January 1950. We see that in this time period, the most power is located around the 50 week mark. Next, we plot the time interval from 1 January 1950 until 1 January 1975. Here, we see that the most power is located around the 2 year mark, while there is also a significant amount of power located around the 1 year mark. This tells us that in this period, there are mostly 2 year cycles, with a less significant 1 year cycle. Finally, we look at the end of the time series (from 1 January 1975 until the end of the data). In this periodogram, we see that the most power is located around the 140 week mark, with the next most significant power around the 50 week mark. This suggests that in this time period, the most significant cycle is around a three year cycle. However, if we look at the periodogram for the whole time series, we see that that cycle is insignificant overall compared to the 1 year and 2 year cycles. This may be because the three year cycle only appares in the last part of the time series. It also may be because the magnitude of power behind this cycle is much lower than the other cycles in other sections of data.}}
 <<>>=
-londondata<-read.ymdc('meas_uk__lon_1944-94_wk.csv') #load london time series using function from 1a(i)
+#load london time series using function from 1a(i)
+londondata <- read.ymdc('meas_uk__lon_1944-94_wk.csv') 
 plot(londondata$date, londondata$cases, xlab="Weeks", ylab="Incidence")
-time.plot(londondata,10,add= TRUE, col='red') #plot using 10 week moving average using function from 1a(ii)
+#plot using 10 week moving average using function from 1a(ii)
+time.plot(londondata,10,add= TRUE, col='red') 
 
 par(mfrow=c(2,2)) #create multiplot. two columns and two rows
 
-periodogram(londondata,xlim=c(0,250), main="Entire time series", xlab="Weeks", ylab="Power") 
+periodogram(londondata,
+            xlim=c(0,250), 
+            main="Entire time series", 
+            xlab="Weeks", 
+            ylab="Power") 
 
-periodogram(londondata,end.date=as.Date('1950-01-01'),xlim=c(1,250), main="Beginning timeseries to 1950-01-01",xlab="Weeks", ylab="Power") 
+periodogram(londondata,
+            end.date=as.Date('1950-01-01'),
+            xlim=c(1,250),
+            main="Beginning timeseries to 1950-01-01",
+            xlab="Weeks", ylab="Power") 
 
-periodogram(londondata,as.Date('1950-01-01'),as.Date('1975-01-01'),xlim=c(1,250), main="1950-01-01 to 1975-01-01",xlab="Weeks", ylab="Power") 
+periodogram(londondata,
+            as.Date('1950-01-01'),
+            as.Date('1975-01-01'),
+            xlim=c(1,250), 
+            main="1950-01-01 to 1975-01-01",
+            xlab="Weeks", ylab="Power") 
 
-periodogram(londondata,as.Date('1975-01-01'),as.Date('1990-01-01'),xlim=c(1,250), main="1975-01-01 to 1990-01-01",xlab="Weeks", ylab="Power")  
+periodogram(londondata,
+            as.Date('1975-01-01'),
+            as.Date('1990-01-01'),
+            xlim=c(1,250), 
+            main="1975-01-01 to 1990-01-01",
+            xlab="Weeks", ylab="Power")  
 @
 
 {\color{blue}{Next, we perform analysis on the Liverpool time series. Again, our first step is to plot the time series, as well as a plot smoothed by a 10 week moving average. Based on this smoothed data, we identify intervals of interest again, which will be tweaked and investigated with periodograms. These intervals identified are from the beginning of the data set to 1950, from 1950 until just before 1970, and from just before 1970 until the end of the time series. Our first plot is a periodogram of the whole time series. In this plot, we can see that the patterns across the whole time series aren't as clear as in the London data series. However, there appear to be strong 1 year and 2 year cycles despite some other less significant cycles present. We then investigate the intervals of interest which we identified through visual patterns in the moving average plot. First, we looked at the time interval from the beginning of the time series until 1 January 1950. The periodogram for this time revealed that the the strongest cycle in this time was around 1 year. Next, we found that the strongest cycle in the time period from 1 January 1950 until 1 January 1968 was two years. However, there was also a weak 1 year cycle present. Finally, in the time period from 1 January 1968 until the end of the data set, we find that the most power is around the 130 week mark. However, there is also a significant amount of power aroudn the 50 week mark.}}
 <<>>=
 #Perform analysis on the lpl time series
-lpldata<-read.ymdc('meas_uk__lpl_1944-94_wk.csv') #load liverpool time series
+#load liverpool time series
+lpldata<-read.ymdc('meas_uk__lpl_1944-94_wk.csv') 
 plot(lpldata$date, lpldata$cases, xlab="Weeks", ylab="Incidence")
 time.plot(lpldata,10,add=TRUE, col='red')
 
 par(mfrow=c(2,2)) #create multiplot. two columns and two rows
 
-periodogram(lpldata, main="Entire timeseries",xlim=c(0,300),xlab="Weeks", ylab="Power") #periodogram of full time series
-periodogram(londondata,end.date=as.Date('1950-01-01'),xlim=c(1,250), main="Beginning timeseries to 1950-01-01",xlab="Weeks", ylab="Power")
-periodogram(londondata,as.Date('1950-01-01'),as.Date('1968-01-01'),xlim=c(1,250), main="1950-01-01 to 1968-01-01",xlab="Weeks", ylab="Power") #strongest 2 year cycle. slightly less strong 1 year cycle
-periodogram(londondata,as.Date('1968-01-01'),as.Date('1990-01-01'),xlim=c(1,250), main="1968-01-01 to End of Time Series",xlab="Weeks", ylab="Power")  #strong 3 year cycle. less strong 1 year cycle
+#periodogram of full time series
+periodogram(lpldata, 
+            main="Entire timeseries",
+            xlim=c(0,300),xlab="Weeks", ylab="Power") 
+periodogram(londondata,
+            end.date=as.Date('1950-01-01'),
+            xlim=c(1,250), 
+            main="Beginning timeseries to 1950-01-01",
+            xlab="Weeks", ylab="Power")
+
+#strongest 2 year cycle. slightly less strong 1 year cycle
+periodogram(londondata,as.Date('1950-01-01'),
+            as.Date('1968-01-01'),
+            xlim=c(1,250), 
+            main="1950-01-01 to 1968-01-01",
+            xlab="Weeks", ylab="Power") 
+
+#strong 3 year cycle. less strong 1 year cycle
+periodogram(londondata,
+            as.Date('1968-01-01'),
+            as.Date('1990-01-01'),
+            xlim=c(1,250), 
+            main="1968-01-01 to End of Time Series",
+            xlab="Weeks", ylab="Power") 
 
 @
 
@@ -171,7 +216,11 @@ SI.Gillespie <- function(beta = 1, N = 100, I0 = 1, tmax=10) {
   }
   
   # return time series
-  tibble(time = t[1:(length(t) - 1)], infected = I[1:(length(I) - 1)], susceptible = S[1:(length(S) - 1)])
+  tibble(
+      time = t[1:(length(t) - 1)], 
+      infected = I[1:(length(I) - 1)], 
+      susceptible = S[1:(length(S) - 1)]
+  )
   
 }
 @

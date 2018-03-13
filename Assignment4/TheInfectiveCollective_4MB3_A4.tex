@@ -106,21 +106,11 @@
 \end{alltt}
 
 
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning: package 'tidyverse' was built under R version 3.3.3}}
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# -- Attaching packages ------------------------------------------------- tidyverse 1.2.1 --}}
 
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Loading tidyverse: ggplot2\\\#\# Loading tidyverse: tibble\\\#\# Loading tidyverse: tidyr\\\#\# Loading tidyverse: readr\\\#\# Loading tidyverse: purrr\\\#\# Loading tidyverse: dplyr}}
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# v ggplot2 2.2.1\ \ \ \  v purrr\ \  0.2.4\\\#\# v tibble\ \ 1.4.2\ \ \ \  v dplyr\ \  0.7.4\\\#\# v tidyr\ \  0.8.0\ \ \ \  v stringr 1.2.0\\\#\# v readr\ \  1.1.1\ \ \ \  v forcats 0.2.0}}
 
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning: package 'ggplot2' was built under R version 3.3.2}}
-
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning: package 'tidyr' was built under R version 3.3.3}}
-
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning: package 'readr' was built under R version 3.3.3}}
-
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning: package 'purrr' was built under R version 3.3.2}}
-
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Conflicts with tidy packages ----------------------------------------------}}
-
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# filter(): dplyr, stats\\\#\# lag():\ \ \ \ dplyr, stats}}\begin{alltt}
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# -- Conflicts ---------------------------------------------------- tidyverse\_conflicts() --\\\#\# x dplyr::filter() masks stats::filter()\\\#\# x dplyr::lag()\ \ \ \ masks stats::lag()}}\begin{alltt}
 \hlstd{read.ymdc} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{filename}\hlstd{) \{}
   \hlstd{df}\hlkwb{<-} \hlkwd{read.csv}\hlstd{(filename,} \hlkwc{skip}\hlstd{=}\hlnum{6}\hlstd{)} \hlcom{#skip 6 because 6 lines }
   \hlcom{#at top of csv file that aren't data}
@@ -181,42 +171,25 @@
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{londondata}\hlkwb{<-}\hlkwd{read.ymdc}\hlstd{(}\hlstr{'meas_uk__lon_1944-94_wk.csv'}\hlstd{)} \hlcom{#load london time series using function from 1a(i)}
-\end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): could not find function "{}str\_c"{}}}\begin{alltt}
 \hlkwd{plot}\hlstd{(londondata}\hlopt{$}\hlstd{date, londondata}\hlopt{$}\hlstd{cases)}
-\end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in plot(londondata\$date, londondata\$cases): object 'londondata' not found}}\begin{alltt}
 \hlkwd{time.plot}\hlstd{(londondata,}\hlnum{10}\hlstd{,}\hlkwc{add}\hlstd{=} \hlnum{TRUE}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{'red'}\hlstd{)} \hlcom{#plot using 10 week moving average using function from 1a(ii)}
 \end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in time.plot(londondata, 10, add = TRUE, col = "{}red"{}): object 'londondata' not found}}\begin{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-1} 
+\begin{kframe}\begin{alltt}
 \hlkwd{par}\hlstd{(}\hlkwc{mfrow}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,}\hlnum{2}\hlstd{))} \hlcom{#create multiplot. two columns and two rows}
 
 \hlkwd{periodogram}\hlstd{(londondata,}\hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{250}\hlstd{),} \hlkwc{main}\hlstd{=}\hlstr{"Entire time series"}\hlstd{)}
-\end{alltt}
 
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'londondata' not found}}\begin{alltt}
 \hlkwd{periodogram}\hlstd{(londondata,}\hlkwc{end.date}\hlstd{=}\hlkwd{as.Date}\hlstd{(}\hlstr{'1950-01-01'}\hlstd{),}\hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{250}\hlstd{),} \hlkwc{main}\hlstd{=}\hlstr{"Beginning timeseries to 1950-01-01"}\hlstd{,}\hlkwc{xlab}\hlstd{=}\hlstr{"Weeks"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Power"}\hlstd{)}
-\end{alltt}
 
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'londondata' not found}}\begin{alltt}
 \hlkwd{periodogram}\hlstd{(londondata,}\hlkwd{as.Date}\hlstd{(}\hlstr{'1950-01-01'}\hlstd{),}\hlkwd{as.Date}\hlstd{(}\hlstr{'1975-01-01'}\hlstd{),}\hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{250}\hlstd{),} \hlkwc{main}\hlstd{=}\hlstr{"1950-01-01 to 1975-01-01"}\hlstd{,}\hlkwc{xlab}\hlstd{=}\hlstr{"Weeks"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Power"}\hlstd{)}
-\end{alltt}
 
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'londondata' not found}}\begin{alltt}
 \hlkwd{periodogram}\hlstd{(londondata,}\hlkwd{as.Date}\hlstd{(}\hlstr{'1975-01-01'}\hlstd{),}\hlkwd{as.Date}\hlstd{(}\hlstr{'1990-01-01'}\hlstd{),}\hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{250}\hlstd{),} \hlkwc{main}\hlstd{=}\hlstr{"1975-01-01 to 1990-01-01"}\hlstd{,}\hlkwc{xlab}\hlstd{=}\hlstr{"Weeks"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Power"}\hlstd{)}
 \end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-2} 
 
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'londondata' not found}}\end{kframe}
 \end{knitrout}
 
 {\color{blue}{Next, we perform analysis on the Liverpool time series. Again, our first step is to plot the time series, as well as a plot smoothed by a 10 week moving average. Based on this smoothed data, we identify intervals of interest again, which will be tweaked and investigated with periodograms. These intervals identified are from the beginning of the data set to 1950, from 1950 until just before 1970, and from just before 1970 until the end of the time series. Our first plot is a periodogram of the whole time series. In this plot, we can see that the patterns across the whole time series aren't as clear as in the London data series. However, there appear to be strong 1 year and 2 year cycles despite some other less significant cycles present. We then investigate the intervals of interest which we identified through visual patterns in the moving average plot. First, we looked at the time interval from the beginning of the time series until 1 January 1950. The periodogram for this time revealed that the the strongest cycle in this time was around 1 year. Next, we found that the strongest cycle in the time period from 1 January 1950 until 1 January 1968 was two years. However, there was also a weak 1 year cycle present. Finally, in the time period from 1 January 1968 until the end of the data set, we find that the most power is around the 130 week mark. However, there is also a significant amount of power aroudn the 50 week mark.}}
@@ -225,40 +198,36 @@
 \begin{alltt}
 \hlcom{#Perform analysis on the lpl time series}
 \hlstd{lpldata}\hlkwb{<-}\hlkwd{read.ymdc}\hlstd{(}\hlstr{'meas_uk__lpl_1944-94_wk.csv'}\hlstd{)} \hlcom{#load liverpool time series}
-\end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): could not find function "{}str\_c"{}}}\begin{alltt}
 \hlkwd{plot}\hlstd{(lpldata}\hlopt{$}\hlstd{date, lpldata}\hlopt{$}\hlstd{cases)}
 \end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in plot(lpldata\$date, lpldata\$cases): object 'lpldata' not found}}\begin{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-5-1} 
+\begin{kframe}\begin{alltt}
 \hlkwd{time.plot}\hlstd{(lpldata,}\hlnum{10}\hlstd{,}\hlkwc{col}\hlstd{=}\hlstr{'red'}\hlstd{)}
 \end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in time.plot(lpldata, 10, col = "{}red"{}): object 'lpldata' not found}}\begin{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-5-2} 
+\begin{kframe}\begin{alltt}
 \hlkwd{periodogram}\hlstd{(lpldata,} \hlkwc{main}\hlstd{=}\hlstr{"Entire timeseries"}\hlstd{,}\hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{300}\hlstd{),}\hlkwc{xlab}\hlstd{=}\hlstr{"Weeks"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Power"}\hlstd{)} \hlcom{#periodogram of full time series}
 \end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'lpldata' not found}}\begin{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-5-3} 
+\begin{kframe}\begin{alltt}
 \hlkwd{periodogram}\hlstd{(londondata,}\hlkwc{end.date}\hlstd{=}\hlkwd{as.Date}\hlstd{(}\hlstr{'1950-01-01'}\hlstd{),}\hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{250}\hlstd{),} \hlkwc{main}\hlstd{=}\hlstr{"Beginning timeseries to 1950-01-01"}\hlstd{,}\hlkwc{xlab}\hlstd{=}\hlstr{"Weeks"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Power"}\hlstd{)}
 \end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'londondata' not found}}\begin{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-5-4} 
+\begin{kframe}\begin{alltt}
 \hlkwd{periodogram}\hlstd{(londondata,}\hlkwd{as.Date}\hlstd{(}\hlstr{'1950-01-01'}\hlstd{),}\hlkwd{as.Date}\hlstd{(}\hlstr{'1968-01-01'}\hlstd{),}\hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{250}\hlstd{),} \hlkwc{main}\hlstd{=}\hlstr{"1950-01-01 to 1968-01-01"}\hlstd{,}\hlkwc{xlab}\hlstd{=}\hlstr{"Weeks"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Power"}\hlstd{)} \hlcom{#strongest 2 year cycle. slightly less strong 1 year cycle}
 \end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'londondata' not found}}\begin{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-5-5} 
+\begin{kframe}\begin{alltt}
 \hlkwd{periodogram}\hlstd{(londondata,}\hlkwd{as.Date}\hlstd{(}\hlstr{'1968-01-01'}\hlstd{),}\hlkwd{as.Date}\hlstd{(}\hlstr{'1990-01-01'}\hlstd{),}\hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{250}\hlstd{),} \hlkwc{main}\hlstd{=}\hlstr{"1968-01-01 to End of Time Series"}\hlstd{,}\hlkwc{xlab}\hlstd{=}\hlstr{"Weeks"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Power"}\hlstd{)}  \hlcom{#strong 3 year cycle. less strong 1 year cycle}
 \end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-5-6} 
 
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'londondata' not found}}\end{kframe}
 \end{knitrout}
 
 \end{enumerate}
@@ -318,10 +287,6 @@
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{library}\hlstd{(deSolve)}
-\end{alltt}
-
-
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning: package 'deSolve' was built under R version 3.3.3}}\begin{alltt}
 \hlcom{# Function to describe }
 \hlstd{SI.d} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{t}\hlstd{,} \hlkwc{y}\hlstd{,} \hlkwc{p}\hlstd{) \{}
   \hlkwd{with}\hlstd{(}\hlkwd{as.list}\hlstd{(}\hlkwd{c}\hlstd{(y, p)), \{}
@@ -405,17 +370,18 @@ $$
 
 {\color{blue}{
 In order for an infected individual to infect a susceptible individual, it must survive the incubation period and become infectious. 
-Then, we can think of $\R_0$ as a sum of the basic reproductive numbers from each stage, such that the final number of secondary cases caused by a typical infective individual is merely equal to the number of infections caused by an infective at each stage. For example, the contribution of infection from the first stage would be equivalent to $\R_0$ of an SEIR model. We denote this value as $\R_{0_1}$:
+Then, we can think of $\R_0$ as the expected number of secondary cases caused by a typical infected individual, should they survive the incubation period and each of the following stages. This expression for $\R_0$ represents a sum of the basic reproductive numbers from each stage, such that the final number of secondary cases caused by the typical infective individual is merely equal to the number of infections they caused at each stage.
+For example, the contribution of infection from the first stage would be equivalent to $\R_0$ of an SEIR model. We denote this value as $\R_{0,1}$:
 $$
 \beta_1 \times \frac{\sigma}{\sigma + \mu} \times \frac{1}{\gamma_1 + \mu}
 $$
 where $\beta_1/(\gamma_1 + \mu)$ represent the average number of infections that occur in stage 1 and $\sigma/(\sigma+\mu)$ is the probability that an infected individual does not die before the incubation period is over.
-In order for infection to occur in stage $i>1$, an infected individual must not die from natural mortality before reaching stage $i$. Then, the contribution of infection during the second stage would be defined as $\R_{0_2}$, such that
+In order for infection to occur in stage $i>1$, an infected individual must not die from natural mortality before reaching stage $i$. Then, the contribution of infection during the second stage would be defined as $\R_{0,2}$, such that
 $$
 \beta_2 \times \frac{\sigma}{\sigma + \mu} \times \frac{\gamma_1}{\gamma_1 + \mu} \times \frac{1}{\gamma_2 + \mu}.
 $$
 Note that we now have $\gamma_1/(\gamma_1+\mu)$ to account for probability the of progressing to stage 2 without dying from natural causes while in stage 1.
-Likewise, we can do a similar computation for all other stages. Summing each of our values for $\R_{0_i}$, we ultimately obtain
+Likewise, we can do a similar computation for all other stages. Summing each of our values for $\R_{0,i}$, we ultimately obtain
 $$
 \begin{aligned}
 \R_0 &= \beta_1 \times \frac{\sigma}{\sigma + \mu} \times \frac{1}{\gamma_1 + \mu}\\
@@ -456,7 +422,10 @@ $$
 }}
   \item \qRe
 
-    \BeautifulSolution
+\color{blue} {
+We highly recommend that the CDC begin preparing for the smallpox attack immediately. Given that smallpox has been altered to have twice as long of an early rash stage, we expect $\R_0$ to increase by at least a factor of 1.5, and that is in the best-case scenario. In the worst case scenario, the $\R_0$ value corresponding to the altered smallpox will be twice as large as that of the unaltered smallpox, corresponding to the following range: $7.5 < \R_0 < 10$.
+This means that the final size of an epidemic will be almost 100\% if the attack is successful.
+}}
 
 \end{enumerate}
 

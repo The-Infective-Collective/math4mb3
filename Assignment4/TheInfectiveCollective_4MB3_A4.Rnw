@@ -100,11 +100,11 @@ plot((s$freq)^(-1), s$spec, type='l', ...)
 
 \item \TSb
 
-{\color{blue}{First, we perform analysis on the London time series. Our first step is to plot the time series, as well as a plot smoothed by a 10 week moving average. This smoothed data helps us identify areas of the time series that appear to have similar patterns. Namely, we note that the beginning of the time series until around 1950 appears to have consistent patterns. We also note that the data from around 1950 to 1975 and 1975 until 1990 appear to have similar structure. To investigate these claims, we plot periodograms. Our first periodogram looks at the entire time series (we cut it off at 250 weeks as when we plotted the whole 2500 weeks, we stop seeing patterns after around 200 weeks). This first periodogram tells us that across the whole time series, the most power is at around the 100 week mark, and the next most power is located around the 50 week mark. We note that these roughly correlate to 2 and 1 year cycles. Next, to investigate how these cycles may change over the time series, we plot periodograms for the intervals mentioned earlier which we identified through the initial moving average plot. The plot in the upper right corner shows the periodogram for the period from the beginning of the time series until 1 January 1950. We see that in this time period, the most power is located around the 50 week mark. Next, we plot the time interval from 1 January 1950 until 1 January 1975. Here, we see that the most power is located around the 2 year mark, while there is also a significant amount of power located around the 1 year mark. This tells us that in this period, there are mostly 2 year cycles, with a less significant 1 year cycle. Finally, we look at the end of the time series (from 1 January 1975 until 1 January 1990). In this periodogram, we see that the most power is located around the 140 week mark, with the next most significant power around the 50 week mark. This suggests that in this time period, the most significant cycle is around a three year cycle. However, if we look at the periodogram for the whole time series, we see that that cycle is insignificant overall compared to the 1 year and 2 year cycles. This may be because the three year cycle only appares in the last part of the time series. It also may be because the magnitude of power behind this cycle is much lower than the other cycles in other sections of data.}}
+{\color{blue}{First, we perform analysis on the London time series. Our first step is to plot the time series, as well as a plot smoothed by a 10 week moving average. This smoothed data helps us identify areas of the time series that appear to have similar patterns. Namely, we note that the beginning of the time series until around 1950 appears to have consistent patterns. We also note that the data from around 1950 to 1975 and 1975 until 1994 appear to have similar structure. To investigate these claims, we plot periodograms. Our first periodogram looks at the entire time series (we cut it off at 250 weeks as when we plotted the whole 2500 weeks, we stop seeing patterns after around 200 weeks). This first periodogram tells us that across the whole time series, the most power is at around the 100 week mark, and the next most power is located around the 50 week mark. We note that these roughly correlate to 2 and 1 year cycles. Next, to investigate how these cycles may change over the time series, we plot periodograms for the intervals mentioned earlier which we identified through the initial moving average plot. The plot in the upper right corner shows the periodogram for the period from the beginning of the time series until 1 January 1950. We see that in this time period, the most power is located around the 50 week mark. Next, we plot the time interval from 1 January 1950 until 1 January 1975. Here, we see that the most power is located around the 2 year mark, while there is also a significant amount of power located around the 1 year mark. This tells us that in this period, there are mostly 2 year cycles, with a less significant 1 year cycle. Finally, we look at the end of the time series (from 1 January 1975 until 31 December 1994). In this periodogram, we see that the most power is located around the 140 week mark, with the next most significant power around the 50 week mark. This suggests that in this time period, the most significant cycle is around a three year cycle. However, if we look at the periodogram for the whole time series, we see that that cycle is insignificant overall compared to the 1 year and 2 year cycles. This may be because the three year cycle only appares in the last part of the time series. It also may be because the magnitude of power behind this cycle is much lower than the other cycles in other sections of data.}}
 <<>>=
 #load london time series using function from 1a(i)
 londondata <- read.ymdc('meas_uk__lon_1944-94_wk.csv') 
-plot(londondata$date, londondata$cases, xlab="Weeks", ylab="Incidence")
+plot(londondata$date, londondata$cases, xlab="Weeks", ylab="Incidence", main ="10 Week Moving Average Plot of Liverpool Data")
 #plot using 10 week moving average using function from 1a(ii)
 time.plot(londondata,10,add= TRUE, col='red') 
 
@@ -119,7 +119,7 @@ periodogram(londondata,
 periodogram(londondata,
             end.date=as.Date('1950-01-01'),
             xlim=c(1,250),
-            main="Beginning timeseries to 1950-01-01",
+            main="1944-01-07 to 1950-01-01",
             xlab="Weeks", ylab="Power") 
 
 periodogram(londondata,
@@ -131,9 +131,9 @@ periodogram(londondata,
 
 periodogram(londondata,
             as.Date('1975-01-01'),
-            as.Date('1990-01-01'),
+            as.Date('1994-12-31'),
             xlim=c(1,250), 
-            main="1975-01-01 to 1990-01-01",
+            main="1975-01-01 to 1994-12-31",
             xlab="Weeks", ylab="Power")  
 @
 
@@ -142,7 +142,7 @@ periodogram(londondata,
 #Perform analysis on the lpl time series
 #load liverpool time series
 lpldata<-read.ymdc('meas_uk__lpl_1944-94_wk.csv') 
-plot(lpldata$date, lpldata$cases, xlab="Weeks", ylab="Incidence")
+plot(lpldata$date, lpldata$cases, xlab="Weeks", ylab="Incidence", main="10 Week Moving Average Plot of Liverpool Data")
 time.plot(lpldata,10,add=TRUE, col='red')
 
 par(mfrow=c(2,2)) #create multiplot. two columns and two rows
@@ -154,7 +154,7 @@ periodogram(lpldata,
 periodogram(londondata,
             end.date=as.Date('1950-01-01'),
             xlim=c(1,250), 
-            main="Beginning timeseries to 1950-01-01",
+            main="1944-01-07 to 1950-01-01",
             xlab="Weeks", ylab="Power")
 
 #strongest 2 year cycle. slightly less strong 1 year cycle
@@ -167,7 +167,7 @@ periodogram(londondata,as.Date('1950-01-01'),
 #strong 3 year cycle. less strong 1 year cycle
 periodogram(londondata,
             as.Date('1968-01-01'),
-            as.Date('1990-01-01'),
+            as.Date('1994-12-31'),
             xlim=c(1,250), 
             main="1968-01-01 to 1994-12-31",
             xlab="Weeks", ylab="Power") 
@@ -264,7 +264,7 @@ for (i in 1:4) {
   
   params <- c(beta = 1, N = size)
   sol <- ode(initial, timesteps, SI.d, params)
-  plot(as.data.frame(sol), type = "l", lwd = 3)
+  plot(as.data.frame(sol), type = "l", lwd = 3, main= str_c("Solution of SI Model for N= ", size))
   
   for (j in 1:30){
     lines(SI.Gillespie(beta = params["beta"], 

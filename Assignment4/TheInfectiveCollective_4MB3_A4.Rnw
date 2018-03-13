@@ -213,19 +213,15 @@ for (i in 1:4) {
   timesteps <- seq(0, tmax, length.out = 300)
   
   params <- c(beta = 1, N = size)
-
-  plot(SI.Gillespie(beta = params["beta"], 
-                       N = params["N"], 
-                       I0 = initial["I"], 
-                       tmax = tmax), col = 1)
+  sol <- ode(initial, timesteps, SI.d, params)
+  plot(as.data.frame(sol), type = "l", lwd = 3)
   
-  for (j in 2:30){
+  for (j in 1:30){
     lines(SI.Gillespie(beta = params["beta"], 
                        N = params["N"], 
                        I0 = initial["I"], 
                        tmax = tmax), col = j)
   }
-  sol <- ode(initial, timesteps, SI.d, params)
   lines(as.data.frame(sol), type = "l", lwd = 3)
 }
 @

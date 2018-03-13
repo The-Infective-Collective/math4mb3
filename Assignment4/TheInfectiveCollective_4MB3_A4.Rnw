@@ -256,17 +256,18 @@ $$
 
 {\color{blue}{
 In order for an infected individual to infect a susceptible individual, it must survive the incubation period and become infectious. 
-Then, we can think of $\R_0$ as a sum of the basic reproductive numbers from each stage, such that the final number of secondary cases caused by a typical infective individual is merely equal to the number of infections caused by an infective at each stage. For example, the contribution of infection from the first stage would be equivalent to $\R_0$ of an SEIR model. We denote this value as $\R_{0_1}$:
+Then, we can think of $\R_0$ as the expected number of secondary cases caused by a typical infected individual, should they survive the incubation period and each of the following stages. This expression for $\R_0$ represents a sum of the basic reproductive numbers from each stage, such that the final number of secondary cases caused by the typical infective individual is merely equal to the number of infections they caused at each stage.
+For example, the contribution of infection from the first stage would be equivalent to $\R_0$ of an SEIR model. We denote this value as $\R_{0,1}$:
 $$
 \beta_1 \times \frac{\sigma}{\sigma + \mu} \times \frac{1}{\gamma_1 + \mu}
 $$
 where $\beta_1/(\gamma_1 + \mu)$ represent the average number of infections that occur in stage 1 and $\sigma/(\sigma+\mu)$ is the probability that an infected individual does not die before the incubation period is over.
-In order for infection to occur in stage $i>1$, an infected individual must not die from natural mortality before reaching stage $i$. Then, the contribution of infection during the second stage would be defined as $\R_{0_2}$, such that
+In order for infection to occur in stage $i>1$, an infected individual must not die from natural mortality before reaching stage $i$. Then, the contribution of infection during the second stage would be defined as $\R_{0,2}$, such that
 $$
 \beta_2 \times \frac{\sigma}{\sigma + \mu} \times \frac{\gamma_1}{\gamma_1 + \mu} \times \frac{1}{\gamma_2 + \mu}.
 $$
 Note that we now have $\gamma_1/(\gamma_1+\mu)$ to account for probability the of progressing to stage 2 without dying from natural causes while in stage 1.
-Likewise, we can do a similar computation for all other stages. Summing each of our values for $\R_{0_i}$, we ultimately obtain
+Likewise, we can do a similar computation for all other stages. Summing each of our values for $\R_{0,i}$, we ultimately obtain
 $$
 \begin{aligned}
 \R_0 &= \beta_1 \times \frac{\sigma}{\sigma + \mu} \times \frac{1}{\gamma_1 + \mu}\\

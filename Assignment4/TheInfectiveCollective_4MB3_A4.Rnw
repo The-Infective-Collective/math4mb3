@@ -308,7 +308,10 @@ $$
 }}
   \item \qRe
 
-    \BeautifulSolution
+\color{blue} {
+We highly recommend that the CDC begin preparing for the smallpox attack immediately. Given that smallpox has been altered to have twice as long of an early rash stage, we expect $\R_0$ to increase by at least a factor of 1.5, and that is in the best-case scenario. In the worst case scenario, the $\R_0$ value corresponding to the altered smallpox will be twice as large as that of the unaltered smallpox, corresponding to the following range: $7.5 < \R_0 < 10$.
+This means that the final size of an epidemic will be almost 100\% if the attack is successful.
+}}
 
 \end{enumerate}
 

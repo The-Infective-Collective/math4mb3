@@ -106,11 +106,11 @@
 \end{alltt}
 
 
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# -- Attaching packages ------------------------------------------------- tidyverse 1.2.1 --}}
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# -- Attaching packages ---------------------------------------------------------------- tidyverse 1.2.1 --}}
 
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# v ggplot2 2.2.1\ \ \ \  v purrr\ \  0.2.4\\\#\# v tibble\ \ 1.4.2\ \ \ \  v dplyr\ \  0.7.4\\\#\# v tidyr\ \  0.8.0\ \ \ \  v stringr 1.2.0\\\#\# v readr\ \  1.1.1\ \ \ \  v forcats 0.2.0}}
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# v ggplot2 2.2.1\ \ \ \  v purrr\ \  0.2.4\\\#\# v tibble\ \ 1.4.2\ \ \ \  v dplyr\ \  0.7.4\\\#\# v tidyr\ \  0.8.0\ \ \ \  v stringr 1.3.0\\\#\# v readr\ \  1.1.1\ \ \ \  v forcats 0.2.0}}
 
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# -- Conflicts ---------------------------------------------------- tidyverse\_conflicts() --\\\#\# x dplyr::filter() masks stats::filter()\\\#\# x dplyr::lag()\ \ \ \ masks stats::lag()}}\begin{alltt}
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# -- Conflicts ------------------------------------------------------------------- tidyverse\_conflicts() --\\\#\# x dplyr::filter() masks stats::filter()\\\#\# x dplyr::lag()\ \ \ \ masks stats::lag()}}\begin{alltt}
 \hlstd{read.ymdc} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{filename}\hlstd{) \{}
   \hlstd{df}\hlkwb{<-} \hlkwd{read.csv}\hlstd{(filename,} \hlkwc{skip}\hlstd{=}\hlnum{6}\hlstd{)} \hlcom{#skip 6 because 6 lines }
   \hlcom{#at top of csv file that aren't data}
@@ -166,12 +166,12 @@
 
 \item \TSb
 
-{\color{blue}{First, we perform analysis on the London time series. Our first step is to plot the time series, as well as a plot smoothed by a 10 week moving average. This smoothed data helps us identify areas of the time series that appear to have similar patterns. Namely, we note that the beginning of the time series until around 1950 appears to have consistent patterns. We also note that the data from around 1950 to 1975 and 1975 until the end of the time series appeared to have similar structure. To investigate these claims, we plot periodograms. Our first periodogram looks at the entire time series (we cut it off at 250 weeks as when we plotted the whole 2500 weeks, we stop seeing patterns after around 200 weeks). This first periodogram tells us that across the whole time series, the most power is at around the 100 week mark, and the next most power is located around the 50 week mark. We note that these roughly correlate to 1 and 2 year cycles. Next, to investigate how these cycles may change over the time series, we plot periodograms for the intervals mentioned earlier which we identified through the initial moving average plot. The plot in the upper right corner shows the periodogram for the period from the beginning of the time series until 1 January 1950. We see that in this time period, the most power is located around the 50 week mark. Next, we plot the time interval from 1 January 1950 until 1 January 1975. Here, we see that the most power is located around the 2 year mark, while there is also a significant amount of power located around the 1 year mark. This tells us that in this period, there are mostly 2 year cycles, with a less significant 1 year cycle. Finally, we look at the end of the time series (from 1 January 1975 until the end of the data). In this periodogram, we see that the most power is located around the 140 week mark, with the next most significant power around the 50 week mark. This suggests that in this time period, the most significant cycle is around a three year cycle. Hwever, if we look at the periodogram for the whole time series, we see that that cycle is insignificant overall compared to the 1 year and 2 year cycles. This may be because the three year cycle only appares in the last part of the time series. It also may be because the magnitude of power behind this cycle is much lower than the other cycles in other sections of data.}}
+{\color{blue}{First, we perform analysis on the London time series. Our first step is to plot the time series, as well as a plot smoothed by a 10 week moving average. This smoothed data helps us identify areas of the time series that appear to have similar patterns. Namely, we note that the beginning of the time series until around 1950 appears to have consistent patterns. We also note that the data from around 1950 to 1975 and 1975 until the end of the time series appeared to have similar structure. To investigate these claims, we plot periodograms. Our first periodogram looks at the entire time series (we cut it off at 250 weeks as when we plotted the whole 2500 weeks, we stop seeing patterns after around 200 weeks). This first periodogram tells us that across the whole time series, the most power is at around the 100 week mark, and the next most power is located around the 50 week mark. We note that these roughly correlate to 1 and 2 year cycles. Next, to investigate how these cycles may change over the time series, we plot periodograms for the intervals mentioned earlier which we identified through the initial moving average plot. The plot in the upper right corner shows the periodogram for the period from the beginning of the time series until 1 January 1950. We see that in this time period, the most power is located around the 50 week mark. Next, we plot the time interval from 1 January 1950 until 1 January 1975. Here, we see that the most power is located around the 2 year mark, while there is also a significant amount of power located around the 1 year mark. This tells us that in this period, there are mostly 2 year cycles, with a less significant 1 year cycle. Finally, we look at the end of the time series (from 1 January 1975 until the end of the data). In this periodogram, we see that the most power is located around the 140 week mark, with the next most significant power around the 50 week mark. This suggests that in this time period, the most significant cycle is around a three year cycle. However, if we look at the periodogram for the whole time series, we see that that cycle is insignificant overall compared to the 1 year and 2 year cycles. This may be because the three year cycle only appares in the last part of the time series. It also may be because the magnitude of power behind this cycle is much lower than the other cycles in other sections of data.}}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{londondata}\hlkwb{<-}\hlkwd{read.ymdc}\hlstd{(}\hlstr{'meas_uk__lon_1944-94_wk.csv'}\hlstd{)} \hlcom{#load london time series using function from 1a(i)}
-\hlkwd{plot}\hlstd{(londondata}\hlopt{$}\hlstd{date, londondata}\hlopt{$}\hlstd{cases)}
+\hlkwd{plot}\hlstd{(londondata}\hlopt{$}\hlstd{date, londondata}\hlopt{$}\hlstd{cases,} \hlkwc{xlab}\hlstd{=}\hlstr{"Weeks"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Incidence"}\hlstd{)}
 \hlkwd{time.plot}\hlstd{(londondata,}\hlnum{10}\hlstd{,}\hlkwc{add}\hlstd{=} \hlnum{TRUE}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{'red'}\hlstd{)} \hlcom{#plot using 10 week moving average using function from 1a(ii)}
 \end{alltt}
 \end{kframe}
@@ -179,7 +179,7 @@
 \begin{kframe}\begin{alltt}
 \hlkwd{par}\hlstd{(}\hlkwc{mfrow}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,}\hlnum{2}\hlstd{))} \hlcom{#create multiplot. two columns and two rows}
 
-\hlkwd{periodogram}\hlstd{(londondata,}\hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{250}\hlstd{),} \hlkwc{main}\hlstd{=}\hlstr{"Entire time series"}\hlstd{)}
+\hlkwd{periodogram}\hlstd{(londondata,}\hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{250}\hlstd{),} \hlkwc{main}\hlstd{=}\hlstr{"Entire time series"}\hlstd{,} \hlkwc{xlab}\hlstd{=}\hlstr{"Weeks"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Power"}\hlstd{)}
 
 \hlkwd{periodogram}\hlstd{(londondata,}\hlkwc{end.date}\hlstd{=}\hlkwd{as.Date}\hlstd{(}\hlstr{'1950-01-01'}\hlstd{),}\hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{250}\hlstd{),} \hlkwc{main}\hlstd{=}\hlstr{"Beginning timeseries to 1950-01-01"}\hlstd{,}\hlkwc{xlab}\hlstd{=}\hlstr{"Weeks"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Power"}\hlstd{)}
 
@@ -198,35 +198,21 @@
 \begin{alltt}
 \hlcom{#Perform analysis on the lpl time series}
 \hlstd{lpldata}\hlkwb{<-}\hlkwd{read.ymdc}\hlstd{(}\hlstr{'meas_uk__lpl_1944-94_wk.csv'}\hlstd{)} \hlcom{#load liverpool time series}
-\hlkwd{plot}\hlstd{(lpldata}\hlopt{$}\hlstd{date, lpldata}\hlopt{$}\hlstd{cases)}
+\hlkwd{plot}\hlstd{(lpldata}\hlopt{$}\hlstd{date, lpldata}\hlopt{$}\hlstd{cases,} \hlkwc{xlab}\hlstd{=}\hlstr{"Weeks"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Incidence"}\hlstd{)}
+\hlkwd{time.plot}\hlstd{(lpldata,}\hlnum{10}\hlstd{,}\hlkwc{add}\hlstd{=}\hlnum{TRUE}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{'red'}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \includegraphics[width=\maxwidth]{figure/unnamed-chunk-5-1} 
 \begin{kframe}\begin{alltt}
-\hlkwd{time.plot}\hlstd{(lpldata,}\hlnum{10}\hlstd{,}\hlkwc{col}\hlstd{=}\hlstr{'red'}\hlstd{)}
-\end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-5-2} 
-\begin{kframe}\begin{alltt}
+\hlkwd{par}\hlstd{(}\hlkwc{mfrow}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,}\hlnum{2}\hlstd{))} \hlcom{#create multiplot. two columns and two rows}
+
 \hlkwd{periodogram}\hlstd{(lpldata,} \hlkwc{main}\hlstd{=}\hlstr{"Entire timeseries"}\hlstd{,}\hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{300}\hlstd{),}\hlkwc{xlab}\hlstd{=}\hlstr{"Weeks"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Power"}\hlstd{)} \hlcom{#periodogram of full time series}
-\end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-5-3} 
-\begin{kframe}\begin{alltt}
 \hlkwd{periodogram}\hlstd{(londondata,}\hlkwc{end.date}\hlstd{=}\hlkwd{as.Date}\hlstd{(}\hlstr{'1950-01-01'}\hlstd{),}\hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{250}\hlstd{),} \hlkwc{main}\hlstd{=}\hlstr{"Beginning timeseries to 1950-01-01"}\hlstd{,}\hlkwc{xlab}\hlstd{=}\hlstr{"Weeks"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Power"}\hlstd{)}
-\end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-5-4} 
-\begin{kframe}\begin{alltt}
 \hlkwd{periodogram}\hlstd{(londondata,}\hlkwd{as.Date}\hlstd{(}\hlstr{'1950-01-01'}\hlstd{),}\hlkwd{as.Date}\hlstd{(}\hlstr{'1968-01-01'}\hlstd{),}\hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{250}\hlstd{),} \hlkwc{main}\hlstd{=}\hlstr{"1950-01-01 to 1968-01-01"}\hlstd{,}\hlkwc{xlab}\hlstd{=}\hlstr{"Weeks"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Power"}\hlstd{)} \hlcom{#strongest 2 year cycle. slightly less strong 1 year cycle}
-\end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-5-5} 
-\begin{kframe}\begin{alltt}
 \hlkwd{periodogram}\hlstd{(londondata,}\hlkwd{as.Date}\hlstd{(}\hlstr{'1968-01-01'}\hlstd{),}\hlkwd{as.Date}\hlstd{(}\hlstr{'1990-01-01'}\hlstd{),}\hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{250}\hlstd{),} \hlkwc{main}\hlstd{=}\hlstr{"1968-01-01 to End of Time Series"}\hlstd{,}\hlkwc{xlab}\hlstd{=}\hlstr{"Weeks"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Power"}\hlstd{)}  \hlcom{#strong 3 year cycle. less strong 1 year cycle}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-5-6} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-5-2} 
 
 \end{knitrout}
 
@@ -332,12 +318,17 @@
                        \hlkwc{I0} \hlstd{= initial[}\hlstr{"I"}\hlstd{],}
                        \hlkwc{tmax} \hlstd{= tmax),} \hlkwc{col} \hlstd{= j)}
   \hlstd{\}}
+  \hlkwd{lines}\hlstd{(}\hlkwd{as.data.frame}\hlstd{(sol),} \hlkwc{type} \hlstd{=} \hlstr{"l"}\hlstd{,} \hlkwc{lwd} \hlstd{=} \hlnum{3}\hlstd{)}
 \hlstd{\}}
 \end{alltt}
 \end{kframe}
 \includegraphics[width=\maxwidth]{figure/unnamed-chunk-8-1} 
 
 \end{knitrout}
+
+The Gillespie simulation was run 30 times for each of the 4 population sizes: N = 32 (top left), N = 100 (top right), N = 1000 (bottom left) and N = 10000 (bottom right). Different runs of the simulation are shown in different colors, while the deterministic solution (using the \texttt{deSolve} package) is shown with a thick black line. 
+
+As $N$ increases, we see that the Gillespie simulation becomes smoother, and agrees more closely with the deterministic solution in shape. 
 
 \end{enumerate}
 
@@ -393,8 +384,62 @@ $$
 }}
 
   \item \Rc
-
-    \BeautifulSolution
+{\color{blue} {
+For this particular system, we have
+$$
+\mathcal{F} = \begin{pmatrix}
+(\beta_1 I_1 + \beta_2 I_2 + \beta_3 I_3 + \beta_4 I_4) S\\
+0\\
+0\\
+0\\
+0
+\end{pmatrix}, \mathcal{V} = \begin{pmatrix}
+(\sigma + \mu) E \\
+- \sigma E + (\gamma_1 + \mu) I_1\\
+- \gamma_1 I_1 + (\gamma_2 + \mu) I_1\\
+- \gamma_2 I_2 + (\gamma_3 + \mu) I_1\\
+- \gamma_3 I_3 + (\gamma_4 + \mu) I_1\\
+\end{pmatrix}
+$$
+Linearizing at the disease free equilibrium, we have
+$$
+F = \begin{pmatrix}
+0 & \beta_1 & \beta_2 & \beta_3 & \beta_4\\
+0 & 0 & 0 & 0 & 0\\
+0 & 0 & 0 & 0 & 0\\
+0 & 0 & 0 & 0 & 0\\
+0 & 0 & 0 & 0 & 0\\
+\end{pmatrix},
+V = \begin{pmatrix}
+(\sigma + \mu) & 0 & 0 & 0 & 0\\
+- \sigma & \gamma_1 + \mu & 0 & 0 & 0\\
+0 & - \gamma_1 & \gamma_2 + \mu & 0 & 0\\
+0 & 0 & - \gamma_2 & \gamma_3 + \mu & 0\\
+0 & 0 & 0 & - \gamma_3 & \gamma_4 + \mu\\
+\end{pmatrix}
+$$
+Inverting this matrix, we observe:
+$$
+V^{-1} = \begin{pmatrix}
+\frac{1}{\sigma + \mu} & 0 & 0 & 0 & 0\\
+\frac{\sigma}{(\sigma + \mu)(\gamma_1 + \mu)} & \frac{1}{\gamma_1 + \mu} & 0 & 0 & 0\\
+\frac{\sigma \gamma_1}{(\sigma + \mu)(\gamma_1 + \mu)(\gamma_2 + \mu)} & \frac{\gamma_1}{(\gamma_1 + \mu)(\gamma_2 + \mu)} & \frac{1}{\gamma_2 + \mu} & 0 & 0\\
+\frac{\sigma \gamma_1 \gamma_2}{(\sigma + \mu)(\gamma_1 + \mu)(\gamma_2 + \mu)(\gamma_3 + \mu)} & \frac{\gamma_1 \gamma_2}{(\gamma_1 + \mu)(\gamma_2 + \mu)(\gamma_3 + \mu)} & \frac{\gamma_2}{(\gamma_2 + \mu)(\gamma_3 + \mu)} & \frac{1}{\gamma_3 + \mu} & 0\\
+\frac{\sigma \gamma_1 \gamma_2 \gamma_3}{(\sigma + \mu)(\gamma_1 + \mu)(\gamma_2 + \mu)(\gamma_3 + \mu)(\gamma_4  +\mu)} & \frac{\gamma_1 \gamma_2 \gamma_3}{(\gamma_1 + \mu)(\gamma_2 + \mu)(\gamma_3 + \mu)(\gamma_4  +\mu)} & \frac{\gamma_2 \gamma_3}{(\gamma_2 + \mu)(\gamma_3 + \mu)(\gamma_4  +\mu)} & \frac{\gamma_3}{(\gamma_3 + \mu)(\gamma_4  +\mu)} & \frac{1}{\gamma_4  +\mu}\\
+\end{pmatrix}
+$$
+It is clear that matrix $FV^{-1}$ consists of 0 entries except its first row.
+Hence, its eigenvalues are on its diagonal, four of which are zero. The only non-zero entry on the diagonal is the first column entry of the first row, which is equal to the previously derived $\R_0$ value:
+$$
+\begin{aligned}
+&\beta_1 \times \frac{\sigma}{\sigma + \mu} \times \frac{1}{\gamma_1 + \mu}\\
+&+ \beta_2 \times \frac{\sigma}{\sigma + \mu} \times \frac{\gamma_1}{\gamma_1 + \mu} \times \frac{1}{\gamma_2 + \mu}\\
+&+ \beta_3 \times \frac{\sigma}{\sigma + \mu} \times \frac{\gamma_1}{\gamma_1 + \mu} \times \frac{\gamma_2}{\gamma_2 + \mu} \times \frac{1}{\gamma_3 + \mu}\\
+&+ \beta_4 \times \frac{\sigma}{\sigma + \mu} \times \frac{\gamma_1}{\gamma_1 + \mu} \times \frac{\gamma_2}{\gamma_2 + \mu} \times \frac{\gamma_3}{\gamma_3 + \mu} \times \frac{1}{\gamma_4 + \mu}\\
+\end{aligned}
+$$
+Therefore, the derivation of $\R_0$ using the next generation method is consistent with the derivation of $\R_0$ from a biological argument.
+}}
 
   \item \Rd
 
@@ -422,7 +467,7 @@ $$
 }}
   \item \qRe
 
-\color{blue} {
+{\color{blue} {
 We highly recommend that the CDC begin preparing for the smallpox attack immediately. Given that smallpox has been altered to have twice as long of an early rash stage, we expect $\R_0$ to increase by at least a factor of 1.5, and that is in the best-case scenario. In the worst case scenario, the $\R_0$ value corresponding to the altered smallpox will be twice as large as that of the unaltered smallpox, corresponding to the following range: $7.5 < \R_0 < 10$.
 This means that the final size of an epidemic will be almost 100\% if the attack is successful.
 }}

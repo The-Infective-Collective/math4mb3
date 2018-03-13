@@ -97,6 +97,7 @@
 \begin{enumerate}[(i)]
 
 \item \TSai
+
 {\color{blue}{Below, we create a function which returns a data frame with a date column and an associated data column. This is done by mutating the initial dataframe from the csv file. We string together the year, month, and day that are originally in three separate columns and then make this string part of the Date class.}}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -105,11 +106,21 @@
 \end{alltt}
 
 
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# -- Attaching packages --------------------------------------------------- tidyverse 1.2.1 --}}
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning: package 'tidyverse' was built under R version 3.3.3}}
 
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# v ggplot2 2.2.1\ \ \ \  v purrr\ \  0.2.4\\\#\# v tibble\ \ 1.4.2\ \ \ \  v dplyr\ \  0.7.4\\\#\# v tidyr\ \  0.8.0\ \ \ \  v stringr 1.3.0\\\#\# v readr\ \  1.1.1\ \ \ \  v forcats 0.2.0}}
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Loading tidyverse: ggplot2\\\#\# Loading tidyverse: tibble\\\#\# Loading tidyverse: tidyr\\\#\# Loading tidyverse: readr\\\#\# Loading tidyverse: purrr\\\#\# Loading tidyverse: dplyr}}
 
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# -- Conflicts ------------------------------------------------------ tidyverse\_conflicts() --\\\#\# x dplyr::filter() masks stats::filter()\\\#\# x dplyr::lag()\ \ \ \ masks stats::lag()}}\begin{alltt}
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning: package 'ggplot2' was built under R version 3.3.2}}
+
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning: package 'tidyr' was built under R version 3.3.3}}
+
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning: package 'readr' was built under R version 3.3.3}}
+
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning: package 'purrr' was built under R version 3.3.2}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Conflicts with tidy packages ----------------------------------------------}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# filter(): dplyr, stats\\\#\# lag():\ \ \ \ dplyr, stats}}\begin{alltt}
 \hlstd{read.ymdc} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{filename}\hlstd{) \{}
   \hlstd{df}\hlkwb{<-} \hlkwd{read.csv}\hlstd{(filename,} \hlkwc{skip}\hlstd{=}\hlnum{6}\hlstd{)} \hlcom{#skip 6 because 6 lines }
   \hlcom{#at top of csv file that aren't data}
@@ -121,6 +132,7 @@
 \end{knitrout}
 
 \item \TSaii
+
 {\color{blue}{Next, we create a function which produces a moving average time plot. We modify the data frame that the user supplies when calling the function such that each row is an average of the following s rows and the prior s rows (if s is the value that the user specifies to compute the moving average over). We also delete the first s rows and the last s rows. By default, the plot is separate from any previous plots that the user may have created, but you may add the plot to an existing plot by inputting 'TRUE' in the third argument of the function.}}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -144,6 +156,7 @@
 \end{knitrout}
 
 \item \TSaiii
+
 {\color{blue}{Finally, we create a function which produces a periodogram on a specific date range of a time series. By default, we have that the begin date is the beginning of the time series and the end date is the end of the time series. However, these can be modified by the user. The fucntion filters the dataframe to only include the date range specified by the user. Then it performs a periodogram on that filtered dataframe using the commands given in the assignment. Similar to the last function, by default, the plot is separate from any previous plots the user may have created, but the plot may be added to an existing plot by specifiying 'TRUE' in the fourth argument of the function.}}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -168,25 +181,42 @@
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{londondata}\hlkwb{<-}\hlkwd{read.ymdc}\hlstd{(}\hlstr{'meas_uk__lon_1944-94_wk.csv'}\hlstd{)} \hlcom{#load london time series using function from 1a(i)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): could not find function "{}str\_c"{}}}\begin{alltt}
 \hlkwd{plot}\hlstd{(londondata}\hlopt{$}\hlstd{date, londondata}\hlopt{$}\hlstd{cases)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in plot(londondata\$date, londondata\$cases): object 'londondata' not found}}\begin{alltt}
 \hlkwd{time.plot}\hlstd{(londondata,}\hlnum{10}\hlstd{,}\hlkwc{add}\hlstd{=} \hlnum{TRUE}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{'red'}\hlstd{)} \hlcom{#plot using 10 week moving average using function from 1a(ii)}
 \end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-1} 
-\begin{kframe}\begin{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in time.plot(londondata, 10, add = TRUE, col = "{}red"{}): object 'londondata' not found}}\begin{alltt}
 \hlkwd{par}\hlstd{(}\hlkwc{mfrow}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,}\hlnum{2}\hlstd{))} \hlcom{#create multiplot. two columns and two rows}
 
 \hlkwd{periodogram}\hlstd{(londondata,}\hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{250}\hlstd{),} \hlkwc{main}\hlstd{=}\hlstr{"Entire time series"}\hlstd{)}
+\end{alltt}
 
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'londondata' not found}}\begin{alltt}
 \hlkwd{periodogram}\hlstd{(londondata,}\hlkwc{end.date}\hlstd{=}\hlkwd{as.Date}\hlstd{(}\hlstr{'1950-01-01'}\hlstd{),}\hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{250}\hlstd{),} \hlkwc{main}\hlstd{=}\hlstr{"Beginning timeseries to 1950-01-01"}\hlstd{,}\hlkwc{xlab}\hlstd{=}\hlstr{"Weeks"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Power"}\hlstd{)}
+\end{alltt}
 
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'londondata' not found}}\begin{alltt}
 \hlkwd{periodogram}\hlstd{(londondata,}\hlkwd{as.Date}\hlstd{(}\hlstr{'1950-01-01'}\hlstd{),}\hlkwd{as.Date}\hlstd{(}\hlstr{'1975-01-01'}\hlstd{),}\hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{250}\hlstd{),} \hlkwc{main}\hlstd{=}\hlstr{"1950-01-01 to 1975-01-01"}\hlstd{,}\hlkwc{xlab}\hlstd{=}\hlstr{"Weeks"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Power"}\hlstd{)}
+\end{alltt}
 
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'londondata' not found}}\begin{alltt}
 \hlkwd{periodogram}\hlstd{(londondata,}\hlkwd{as.Date}\hlstd{(}\hlstr{'1975-01-01'}\hlstd{),}\hlkwd{as.Date}\hlstd{(}\hlstr{'1990-01-01'}\hlstd{),}\hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{250}\hlstd{),} \hlkwc{main}\hlstd{=}\hlstr{"1975-01-01 to 1990-01-01"}\hlstd{,}\hlkwc{xlab}\hlstd{=}\hlstr{"Weeks"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Power"}\hlstd{)}
 \end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-2} 
 
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'londondata' not found}}\end{kframe}
 \end{knitrout}
 
 {\color{blue}{Next, we perform analysis on the Liverpool time series. Again, our first step is to plot the time series, as well as a plot smoothed by a 10 week moving average. Based on this smoothed data, we identify intervals of interest again, which will be tweaked and investigated with periodograms. These intervals identified are from the beginning of the data set to 1950, from 1950 until just before 1970, and from just before 1970 until the end of the time series. Our first plot is a periodogram of the whole time series. In this plot, we can see that the patterns across the whole time series aren't as clear as in the London data series. However, there appear to be strong 1 year and 2 year cycles despite some other less significant cycles present. We then investigate the intervals of interest which we identified through visual patterns in the moving average plot. First, we looked at the time interval from the beginning of the time series until 1 January 1950. The periodogram for this time revealed that the the strongest cycle in this time was around 1 year. Next, we found that the strongest cycle in the time period from 1 January 1950 until 1 January 1968 was two years. However, there was also a weak 1 year cycle present. Finally, in the time period from 1 January 1968 until the end of the data set, we find that the most power is around the 130 week mark. However, there is also a significant amount of power aroudn the 50 week mark.}}
@@ -195,36 +225,40 @@
 \begin{alltt}
 \hlcom{#Perform analysis on the lpl time series}
 \hlstd{lpldata}\hlkwb{<-}\hlkwd{read.ymdc}\hlstd{(}\hlstr{'meas_uk__lpl_1944-94_wk.csv'}\hlstd{)} \hlcom{#load liverpool time series}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): could not find function "{}str\_c"{}}}\begin{alltt}
 \hlkwd{plot}\hlstd{(lpldata}\hlopt{$}\hlstd{date, lpldata}\hlopt{$}\hlstd{cases)}
 \end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-5-1} 
-\begin{kframe}\begin{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in plot(lpldata\$date, lpldata\$cases): object 'lpldata' not found}}\begin{alltt}
 \hlkwd{time.plot}\hlstd{(lpldata,}\hlnum{10}\hlstd{,}\hlkwc{col}\hlstd{=}\hlstr{'red'}\hlstd{)}
 \end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-5-2} 
-\begin{kframe}\begin{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in time.plot(lpldata, 10, col = "{}red"{}): object 'lpldata' not found}}\begin{alltt}
 \hlkwd{periodogram}\hlstd{(lpldata,} \hlkwc{main}\hlstd{=}\hlstr{"Entire timeseries"}\hlstd{,}\hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{300}\hlstd{),}\hlkwc{xlab}\hlstd{=}\hlstr{"Weeks"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Power"}\hlstd{)} \hlcom{#periodogram of full time series}
 \end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-5-3} 
-\begin{kframe}\begin{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'lpldata' not found}}\begin{alltt}
 \hlkwd{periodogram}\hlstd{(londondata,}\hlkwc{end.date}\hlstd{=}\hlkwd{as.Date}\hlstd{(}\hlstr{'1950-01-01'}\hlstd{),}\hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{250}\hlstd{),} \hlkwc{main}\hlstd{=}\hlstr{"Beginning timeseries to 1950-01-01"}\hlstd{,}\hlkwc{xlab}\hlstd{=}\hlstr{"Weeks"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Power"}\hlstd{)}
 \end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-5-4} 
-\begin{kframe}\begin{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'londondata' not found}}\begin{alltt}
 \hlkwd{periodogram}\hlstd{(londondata,}\hlkwd{as.Date}\hlstd{(}\hlstr{'1950-01-01'}\hlstd{),}\hlkwd{as.Date}\hlstd{(}\hlstr{'1968-01-01'}\hlstd{),}\hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{250}\hlstd{),} \hlkwc{main}\hlstd{=}\hlstr{"1950-01-01 to 1968-01-01"}\hlstd{,}\hlkwc{xlab}\hlstd{=}\hlstr{"Weeks"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Power"}\hlstd{)} \hlcom{#strongest 2 year cycle. slightly less strong 1 year cycle}
 \end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-5-5} 
-\begin{kframe}\begin{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'londondata' not found}}\begin{alltt}
 \hlkwd{periodogram}\hlstd{(londondata,}\hlkwd{as.Date}\hlstd{(}\hlstr{'1968-01-01'}\hlstd{),}\hlkwd{as.Date}\hlstd{(}\hlstr{'1990-01-01'}\hlstd{),}\hlkwc{xlim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{250}\hlstd{),} \hlkwc{main}\hlstd{=}\hlstr{"1968-01-01 to End of Time Series"}\hlstd{,}\hlkwc{xlab}\hlstd{=}\hlstr{"Weeks"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Power"}\hlstd{)}  \hlcom{#strong 3 year cycle. less strong 1 year cycle}
 \end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-5-6} 
 
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'londondata' not found}}\end{kframe}
 \end{knitrout}
 
 \end{enumerate}
@@ -284,6 +318,10 @@
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{library}\hlstd{(deSolve)}
+\end{alltt}
+
+
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning: package 'deSolve' was built under R version 3.3.3}}\begin{alltt}
 \hlcom{# Function to describe }
 \hlstd{SI.d} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{t}\hlstd{,} \hlkwc{y}\hlstd{,} \hlkwc{p}\hlstd{) \{}
   \hlkwd{with}\hlstd{(}\hlkwd{as.list}\hlstd{(}\hlkwd{c}\hlstd{(y, p)), \{}

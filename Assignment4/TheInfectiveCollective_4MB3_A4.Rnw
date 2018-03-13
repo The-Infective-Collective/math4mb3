@@ -283,8 +283,62 @@ $$
 }}
 
   \item \Rc
-
-    \BeautifulSolution
+{\color{blue} {
+For this particular system, we have
+$$
+\mathcal{F} = \begin{pmatrix}
+(\beta_1 I_1 + \beta_2 I_2 + \beta_3 I_3 + \beta_4 I_4) S\\
+0\\
+0\\
+0\\
+0
+\end{pmatrix}, \mathcal{V} = \begin{pmatrix}
+(\sigma + \mu) E \\
+- \sigma E + (\gamma_1 + \mu) I_1\\
+- \gamma_1 I_1 + (\gamma_2 + \mu) I_1\\
+- \gamma_2 I_2 + (\gamma_3 + \mu) I_1\\
+- \gamma_3 I_3 + (\gamma_4 + \mu) I_1\\
+\end{pmatrix}
+$$
+Linearizing at the disease free equilibrium, we have
+$$
+F = \begin{pmatrix}
+0 & \beta_1 & \beta_2 & \beta_3 & \beta_4\\
+0 & 0 & 0 & 0 & 0\\
+0 & 0 & 0 & 0 & 0\\
+0 & 0 & 0 & 0 & 0\\
+0 & 0 & 0 & 0 & 0\\
+\end{pmatrix},
+V = \begin{pmatrix}
+(\sigma + \mu) & 0 & 0 & 0 & 0\\
+- \sigma & \gamma_1 + \mu & 0 & 0 & 0\\
+0 & - \gamma_1 & \gamma_2 + \mu & 0 & 0\\
+0 & 0 & - \gamma_2 & \gamma_3 + \mu & 0\\
+0 & 0 & 0 & - \gamma_3 & \gamma_4 + \mu\\
+\end{pmatrix}
+$$
+Inverting this matrix, we observe:
+$$
+V^{-1} = \begin{pmatrix}
+\frac{1}{\sigma + \mu} & 0 & 0 & 0 & 0\\
+\frac{\sigma}{(\sigma + \mu)(\gamma_1 + \mu)} & \frac{1}{\gamma_1 + \mu} & 0 & 0 & 0\\
+\frac{\sigma \gamma_1}{(\sigma + \mu)(\gamma_1 + \mu)(\gamma_2 + \mu)} & \frac{\gamma_1}{(\gamma_1 + \mu)(\gamma_2 + \mu)} & \frac{1}{\gamma_2 + \mu} & 0 & 0\\
+\frac{\sigma \gamma_1 \gamma_2}{(\sigma + \mu)(\gamma_1 + \mu)(\gamma_2 + \mu)(\gamma_3 + \mu)} & \frac{\gamma_1 \gamma_2}{(\gamma_1 + \mu)(\gamma_2 + \mu)(\gamma_3 + \mu)} & \frac{\gamma_2}{(\gamma_2 + \mu)(\gamma_3 + \mu)} & \frac{1}{\gamma_3 + \mu} & 0\\
+\frac{\sigma \gamma_1 \gamma_2 \gamma_3}{(\sigma + \mu)(\gamma_1 + \mu)(\gamma_2 + \mu)(\gamma_3 + \mu)(\gamma_4  +\mu)} & \frac{\gamma_1 \gamma_2 \gamma_3}{(\gamma_1 + \mu)(\gamma_2 + \mu)(\gamma_3 + \mu)(\gamma_4  +\mu)} & \frac{\gamma_2 \gamma_3}{(\gamma_2 + \mu)(\gamma_3 + \mu)(\gamma_4  +\mu)} & \frac{\gamma_3}{(\gamma_3 + \mu)(\gamma_4  +\mu)} & \frac{1}{\gamma_4  +\mu}\\
+\end{pmatrix}
+$$
+It is clear that matrix $FV^{-1}$ consists of 0 entries except its first row.
+Hence, its eigenvalues are on its diagonal, four of which are zero. The only non-zero entry on the diagonal is the first column entry of the first row, which is equal to the previously derived $\R_0$ value:
+$$
+\begin{aligned}
+&\beta_1 \times \frac{\sigma}{\sigma + \mu} \times \frac{1}{\gamma_1 + \mu}\\
+&+ \beta_2 \times \frac{\sigma}{\sigma + \mu} \times \frac{\gamma_1}{\gamma_1 + \mu} \times \frac{1}{\gamma_2 + \mu}\\
+&+ \beta_3 \times \frac{\sigma}{\sigma + \mu} \times \frac{\gamma_1}{\gamma_1 + \mu} \times \frac{\gamma_2}{\gamma_2 + \mu} \times \frac{1}{\gamma_3 + \mu}\\
+&+ \beta_4 \times \frac{\sigma}{\sigma + \mu} \times \frac{\gamma_1}{\gamma_1 + \mu} \times \frac{\gamma_2}{\gamma_2 + \mu} \times \frac{\gamma_3}{\gamma_3 + \mu} \times \frac{1}{\gamma_4 + \mu}\\
+\end{aligned}
+$$
+Therefore, the derivation of $\R_0$ using the next generation method is consistent with the derivation of $\R_0$ from a biological argument.
+}}
 
   \item \Rd
 

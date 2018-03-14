@@ -5,4 +5,4 @@
 * Monday April 9: Final deadline
 
 # Useful papers
-* (http://science.sciencemag.org/content/sci/290/5495/1360.full.pdf)[Number 6 from project doc]
+* (Number 6 from project doc)[http://science.sciencemag.org/content/sci/290/5495/1360.full.pdf]

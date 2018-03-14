@@ -168,7 +168,8 @@
 \begin{alltt}
 \hlcom{#load london time series using function from 1a(i)}
 \hlstd{londondata} \hlkwb{<-} \hlkwd{read.ymdc}\hlstd{(}\hlstr{'meas_uk__lon_1944-94_wk.csv'}\hlstd{)}
-\hlkwd{plot}\hlstd{(londondata}\hlopt{$}\hlstd{date, londondata}\hlopt{$}\hlstd{cases,} \hlkwc{xlab}\hlstd{=}\hlstr{"Weeks"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Incidence"}\hlstd{,} \hlkwc{main} \hlstd{=}\hlstr{"10 Week Moving Average Plot of Liverpool Data"}\hlstd{)}
+\hlkwd{plot}\hlstd{(londondata}\hlopt{$}\hlstd{date, londondata}\hlopt{$}\hlstd{cases,} \hlkwc{xlab}\hlstd{=}\hlstr{"Weeks"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Incidence"}\hlstd{,}
+     \hlkwc{main} \hlstd{=}\hlstr{"10 Week Moving Average Plot of Liverpool Data"}\hlstd{)}
 \hlcom{#plot using 10 week moving average using function from 1a(ii)}
 \hlkwd{time.plot}\hlstd{(londondata,}\hlnum{10}\hlstd{,}\hlkwc{add}\hlstd{=} \hlnum{TRUE}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{'red'}\hlstd{)}
 \end{alltt}
@@ -215,7 +216,8 @@
 \hlcom{#Perform analysis on the lpl time series}
 \hlcom{#load liverpool time series}
 \hlstd{lpldata}\hlkwb{<-}\hlkwd{read.ymdc}\hlstd{(}\hlstr{'meas_uk__lpl_1944-94_wk.csv'}\hlstd{)}
-\hlkwd{plot}\hlstd{(lpldata}\hlopt{$}\hlstd{date, lpldata}\hlopt{$}\hlstd{cases,} \hlkwc{xlab}\hlstd{=}\hlstr{"Weeks"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Incidence"}\hlstd{,} \hlkwc{main}\hlstd{=}\hlstr{"10 Week Moving Average Plot of Liverpool Data"}\hlstd{)}
+\hlkwd{plot}\hlstd{(lpldata}\hlopt{$}\hlstd{date, lpldata}\hlopt{$}\hlstd{cases,} \hlkwc{xlab}\hlstd{=}\hlstr{"Weeks"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Incidence"}\hlstd{,}
+     \hlkwc{main}\hlstd{=}\hlstr{"10 Week Moving Average Plot of Liverpool Data"}\hlstd{)}
 \hlkwd{time.plot}\hlstd{(lpldata,}\hlnum{10}\hlstd{,}\hlkwc{add}\hlstd{=}\hlnum{TRUE}\hlstd{,} \hlkwc{col}\hlstd{=}\hlstr{'red'}\hlstd{)}
 \end{alltt}
 \end{kframe}
@@ -350,7 +352,8 @@
 
   \hlstd{params} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlkwc{beta} \hlstd{=} \hlnum{1}\hlstd{,} \hlkwc{N} \hlstd{= size)}
   \hlstd{sol} \hlkwb{<-} \hlkwd{ode}\hlstd{(initial, timesteps, SI.d, params)}
-  \hlkwd{plot}\hlstd{(}\hlkwd{as.data.frame}\hlstd{(sol),} \hlkwc{type} \hlstd{=} \hlstr{"l"}\hlstd{,} \hlkwc{lwd} \hlstd{=} \hlnum{3}\hlstd{,} \hlkwc{main}\hlstd{=} \hlkwd{str_c}\hlstd{(}\hlstr{"Solution of SI Model for N= "}\hlstd{, size))}
+  \hlkwd{plot}\hlstd{(}\hlkwd{as.data.frame}\hlstd{(sol),} \hlkwc{type} \hlstd{=} \hlstr{"l"}\hlstd{,} \hlkwc{lwd} \hlstd{=} \hlnum{3}\hlstd{,}
+       \hlkwc{main}\hlstd{=} \hlkwd{str_c}\hlstd{(}\hlstr{"Solution of SI Model for N= "}\hlstd{, size))}
 
   \hlkwa{for} \hlstd{(j} \hlkwa{in} \hlnum{1}\hlopt{:}\hlnum{30}\hlstd{)\{}
     \hlkwd{lines}\hlstd{(}\hlkwd{SI.Gillespie}\hlstd{(}\hlkwc{beta} \hlstd{= params[}\hlstr{"beta"}\hlstd{],}

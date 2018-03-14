@@ -25,34 +25,32 @@ date.string <- function(year,month,day) {
 
 \rhead{\fancyplain{}{4MB3 Project Notebook \Sexpr{this.year} \hfill Paul McCartney}}
 \title{Math 4MB3 Project Notebook \Sexpr{this.year}}
-\author{Paul McCartney (The Beatles)}
+\author{Michael Chong (The Infective Collective)}
 \date{\today\ @ \thistime}
 
 \begin{document}
 \maketitle
 
-\section*{\Sexpr{date.string(this.year, 3, 15)}}
+\section*{\Sexpr{date.string(this.year, 3, 9)}}
 
-\textbf{Group Meeting} \\
-\emph{Approximate Duration: 1 Hour}
+\textbf{Group Meeting (in class)} \\
+\emph{Approximate Duration: 0.5 Hours}
 
 \begin{itemize}
-\item We discussed what worked on the last album, and how we want things to go this time.
-\item John doesn't seem to appreciate that the success of the album was entirely due to my songs.
-\item I think we should face facts and include only my material on the new album.
-\item John said Yoko has to be present in the studio all the time.  I hit him.  He swore at me.  Ringo said ``Come on boys -- make nice.''  John hit him.  George meditated in a corner.
-\item George Martin convinced us to break and reconvene in a couple of days.
+\item We discussed project topics, and settled on ``Spatial Epidemic Dynamics: Synchronization" as our topic. This was communicated to Dr. Earn
 \end{itemize}
 
-\section*{\Sexpr{date.string(this.year, 3, 16)}}
+\section*{\Sexpr{date.string(this.year, 3, 14)}}
 
-\textbf{Solo work} \\
-\emph{Approximate Duration: 15 Hours}
+\textbf{Group Meeting (in class)} \\
+\emph{Approximate Duration:  Hours}
 
 \begin{itemize}
-\item Played Twinkle on my bass for 4 hours and then tried to come up with a new melody for my lyric ``The Long and Winding Road''.
-\item Wrote a brilliant \Rlogo script that composes melodies to given lyrics.  Oh man, this is so heavy.  I'm gonna be even more famous.
-\item Can't wait to play the song for the group tomorrow.
+\item Updated ``README.md" in the GitHub to keep track of the project
+\item Agreed to read papers suggested in the project document by Friday Mar. 16
+\item Brainstorm and discuss step (b) (construction of spatial SIR model) on Friday Mar. 16
+\item Try to complete steb (b) by Monday Mar. 19
+\item Spent rest of the meeting reading papers individually
 \end{itemize}
 
 \section*{\Sexpr{date.string(this.year, 3, 17)}}

@@ -104,7 +104,8 @@ plot((s$freq)^(-1), s$spec, type='l', ...)
 <<>>=
 #load london time series using function from 1a(i)
 londondata <- read.ymdc('meas_uk__lon_1944-94_wk.csv') 
-plot(londondata$date, londondata$cases, xlab="Weeks", ylab="Incidence", main ="10 Week Moving Average Plot of Liverpool Data")
+plot(londondata$date, londondata$cases, xlab="Weeks", ylab="Incidence",
+     main ="10 Week Moving Average Plot of Liverpool Data")
 #plot using 10 week moving average using function from 1a(ii)
 time.plot(londondata,10,add= TRUE, col='red') 
 
@@ -142,7 +143,8 @@ periodogram(londondata,
 #Perform analysis on the lpl time series
 #load liverpool time series
 lpldata<-read.ymdc('meas_uk__lpl_1944-94_wk.csv') 
-plot(lpldata$date, lpldata$cases, xlab="Weeks", ylab="Incidence", main="10 Week Moving Average Plot of Liverpool Data")
+plot(lpldata$date, lpldata$cases, xlab="Weeks", ylab="Incidence",
+     main="10 Week Moving Average Plot of Liverpool Data")
 time.plot(lpldata,10,add=TRUE, col='red')
 
 par(mfrow=c(2,2)) #create multiplot. two columns and two rows
@@ -264,7 +266,8 @@ for (i in 1:4) {
   
   params <- c(beta = 1, N = size)
   sol <- ode(initial, timesteps, SI.d, params)
-  plot(as.data.frame(sol), type = "l", lwd = 3, main= str_c("Solution of SI Model for N= ", size))
+  plot(as.data.frame(sol), type = "l", lwd = 3,
+       main= str_c("Solution of SI Model for N= ", size))
   
   for (j in 1:30){
     lines(SI.Gillespie(beta = params["beta"], 

@@ -25,23 +25,29 @@ date.string <- function(year,month,day) {
 
 \rhead{\fancyplain{}{4MB3 Project Notebook \Sexpr{this.year} \hfill Paul McCartney}}
 \title{Math 4MB3 Project Notebook \Sexpr{this.year}}
-\author{Paul McCartney (The Beatles)}
+\author{Aurora Basinski-Ferris}
 \date{\today\ @ \thistime}
 
 \begin{document}
 \maketitle
 
-\section*{\Sexpr{date.string(this.year, 3, 15)}}
+\section*{\Sexpr{date.string(this.year, 3, 9)}}
+
+\textbf{Group Meeting} \\
+\emph{Approximate Duration: 1/2 Hour}
+
+\begin{itemize}
+\item We discussed and chose a project topic. We settled on `Spatial Epidemic dynamics: Synchronization'
+\end{itemize}
+
+\section*{\Sexpr{date.string(this.year, 3, 14)}}
 
 \textbf{Group Meeting} \\
 \emph{Approximate Duration: 1 Hour}
 
 \begin{itemize}
-\item We discussed what worked on the last album, and how we want things to go this time.
-\item John doesn't seem to appreciate that the success of the album was entirely due to my songs.
-\item I think we should face facts and include only my material on the new album.
-\item John said Yoko has to be present in the studio all the time.  I hit him.  He swore at me.  Ringo said ``Come on boys -- make nice.''  John hit him.  George meditated in a corner.
-\item George Martin convinced us to break and reconvene in a couple of days.
+\item We discussed next steps for the project. We planned to read the recommended paper today (and in the next few days individually). 
+\item We will aim to have the spatial SIR model that must be checked by Dr. Earn (part b of the synchronization question) done by 19 March
 \end{itemize}
 
 \section*{\Sexpr{date.string(this.year, 3, 16)}}

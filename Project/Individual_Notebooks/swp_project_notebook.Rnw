@@ -82,6 +82,185 @@ E[I_{i,t+1}] &= \beta_{t+1} S_{i,t} \sum_{j=1}^n m_{ij} I_{j,t}
 $$
 tSIR model is supposed to be a tool to estimate transmission rate over time using a GLM framework but parameter estimation becomes more difficult when we add spatial structures. Instead, we can try to use estimated transmission rates and compare how synchrony and coherence might vary. This is something I might do for my own interest when I have some extra time...
 
+\section*{\Sexpr{date.string(this.year, 3, 16)}}
+
+\textbf{Group work}
+\emph{Approximate Duration: 1 hour}
+
+\begin{itemize}
+    \item Discussed different model structures
+    \item We want to consider a discrete time model due to its simplicity
+    \item Discussed various ways of discretizing the model
+\end{itemize}
+\leavevmode
+
+\section*{\Sexpr{date.string(this.year, 3, 17)}}
+
+\textbf{Solo work}
+\emph{Approximate Duration: 1.5 hours}
+
+Consider an SIR model with spatial sturcture:
+$$
+\begin{aligned}
+\frac{dS_i}{dt} &= \mu (N - S_i) - \beta(t) \left(\sum_{j=1}^n m_{ij} I_j \right) S_i\\
+\frac{dI_i}{dt} &= \beta(t) \left(\sum_{j=1}^n m_{ij} I_j \right) S_i - (\gamma + \mu) I_i\\
+\frac{dR_i}{dt} &= \gamma I_i - \mu R_i \\
+\end{aligned}
+$$
+We want to discretize this model in a biologically sensible way. 
+In the absence of natural birth, dynamics of the susceptible population can be described by
+$$
+\frac{dS_i}{dt} = -\left(\beta(t) \left(\sum_{j=1}^n m_{ij} I_j \right) + \mu\right) S_i
+$$
+Then, $\left(\beta(t) \left(\sum_{j=1}^n m_{ij} I_j \right) + \mu\right)$ can be thought of as per capita "death rate".
+Then, it follows that
+$$
+\begin{aligned}
+\frac{dS_i}{dt} &= - \left(\beta(t) \left(\sum_{j=1}^n m_{ij} I_j \right) + \mu\right) S_i\\
+\implies \frac{1}{S_i} \frac{dS_i}{dt} &= - \left(\beta(t) \left(\sum_{j=1}^n m_{ij} I_j \right) + \mu\right)\\
+\implies \int_{t}^{t + \Delta t} \frac{d\log S_i}{dt} dt &= - \int_{t}^{t + \Delta t} \left(\beta(t) \left(\sum_{j=1}^n m_{ij} I_j \right) + \mu\right) dt\\
+\implies \log \left(S_i(t + \Delta t)/S_i(t) \right) &= - \int_{t}^{t + \Delta t} \left(\beta(t) \left(\sum_{j=1}^n m_{ij} I_j \right) + \mu\right) dt\\
+\implies S_i(t + \Delta t) &= \exp \left(- \int_{t}^{t + \Delta t} \left(\beta(t) \left(\sum_{j=1}^n m_{ij} I_j \right) + \mu\right) dt \right) S_i(t)
+\end{aligned}
+$$
+where
+$$
+\exp \left(- \int_{t}^{t + \Delta t} \left(\beta(t) \left(\sum_{j=1}^n m_{ij} I_j \right) + \mu\right) dt \right)
+$$
+represents survival probability of a susceptible individual between time $t$ and $t + \Delta t$.
+Assuming that $\Delta t$ is sufficiently small, we have
+$$
+- \int_{t}^{t + \Delta t} \left(\beta(t) \left(\sum_{j=1}^n m_{ij} I_j \right) + \mu\right) dt \approx \left(\beta(t) \left(\sum_{j=1}^n m_{ij} I_j \right) + \mu\right) \Delta t
+$$
+By applying this approximation, we are essentially assuming that $I_j(t)$ does not vary much between $t$ and $t + \Delta t$. We can do a second order approximation here to account for changes in $I_j(t)$ over $\Delta$ but we don't have to worry about that yet \citep{he2009plug}.
+Then, it follows that
+$$
+S_i(t + \Delta t) = S_i(t) - \left(1-e^{-\left(\beta(t) \left(\sum_{j=1}^n m_{ij} I_j \right) + \mu\right) \Delta t}\right) S_i(t)
+$$
+It is convenient to express it this way because 
+$$
+\left(1-e^{-\left(\beta(t) \left(\sum_{j=1}^n m_{ij} I_j \right) + \mu\right) \Delta t}\right) S_i(t)
+$$
+represents the number of people that leave the susceptible compartment and incidence (number of people infected between time $t$ and $t + \Delta t$) can approximated by
+$$
+i_i(t) = \frac{\beta(t) \left(\sum_{j=1}^n m_{ij} I_j \right)}{\beta(t) \left(\sum_{j=1}^n m_{ij} I_j \right) + \mu} \left(1-e^{-\left(\beta(t) \left(\sum_{j=1}^n m_{ij} I_j \right) + \mu\right) \Delta t}\right) S_i(t)
+$$
+where $i_i(t)$ denotes incidence. $i_i$ is a really terrible notation and I should come up with something better... Note that
+$$
+\frac{\beta(t) \left(\sum_{j=1}^n m_{ij} I_j \right)}{\beta(t) \left(\sum_{j=1}^n m_{ij} I_j \right) + \mu}
+$$
+is approximately equal to the probability that a infection occurs before a susceptible individual dies from natural mortality.
+Likewise, we can do similar analysis and derive survival probability of an infected individual between time $t$ and $t + \Delta t$:
+$$
+\exp\left(- (\gamma + \mu ) \Delta t\right)
+$$
+In this case, this is exact (not an approximation) because "death rate" does not vary over time.
+Hence, we have
+$$
+I_i(t + \Delta t) = I(t) + i_i(t) - \left(1 - e^{-(\gamma + \mu) \Delta t}\right) I(t)
+$$
+we denote number of recovered individuals between $t$ and $t + \Delta t$ by $r(t)$:
+$$
+r_i(t) = \frac{\gamma}{\gamma + \mu} \left(1 - e^{-(\gamma + \mu) \Delta t}\right) I(t)
+$$
+Then, by similar argument
+$$
+R_i(t + \Delta t) = R_i(t) + r_i(t) - \left(1 - e^{-\mu \Delta t}\right) R_i
+$$
+Then, the entire model is given by
+$$
+\begin{aligned}
+S_i(t + \Delta t) &= S_i(t) + b_i(t) - \left(1-e^{-\left(\beta(t) \left(\sum_{j=1}^n m_{ij} I_j \right) + \mu\right) \Delta t}\right) S_i(t)\\
+I_i(t + \Delta t) &= I(t) + i_i(t) - \left(1 - e^{-(\gamma + \mu) \Delta t}\right) I(t)\\
+R_i(t + \Delta t) &= R_i(t) + r_i(t) - \left(1 - e^{-\mu \Delta t}\right) R_i
+\end{aligned}
+$$
+where
+$$
+\begin{aligned}
+b_i(t) &= \mu N \Delta t\\
+i_i(t) &= \frac{\beta(t) \left(\sum_{j=1}^n m_{ij} I_j \right)}{\beta(t) \left(\sum_{j=1}^n m_{ij} I_j \right) + \mu} \left(1-e^{-\left(\beta(t) \left(\sum_{j=1}^n m_{ij} I_j \right) + \mu\right) \Delta t}\right) S_i(t)\\
+r_i(t) &= \frac{\gamma}{\gamma + \mu} \left(1 - e^{-(\gamma + \mu) \Delta t}\right) I(t)
+\end{aligned}
+$$
+This doesn't exactly keep the population size constant and if we wanted to keep the population size constant, we would let
+$$
+b_i(t) = \frac{\mu}{\beta(t) \left(\sum_{j=1}^n m_{ij} I_j \right) + \mu} \left(1-e^{-\left(\beta(t) \left(\sum_{j=1}^n m_{ij} I_j \right) + \mu\right) \Delta t}\right) S_i(t) + \frac{\mu}{\gamma + \mu} \left(1 - e^{-(\gamma + \mu) \Delta t}\right) I(t)
+$$
+Since we have a nice probabilistic interpretation of the model, we can add stochasticity by adding appropriate binomial and multinomial random variables (beta binomial and dirichlet multinomial for overdispersion in process error \citep{li2017fitting} but we probably don't need to worry about this).
+
+We can compare how different this model is from ODE through simulations. First, we can start with a simple SIR case without birth terms.
+<<load, include=FALSE>>==
+library(deSolve)
+@
+
+<<SIR sim, echo=FALSE, fig.width=6, fig.height=4>>==
+SIR.grad <- function(t, y, par) {
+    with(as.list(c(y, par)), {
+        dS <- - beta * S *I
+        dI <- beta * S * I - gamma * I
+        list(c(dS, dI))
+    })
+} 
+
+par <- c(beta=1/1000, gamma=0.5)
+y <- c(S=999, I=1)
+tvec <- seq(from=1, to=30, by=0.1)
+
+df <- ode(y, tvec, SIR.grad, par)
+
+SIR.discrete <- function(y=c(S=999, I=1), 
+                         par=c(beta=0.2/1000, gamma=0.1), 
+                         tmin=1, 
+                         tmax=200,
+                         delta.t=1) {
+    with(as.list(par), {
+        t.length <- (tmax-tmin)/delta.t+1
+    
+        I <- S <- rep(NA, t.length)
+        I[1] <- y[["I"]]
+        S[1] <- y[["S"]]
+    
+        for (i in 1:(t.length-1)) {
+            inf <- (1-exp(-beta*I[i]*delta.t))* S[i]
+            
+            S[i+1] <- S[i] - inf
+            I[i+1] <- I[i] + inf - (1-exp(-gamma*delta.t)) * I[i]
+        }
+        
+        data.frame(
+            time=seq(from=tmin, to=tmax, by=delta.t),
+            S=S,
+            I=I
+        )
+    })
+}
+
+df2 <- SIR.discrete(par=par, delta.t=1)
+df3 <- SIR.discrete(par=par, delta.t=0.5)
+df4 <- SIR.discrete(par=par, delta.t=0.1)
+df5 <- SIR.discrete(par=par, delta.t=0.01)
+
+plot(tvec, df[,"I"], type="l", ylim=c(0, 300), xlab="time", ylab="prevalence")
+lines(df2$time, df2$I, col=2, lty=2)
+lines(df3$time, df3$I, col=3, lty=3)
+lines(df4$time, df4$I, col=4, lty=4)
+lines(df5$time, df5$I, col=5, lty=5)
+legend(
+    "topleft",
+    legend=c("ode", 
+             expression(Delta~t==1),
+             expression(Delta~t==0.5),
+             expression(Delta~t==0.1),
+             expression(Delta~t==0.01)),
+    col=1:5,
+    lty=1:5
+)
+
+@
+
+Note that our purpose is not necessarily to approximate the ode but to come up with a biologically reasonalbe discrete time model. It's worth keeping in mind that choices of $\Delta t$ matters if it is too large with repsect to disease time scale but otherwise, we don't have to make it too small. We will still obtain qualitatively similar dynamics (but what happens when we include seasonal forcing?).
+
 \section*{Total time spent on this project}
 
 \begin{quote}

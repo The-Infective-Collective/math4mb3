@@ -51,15 +51,21 @@ date.string <- function(year,month,day) {
 \end{itemize}
 
 \section*{\Sexpr{date.string(this.year, 3, 16)}}
-
-\textbf{Solo work} \\
-\emph{Approximate Duration: 15 Hours}
+\textbf{Group Meeting} \\
+\emph{Approximate Duration: 1 Hour}
 
 \begin{itemize}
-\item Played Twinkle on my bass for 4 hours and then tried to come up with a new melody for my lyric ``The Long and Winding Road''.
-\item Wrote a brilliant \Rlogo script that composes melodies to given lyrics.  Oh man, this is so heavy.  I'm gonna be even more famous.
-\item Can't wait to play the song for the group tomorrow.
+\item Worked on our spatial SIR model (based on n identical patches).
 \end{itemize}
+
+\section*{\Sexpr{date.string(this.year, 3, 19)}}
+\textbf{Group Meeting} \\
+\emph{Approximate Duration: 1 Hour}
+
+\begin{itemize}
+\item Discussed the spatial model constructed.
+\item Planned next steps. The two Daniels will work on finding an analytic criterion for guaranteed stochasticity. Michael and I will work on implementing the stochastic model in R.
+\end{itemize
 
 \section*{\Sexpr{date.string(this.year, 3, 17)}}
 

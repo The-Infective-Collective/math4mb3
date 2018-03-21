@@ -4,6 +4,7 @@
 
 
 <<>>=
+setwd("~/Documents/math4mb3/Project")
 library(Rcpp)
 library(tidyverse,stringr)
 sourceCpp("try2.cpp")
@@ -13,11 +14,10 @@ params <- within(params, {
     
  ## set rng state
     seed <- 0
-    tau <- 0.001 # in years
-    nyears <- 10
-    
+    dt <- 1
+    nyears <- 20
     ## total number of steps
-    nsteps <- nyears/tau
+    nsteps <- nyears/dt
     
     ## total number of patches
     mpatch <- 2
@@ -30,7 +30,7 @@ params <- within(params, {
     
     pop <- 1e6
     
-    dt <- 0.9
+
     ## initial conditions, list within list
     ## use within() to modify empty list, as above
     init <- within(list(), {
@@ -51,14 +51,15 @@ nsim <- 12
 
 ## run many sims, combine all results into one data.frame
 ## plyr will combine results for us
-result.rep <- ldply(1:nsim, function(.nn) {
-    set.seed(.nn)
-    ## run the model
-    result <- tauleapCpp(params)
-    ## this wastes space, but is very simple and aids plotting
-    result$nsim <- .nn
-    return(result)
-})
+
+#result.rep <- ldply(1:nsim, function(.nn) {
+#    set.seed(.nn)
+#    ## run the model
+#    result <- SIRmodel(params)
+#    ## this wastes space, but is very simple and aids plotting
+#    result$nsim <- .nn
+#    return(result)
+#})
 
 @
 

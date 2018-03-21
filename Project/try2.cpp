@@ -100,5 +100,12 @@ List SIRmodel(List params) {
     Named("I") = II,
     Named("R") = RR
   );
-  return sim;
+  
+  List ret;
+  ret["time"] = time;
+  ret["S"] = SS1;
+  ret["I"] = II1;
+  ret["R"] = RR1;
+  
+  return ret;
 };

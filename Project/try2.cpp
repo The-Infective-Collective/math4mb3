@@ -64,7 +64,7 @@ List SIRmodel(List params) {
   // Calculate the number of events for each step, update state vectors
   for (int istep = 0; istep < (nsteps-1); istep++) {
     
-    for (int jpatch = 0; jpatch < (mpatch-1); jpatch++) {
+    for (int jpatch = 0; jpatch < mpatch; jpatch++) {
       
       double iS1 = SS1(istep, jpatch);  
       double iI1 = II1(istep, jpatch);
@@ -73,7 +73,7 @@ List SIRmodel(List params) {
       // perform dot product for transmission rate
       double transsum = 0;
       
-      for (int i=0; i < (mpatch-1); i++) {
+      for (int i=0; i < (mpatch); i++) {
         transsum += m(jpatch, i)*II1(istep,i);
       }
     

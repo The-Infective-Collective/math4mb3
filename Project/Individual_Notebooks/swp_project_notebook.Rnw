@@ -444,6 +444,7 @@ lines(tvec, df$I2, col=2)
 @
 
 
+
 \section*{Total time spent on this project}
 
 \begin{quote}

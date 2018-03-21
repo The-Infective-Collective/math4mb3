@@ -64,44 +64,35 @@ date.string <- function(year,month,day) {
 
 \begin{itemize}
 \item Discussed the spatial model constructed.
-\item Planned next steps. The two Daniels will work on finding an analytic criterion for guaranteed stochasticity. Michael and I will work on implementing the stochastic model in R.
+\item Planned next steps. The two Daniels will work on finding an analytic criterion for guaranteed sychrony. Michael and I will work on implementing the stochastic model in R.
 \end{itemize
 
-\section*{\Sexpr{date.string(this.year, 3, 17)}}
+\section*{\Sexpr{date.string(this.year, 3, 20)}}
 
-\textbf{Group Meeting} \\
+\textbf{Group Meeting (Michael and I)} \\
+\emph{Approximate Duration: 3 Hours}
+
+\begin{itemize}
+\item Learned Rcpp (C++ addon to R) to construct deterministic discrete patch model previously created
+\end{itemize}
+
+\section*{\Sexpr{date.string(this.year, 3, 21)}}
+
+\textbf{Group Meeting (Michael and I)} \\
 \emph{Approximate Duration: 2 Hours}
 
 \begin{itemize}
-\item John and I each played a song for the others.  Mine was excellent.  John's sucked.  (He refuses to learn \Rlogo.  What a loser.)  
-\item George Martin said both songs are good for the album.  He'll just rework the melodies and harmonies.
-\item Yoko suggested a change to my song.  I hit John.  He swore at me.  Ringo said ``Come on boys -- make nice.''  John hit him.  George meditated in a corner.
-\item George Martin convinced us to break and reconvene tomorrow.
+\item Continuation of meeting from yesterday to learn Rcpp. We got the patch based deterministic model working.
+\item Next step is to make this stochastic. We will be working on that in the coming days.
 \end{itemize}
 
-\section*{\Sexpr{date.string(this.year, 3, 18)}}
+\section*{\Sexpr{date.string(this.year, 3, 21)}}
 
-\textbf{Group Meeting} \\
-\emph{Approximate Duration: 23 Hours}
-
-\begin{itemize}
-\item George (Harrison) sat in a corner trying to come up to a lead guitar part for my song for 19 hours.
-\item George (Martin) lost it with George (Harrison) and said [plunking a melody on the piano] ``Oh for heaven's sake try this!''  It was bloody good, as usual.  We'll use it.
-\item Yoko suggested a change to the lead line.  I hit John.  He swore at me.  Ringo said ``Come on boys -- make nice.''  John hit him.  George meditated in a corner.
-\item George Martin convinced us to break and reconvene tomorrow.
-\end{itemize}
-
-\vspace{2cm}
-\centerline{\color{red}My dog ate this part of my notebook.}
-\vspace{2cm}
-
-\section*{\Sexpr{date.string(this.year, 4, 4)}}
-
-\textbf{Group Meeting} \\
-\emph{Approximate Duration: 22 Hours}
+\textbf{Group Meeting (with everyone)} \\
+\emph{Approximate Duration: 1 Hour}
 
 \begin{itemize}
-\item After listening to the final takes 13 times, we agreed to call the album ``Let It Be''.
+\item Met in class to discuss our progress.
 \end{itemize}
 
 \section*{Total time spent on this project}

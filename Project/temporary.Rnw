@@ -4,13 +4,15 @@
 
 
 <<>>=
+setwd("~/Documents/math4mb3/Project")
+library(Rcpp)
 library(tidyverse,stringr)
-sourceCpp("tauleapCpp.cpp")
+sourceCpp("try2.cpp")
 
 params <- list()
 params <- within(params, {
     
-    ## set rng state
+ ## set rng state
     seed <- 0
     tau <- 0.001 # in years
     nyears <- 10
@@ -26,12 +28,13 @@ params <- within(params, {
     R0 <- 10
     ## refers to R0 above
     beta <- R0*(gamma+mu) #transmission rate
-    nu <- mu #birth rate
     
+    pop <- 1e6
+    
+    dt <- 0.9
     ## initial conditions, list within list
     ## use within() to modify empty list, as above
     init <- within(list(), {
-        pop <- 1e6
         S <- round(pop/R0)
         I <- round(pop*mu*(1-1/R0)/(gamma+mu))
         ## refers to S,I above
@@ -39,12 +42,10 @@ params <- within(params, {
     })
 })
 
-m <- matrix(c(0.5, 0.5, 0.5, 0.5), nrow=2, ncol=2)
-
 set.seed(params$seed)
 
 ## run the model once
-result.df <- tauleapCpp(params)
+result.df <- SIRmodel(params)
     
 library(plyr)
 nsim <- 12

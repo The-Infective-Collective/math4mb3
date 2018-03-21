@@ -4,7 +4,6 @@
 
 
 <<>>=
-setwd("~/Documents/math4mb3/Project")
 library(Rcpp)
 library(tidyverse,stringr)
 sourceCpp("try2.cpp")

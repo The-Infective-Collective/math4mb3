@@ -5,6 +5,7 @@
 \pagestyle{fancyplain}
 \usepackage[T1]{fontenc}
 \usepackage{tikz-cd}
+\usepackage{amsmath}
 % So David can comment:
 \newcommand{\de}[1]{{\color{red}{\bfseries DE:} #1}}
 % Use the R logo when referring to R:
@@ -43,60 +44,83 @@ date.string <- function(year,month,day) {
 \section*{\Sexpr{date.string(this.year, 3, 14)}}
 
 \textbf{Group Meeting (in class)} \\
-\emph{Approximate Duration:  Hours}
+\emph{Approximate Duration: 1  Hours}
 
 \begin{itemize}
 \item Updated ``README.md" in the GitHub to keep track of the project
 \item Agreed to read papers suggested in the project document by Friday Mar. 16
 \item Brainstorm and discuss step (b) (construction of spatial SIR model) on Friday Mar. 16
-\item Try to complete steb (b) by Monday Mar. 19
+\item Try to complete step (b) by Monday Mar. 19
 \item Spent rest of the meeting reading papers individually
 \end{itemize}
 
-\section*{\Sexpr{date.string(this.year, 3, 17)}}
+\section*{\Sexpr{date.string(this.year, 3, 16)}}
+
+\textbf{Group Meeting (in class)} \\
+\emph{Approximate Duration: 1 Hours}
+
+\begin{itemize}
+\item Tried to construct spatial SIR model
+\item Checked in with Dr. Earn about a possible construction
+\subitem Feedback: try to incorporate a decay within time steps (due to people leaving in between)
+\item Had my vote taken for pizza
+\end{itemize}
+
+\section*{\Sexpr{date.string(this.year, 3, 19)}}
+
+\textbf{Solo Work} \\
+\emph{Approximate Duration: 1 Hours}
+
+\begin{itemize}
+\item Try to formulate my own SIR model that takes into account feedback 
+\end{itemize}
+
+We previously came up with this model:
+\begin{equation}
+\begin{aligned}
+S_{t+1}^i &= \mu (1 - S_t) - \beta \left( \sum_{i=1}^M m_{ij} I_t^j \right) S_t^i \\
+I_{t+1}^i &= \beta \left( \sum_{i=1}^M m_{ij} I_t^j \right) S_t^i  - (\gamma + \mu) I_t^i\\
+R_{t+1} &= \gamma I_t^i - \mu R_t^i 
+\end{aligned}
+\end{equation}
 
 \textbf{Group Meeting} \\
+\emph{Approximate Duration: 1 Hours}
+
+\begin{itemize}
+\item Organization: 
+\item AB and MC to work on coding the simulation
+\item DPa and DPr try to connect this model to existing theorems
+\end{itemize}
+
+\section*{\Sexpr{date.string(this.year, 3, 20)}}
+
+\textbf{Group Work with Aurora} \\
+\emph{Approximate Duration: 3 Hours}
+
+\begin{itemize}
+\item Tried to implement model using R.
+\item Attempts on using pomp and Rcpp
+\item Ended up implementing Rcpp, but ran some errors. Will revisit tomorrow morning.
+\end{itemize}
+
+\section*{\Sexpr{date.string(this.year, 3, 21)}}
+
+\textbf{Group Work with Aurora} \\
 \emph{Approximate Duration: 2 Hours}
 
 \begin{itemize}
-\item John and I each played a song for the others.  Mine was excellent.  John's sucked.  (He refuses to learn \Rlogo.  What a loser.)  
-\item George Martin said both songs are good for the album.  He'll just rework the melodies and harmonies.
-\item Yoko suggested a change to my song.  I hit John.  He swore at me.  Ringo said ``Come on boys -- make nice.''  John hit him.  George meditated in a corner.
-\item George Martin convinced us to break and reconvene tomorrow.
-\end{itemize}
-
-\section*{\Sexpr{date.string(this.year, 3, 18)}}
-
-\textbf{Group Meeting} \\
-\emph{Approximate Duration: 23 Hours}
-
-\begin{itemize}
-\item George (Harrison) sat in a corner trying to come up to a lead guitar part for my song for 19 hours.
-\item George (Martin) lost it with George (Harrison) and said [plunking a melody on the piano] ``Oh for heaven's sake try this!''  It was bloody good, as usual.  We'll use it.
-\item Yoko suggested a change to the lead line.  I hit John.  He swore at me.  Ringo said ``Come on boys -- make nice.''  John hit him.  George meditated in a corner.
-\item George Martin convinced us to break and reconvene tomorrow.
-\end{itemize}
-
-\vspace{2cm}
-\centerline{\color{red}My dog ate this part of my notebook.}
-\vspace{2cm}
-
-\section*{\Sexpr{date.string(this.year, 4, 4)}}
-
-\textbf{Group Meeting} \\
-\emph{Approximate Duration: 22 Hours}
-
-\begin{itemize}
-\item After listening to the final takes 13 times, we agreed to call the album ``Let It Be''.
+\item Resolved errors, and the implementation now successfully produces output as a table
+\item Next steps are to implement stochasticity, and clean up and comment the code
 \end{itemize}
 
 \section*{Total time spent on this project}
 
 \begin{quote}
 
-\emph{Group work:} 96 hours
+\emph{Group work:}  hours
 
-\emph{Solo work:} 132 hours
+\emph{Solo work:}  hours
 
 \end{quote}
 

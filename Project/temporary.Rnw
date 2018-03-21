@@ -14,7 +14,7 @@ params <- within(params, {
     
  ## set rng state
     seed <- 0
-    dt <- 1
+    dt <- 0.1
     nyears <- 20
     ## total number of steps
     nsteps <- nyears/dt
@@ -26,9 +26,10 @@ params <- within(params, {
     gamma <- 365/10 #recovery rate
     R0 <- 10
     ## refers to R0 above
-    beta <- R0*(gamma+mu) #transmission rate
-    
     pop <- 1e6
+    beta <- R0*(gamma+mu)/pop #transmission rate
+    
+ 
     
 
     ## initial conditions, list within list

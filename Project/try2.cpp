@@ -72,6 +72,7 @@ List SIRmodel(List params) {
       
       // perform dot product for transmission rate
       double transsum = 0;
+      
       for (int i=0; i < (mpatch-1); i++) {
         transsum += m(jpatch, i)*II1(istep,i);
       }
@@ -79,7 +80,7 @@ List SIRmodel(List params) {
     double transmission = 1- exp((-beta*transsum -mu)*dt);
     
     //i_i(t)
-    double transratio = beta*transsum/(beta*transsum + mu)*transmission*iS1;
+    double transratio = beta*transsum*transmission*iS1/(beta*transsum + mu);
     
     // r_i(t)
     double recoveryratio = gamma*recoveryrate*iI1/(gamma+mu); 
@@ -92,20 +93,12 @@ List SIRmodel(List params) {
     // time in fractional years (ie units parameters are given in)
     time[istep+1] = (istep+1)*dt;
   }
-  
-  // Return results as data.frame
-  DataFrame sim = DataFrame::create(
-    Named("time") = time,
-    Named("S") = SS,
-    Named("I") = II,
-    Named("R") = RR
-  );
-  
+
   List ret;
   ret["time"] = time;
   ret["S"] = SS1;
   ret["I"] = II1;
   ret["R"] = RR1;
-  
+  ret["m"] = m;
   return ret;
 };

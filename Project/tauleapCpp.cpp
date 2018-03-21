@@ -1,4 +1,4 @@
-#include <Rcpp.h>
+# include <Rcpp.h>
 
 using namespace Rcpp;
 
@@ -11,6 +11,7 @@ List tauleapCpp(List params) {
   
   // use Rcpp as() function to "cast" R vector to cpp scalar
   int nsteps = as<int>(params["nsteps"]);
+  int mpatch = as<int>(params["mpatch"]);
   
   // initialize each state vector in its own vector
   // set all vals to initial vals
@@ -18,11 +19,11 @@ List tauleapCpp(List params) {
     // I use doubles (NumericVector) rather than 
   // ints (IntegerVector), since rpois returns double,
   // and the domain of double is a superset of int
-  NumericVector SS(nsteps, init["S"]);
-  NumericVector II(nsteps, init["I"]);
-  NumericVector RR(nsteps, init["R"]);
-  NumericVector NN(nsteps, init["pop"]);
+  NumericMatrix SS(nsteps, mpatch, init["S"]);
+  NumericMatrix II(nsteps, mpatch, init["I"]);
+  NumericMatrix RR(nsteps, mpatch, init["R"]);
   
+    
   // fill time w/zeros
   NumericVector time(nsteps);
   
@@ -32,46 +33,37 @@ List tauleapCpp(List params) {
   double beta = params["beta"];
   double gamma = params["gamma"];
   double tau = params["tau"];
+  double pop = params["pop"];
+  double births = pop*mu;  //multiply by timestep
   
   // Calculate the number of events for each step, update state vectors
   for (int istep = 0; istep < (nsteps-1); istep++) {
     
-    // pull out this steps scalars for easier reading
-    // and to avoid compiler headaches
-    double iS = SS[istep];
-    double iI = II[istep];
-    double iR = RR[istep];
-    double iN = NN[istep];
-    
-    /////////////////////////
-    // State Equations
-    /////////////////////////
-    
-    // R::rpois always returns a single value
-    // to return multiple (e.g. Integer/NumericVector, 
-    // use Rcpp::rpois(int ndraw, param) and friends
-    double births = R::rpois(nu*iN*tau);
+    for (int jpatch = 9; jpatch < (mpatch-1); jpatch++) {
+      
+      //pull current state of the patch at each compartment
+      double iS = SS[istep, jpatch];  
+      double iI = II[istep, jpatch];
+      double iR = RR[istep, jpatch];
+  
+      double transsum = m(jpatch,_)*II(istep,_);
+      double transmission = 1- exp(-beta*transsum -mu);
+      // Update next timestep
+      SS[istep+1, jpatch] = iS + births - transmission*iS;
+      II[istep+1, jpatch] = iI  ;
+      RR[istep+1, jpatch] = iR ;
+    }
+
     
     // Prevent negative states
-    double Sdeaths = std::min(iS, R::rpois(mu*iS*tau));
-    double maxtrans = R::rpois(beta*(iI/iN)*iS*tau);
-    double transmission = std::min(iS-Sdeaths, maxtrans);
-    double Ideaths = std::min(iI, R::rpois(mu*iI*tau));
-    double recovery = std::min(iI-Ideaths, R::rpois(gamma*iI*tau));
-    double Rdeaths = std::min(iR, R::rpois(mu*iR*tau));
-    
-    // Calculate the change in each state variable
-    double dS = births-Sdeaths-transmission;
-    double dI = transmission-Ideaths-recovery;
-    double dR = recovery-Rdeaths;
-    
-    // Update next timestep
-    SS[istep+1] = iS + dS;
-    II[istep+1] = iI + dI;
-    RR[istep+1] = iR + dR;
-    
-    // Sum population
-    NN[istep+1] = iS + iI + iR + dS + dI + dR;
+    //double Sdeaths = std::min(iS, R::rpois(mu*iS*tau));
+    //double maxtrans = R::rpois(beta*(iI/iN)*iS*tau);
+    //double transmission = std::min(iS-Sdeaths, maxtrans);
+    //double Ideaths = std::min(iI, R::rpois(mu*iI*tau));
+    //double recovery = std::min(iI-Ideaths, R::rpois(gamma*iI*tau));
+    //double Rdeaths = std::min(iR, R::rpois(mu*iR*tau));
+  
+  
     
     // time in fractional years (ie units parameters are given in)
     time[istep+1] = (istep+1)*tau;
@@ -82,8 +74,8 @@ List tauleapCpp(List params) {
     Named("time") = time,
     Named("S") = SS,
     Named("I") = II,
-    Named("R") = RR,
-    Named("N") = NN
+    Named("R") = RR
+
     );
     return sim;
 };

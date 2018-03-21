@@ -18,6 +18,9 @@ params <- within(params, {
     ## total number of steps
     nsteps <- nyears/tau
     
+    ## total number of patches
+    mpatch <- 2
+    
     mu <- 1/70 #death rate
     gamma <- 365/10 #recovery rate
     R0 <- 10
@@ -35,6 +38,8 @@ params <- within(params, {
         R <- pop-S-I
     })
 })
+
+m <- matrix(c(0.5, 0.5, 0.5, 0.5), nrow=2, ncol=2)
 
 set.seed(params$seed)
 

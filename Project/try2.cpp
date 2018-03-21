@@ -64,12 +64,6 @@ List SIRmodel(List params) {
   // Calculate the number of events for each step, update state vectors
   for (int istep = 0; istep < (nsteps-1); istep++) {
     
-    // pull out this step's scalars for easier reading
-    // and to avoid compiler headaches
-    double iS = SS[istep];
-    double iI = II[istep];
-    double iR = RR[istep];
-    
     for (int jpatch = 0; jpatch < (mpatch-1); jpatch++) {
       
       double iS1 = SS1(istep, jpatch);  
@@ -94,7 +88,6 @@ List SIRmodel(List params) {
     II1(istep+1, jpatch) = iI1 + transratio - recoveryrate*iI1;
     RR1(istep+1, jpatch) = iR1 + recoveryratio - deathrate*iR1;
     }
-    
     
     // time in fractional years (ie units parameters are given in)
     time[istep+1] = (istep+1)*dt;

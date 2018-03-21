@@ -261,6 +261,133 @@ legend(
 
 Note that our purpose is not necessarily to approximate the ode but to come up with a biologically reasonalbe discrete time model. It's worth keeping in mind that choices of $\Delta t$ matters if it is too large with repsect to disease time scale but otherwise, we don't have to make it too small. We will still obtain qualitatively similar dynamics (but what happens when we include seasonal forcing?).
 
+\section*{\Sexpr{date.string(this.year, 3, 19)}}
+
+\textbf{Group Meeting} \\
+\emph{Approximate Duration: 1 Hour}
+
+\begin{itemize}
+    \item Discussed model further
+    \item Discussed how we can implement stochastic model
+    \item Divided up the work
+\end{itemize}
+
+\section*{\Sexpr{date.string(this.year, 3, 20)}}
+
+\textbf{Solo work} \\
+\emph{Approximate Duration: 4 Hours}
+
+\begin{itemize}
+    \item Spent two hours trying to get an analytical handle on the model and got nowhere near. 
+    \item The following notes are my second attempt to get somewhere (hopefully).
+\end{itemize}
+
+Let's try to start with a simpler case. Hopefully, we can get more insight later on. Consider a coupled SI model. Assume that mixing matrix is give nby
+$$
+M = \begin{bmatrix}
+1 - m_1 & m_2\\
+m_1 & 1 - m_2
+\end{bmatrix}
+$$
+For sake of simplicity, assume $m_1 = m_2 = 1/2$.
+Then, it follows that
+$$
+\begin{aligned}
+S_i(t+\Delta t) &= S_i(t) + \left(1-e^{-\gamma \Delta t}\right) I_i(t) - \left(1 - e^{-\beta(t) (I_1 + I_2)\Delta t/2} \right) S_i(t)\\
+I_i(t+\Delta t) &= I_i(t) + \left(1 - e^{-\beta(t) (I_1 + I_2)\Delta t/2} \right) S_i(t) - \left(1-e^{-\gamma \Delta t}\right) I_i(t)
+\end{aligned}
+$$
+Then, it follows that
+$$
+\begin{aligned}
+S_2' - S_1' &= e^{-\beta(t) (I_1 + I_2)\Delta t/2} (S_2 - S_1) + \left(1 - e^{-\gamma \Delta t}\right) (I_2 - I_1)\\
+I_2' - I_1' &= e^{-\gamma \Delta t} (I_2 - I_1) + \left(1 - e^{-\beta(t) (I_1 + I_2)\Delta t/2} \right) (S_2 - S_1)\\
+\end{aligned}
+$$
+Note that
+$$
+S_2 - S_1 = (N - I_2) - (N - I_1) = I_1 - I_2
+$$
+Then,
+$$
+\begin{aligned}
+I_2' - I_1' &= e^{-\gamma \Delta t} (I_2 - I_1) - \left(1 - e^{-\beta(t) (I_1 + I_2)\Delta t/2} \right) (I_2 - I_1)\\
+&= \left(e^{-\gamma \Delta t} + e^{-\beta(t) (I_1 + I_2)\Delta t/2} - 1 \right) (I_2 - I_1)\\
+S_2' - S_1' &= e^{-\beta(t) (I_1 + I_2)\Delta t/2} (S_2 - S_1) - \left(1 - e^{-\gamma \Delta t}\right) (S_2 - S_1)\\
+&= \left(e^{-\gamma \Delta t} + e^{-\beta(t) (I_1 + I_2)\Delta t/2} - 1 \right) (S_2 - S_1)
+\end{aligned}
+$$
+So it seems that 
+$$
+e^{-\gamma \Delta t} + e^{-\beta(t) (I_1 + I_2)\Delta t/2} - 1
+$$
+could be the quantity that determines synchrony and coherence.
+Suppose that $\Delta t$ is sufficiently small. Then, it follows that
+$$
+\begin{aligned}
+e^{-\gamma \Delta t} + e^{-\beta(t) (I_1 + I_2)\Delta t/2} - 1 &\approx 1 - \gamma \Delta t + 1 - \beta(t) (I_1 + I_2)\Delta t/2 - 1\\
+&= 1 - \gamma \Delta t - \beta(t) (I_1 + I_2)\Delta t/2
+\end{aligned}
+$$
+It seems to me that this quantity would be less than 1 but greater than 0 if $\Delta t$ is small?
+Then, I think we obtain coherence.
+
+It might be easier to work with a continuous time model for analytical results. Consider the following coupled SIS model:
+$$
+\begin{aligned}
+\frac{dS_1}{dt} &= \gamma I_1 - \beta(t) \left((1 - m_1) I_1 + m_2 I_2\right) S_1\\
+\frac{dS_2}{dt} &= \gamma I_2 - \beta(t) \left(m_1 I_1 + (1-m_2) I_2\right) S_2\\
+\frac{dI_1}{dt} &= \beta(t) \left((1 - m_1) I_1 + m_2 I_2\right) S_1 - \gamma I_1\\
+\frac{dI_2}{dt} &= \beta(t) \left(m_1 I_1 + (1-m_2) I_2\right) S_2 - \gamma I_2\\
+\end{aligned}
+$$
+Then, necessary condition is that
+$$
+\frac{dI_1}{dt} - \frac{dI_2}{dt} \to 0.
+$$
+Note that
+$$
+\begin{aligned}
+\frac{dI_1}{dt} - \frac{dI_2}{dt} &= \beta(t) \left((1 - m_1) I_1 + m_2 I_2\right) S_1 - \beta(t) \left(m_1 I_1 + (1-m_2) I_2\right) S_2 - \gamma (I_1 - I_2)\\
+&= \beta(t) \left(\left((1 - m_1) I_1 + m_2 I_2\right) (1 - I_1) -\left(m_1 I_1 + (1-m_2) I_2\right)(1 - I_2) \right) - \gamma (I_1 - I_2)\\
+&= \beta(t) ((I_1 - m_1 I_1 + m_2 I_2) (1 - I_1) - (m_1 I_1 + I_2 - m_2 I_2) (1-I_2)) - \gamma (I_1 - I_2)\\
+&= \beta(t) ((1 - 2 m_1) I_1 + (m_1 - 1) I_1^2 - (1 - 2 m_2) I_2 - (m_2 - 1) I_2^2) - \gamma (I_1 - I_2)\\
+\end{aligned}
+$$
+Again, when $m_1 = m_2 = 1/2$, we have
+$$
+\begin{aligned}
+&\beta(t) ((1 - 2 m_1) I_1 + (m_1 - 1) I_1^2 - (1 - 2 m_2) I_2 - (m_2 - 1) I_2^2) - \gamma (I_1 - I_2)\\
+&=-\beta(t) (I_1^2 - I_2^2)/2 - \gamma (I_1 - I_2)\\
+&=\left(-\beta(t) (I_1 + I_2)/2  - \gamma \right) (I_1 - I_2)
+\end{aligned}
+$$
+Hence,
+$$ 
+- \max \beta(t) - \gamma < \frac{d \log (I_1 - I_2)}{dt} = - \beta(t) (I_1 + I_2)/2  - \gamma < -\gamma
+$$
+Therefore, it must become coherent as $\log (I_1 - I_2) \to -\infty$. 
+When $m_1 = m_2 = m$,
+$$
+\begin{aligned}
+&\beta(t) ((1 - 2 m_1) I_1 + (m_1 - 1) I_1^2 - (1 - 2 m_2) I_2 - (m_2 - 1) I_2^2) - \gamma (I_1 - I_2)\\
+&=\beta(t) ((1-2m) (I_1 - I_2) + (m-1) (I_1^2 - I_2^2)) - \gamma (I_1 - I_2)\\
+&=\left(\beta(t) (1 - 2m + (m-1) (I_1 + I_2)) - \gamma \right) (I_1 - I_2)
+\end{aligned}
+$$
+Hence,
+$$
+\frac{d \log (I_1 - I_2)}{dt} = \left(\beta(t) (1 - 2m + (m-1) (I_1 + I_2)) - \gamma \right)
+$$
+Note that
+$$
+\beta(t) (1 - 2m + (m-1) (I_1 + I_2)) - \gamma = \beta(t) (1-2m) - \beta(t) (1-m) (I_1 + I_2) - \gamma < \beta (t) (1 - 2m) - \gamma
+$$
+Then, when $\beta (t) (1 - 2m) - \gamma < 0$, this system \emph{can} be coherent.
+
+
+
+
 \section*{Total time spent on this project}
 
 \begin{quote}

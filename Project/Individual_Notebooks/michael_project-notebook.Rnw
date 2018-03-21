@@ -114,6 +114,19 @@ R_{t+1} &= \gamma I_t^i - \mu R_t^i
 \item Next steps are to implement stochasticity, and clean up and comment the code
 \end{itemize}
 
+\textbf{Group meeting (in class)} \\
+\emph{Approximate Duration: 2 Hours}
+\begin{itemize}
+\item Troubleshoot code -- second patch wasn't updating because the loop wasn't reaching the last patch
+\end{itemize}
+
+\textbf{Solo work} \\
+\emph{Approximate Duration: 1 Hours}
+\begin{itemize}
+\item Clean up code
+\end{itemize}
+
+
 \section*{Total time spent on this project}
 
 \begin{quote}

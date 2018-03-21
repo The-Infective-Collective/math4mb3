@@ -8,15 +8,15 @@ List SIRmodel(List params) {
   int nsteps = as<int>(params["nsteps"]);
   
   // Number of patches
-  int mpatch = as<int>(params["mpatch"]);
+  int mpatches = as<int>(params["mpatches"]);
   
   // Pull list of initial states
   List init = params["init"];
 
   // Initalize matrices to hold results (time steps as rows, columns as patches) - makes matrix of zeroes
-  NumericMatrix SS(nsteps, mpatch);
-  NumericMatrix II(nsteps, mpatch);
-  NumericMatrix RR(nsteps, mpatch);
+  NumericMatrix SS(nsteps, mpatches);
+  NumericMatrix II(nsteps, mpatches);
+  NumericMatrix RR(nsteps, mpatches);
   
   // Get the initial state values
   double Sinit = init["S"];
@@ -24,7 +24,7 @@ List SIRmodel(List params) {
   double Rinit = init["R"];
   
   // Set initial conditions in the first row
-  for (int i = 0; i < mpatch; i++) {
+  for (int i = 0; i < mpatches; i++) {
     SS(0, i) = Sinit;
     II(0, i) = Iinit;
     RR(0, i) = Rinit;
@@ -44,10 +44,10 @@ List SIRmodel(List params) {
   double deathrate = 1 - exp(-mu*dt);
   
   // Connectivity matrix
-  NumericMatrix m(mpatch, mpatch);
+  NumericMatrix m = params["conmat"];
   
   // Fill connectivity matrix (currently with 0.5)
-  for (int i = 0; i < mpatch*mpatch; i++) {
+  for (int i = 0; i < mpatches*mpatches; i++) {
     m[i] = 0.5;
   }
   
@@ -55,7 +55,7 @@ List SIRmodel(List params) {
   for (int istep = 0; istep < (nsteps-1); istep++) {
     
     // Iterate over patches
-    for (int jpatch = 0; jpatch < mpatch; jpatch++) {
+    for (int jpatch = 0; jpatch < mpatches; jpatch++) {
       
       // Get current S, I, and R states
       double iS1 = SS(istep, jpatch);  
@@ -66,7 +66,7 @@ List SIRmodel(List params) {
       double transsum = 0;
       
       // Iterate over all patches
-      for (int i=0; i < (mpatch); i++) {
+      for (int i=0; i < (mpatches); i++) {
         // Calculate sum of (connectivity)*(# infected)
         transsum += m(jpatch, i)*II(istep,i);
       }
@@ -89,7 +89,7 @@ List SIRmodel(List params) {
     // Time in fraction of year
     time[istep+1] = (istep+1)*dt;
   }
-
+  
   // Initialize a list to return results
   List ret;
   

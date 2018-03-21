@@ -18,15 +18,15 @@ params <- within(params, {
     dt <- 0.1
     
     # number of years
-    nyears <- 20
+    nyears <- 10
     
     # number of time steps
     nsteps <- nyears/dt
     
     # number of spatial patches
-    mpatch <- 2
+    mpatches <- 2
     
-    # death rate
+    # birth/death rate
     mu <- 1/70
     
     # recovery rate
@@ -41,6 +41,9 @@ params <- within(params, {
     # transmission rate
     beta <- R0*(gamma+mu)/pop 
 
+    # connectivity matrix
+    conmat <- matrix(c(0.5, 0.5, 0.5, 0.5), nrow = 2, ncol = 2)
+    
     # initial conditions, 
     init <- within(list(), {
         S <- round(pop/R0)

@@ -24,7 +24,7 @@ params <- within(params, {
     nsteps <- nyears/dt
     
     # number of spatial patches
-    mpatches <- 2
+    mpatches <- 3
     
     # birth/death rate
     mu <- 1/70
@@ -42,7 +42,7 @@ params <- within(params, {
     beta <- R0*(gamma+mu)/pop 
 
     # connectivity matrix
-    conmat <- matrix(c(0.5, 0.5, 0.5, 0.5), nrow = 2, ncol = 2)
+    conmat <- matrix(rep(mpatches^(-1), mpatches^2), nrow = mpatches, ncol = mpatches)
     
     # initial conditions, 
     init <- within(list(), {

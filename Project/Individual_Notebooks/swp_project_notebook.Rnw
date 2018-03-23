@@ -396,11 +396,11 @@ SI.grad <- function(t, y, par) {
     })
 } 
 
-par <- c(b0=0.6, b1=0.2, gamma=0.5, m = 0.2, period=10)
+SI.par <- c(b0=0.6, b1=0.2, gamma=0.1, m = 0.001, period=20)
 y <- c(I1=0.4, I2=0.6)
 tvec <- seq(from=1, to=35, by=1)
 
-df <- as.data.frame(ode(y, tvec, SI.grad, par))
+df <- as.data.frame(ode(y, tvec, SI.grad, SI.par))
 
 plot(tvec, df$I1, type="l")
 lines(tvec, df$I2, col=2)
@@ -411,7 +411,7 @@ I think seasonal forcing is too strong in this case...??? We get dynamics that a
 Now, let's think about the big model instead of SIS
 
 <<simple model 2>>==
-SI.grad <- function(t, y, par) {
+SIR.grad <- function(t, y, par) {
     with(as.list(c(y, par)), {
         beta <- b0 * (1 + b1 * cos (2 * pi * t/period))
         
@@ -427,22 +427,125 @@ SI.grad <- function(t, y, par) {
         dI2 <- inf2 - (gamma + mu) * I2
         dR2 <- gamma * I2 - mu * R2
         
-        list(c(dS1, dI1, dR1, dS2, dI2, dR2))
+        Q <- beta * (1 - 2 * m - (1-m) * (I1 + I2)) - gamma
+        
+        list(c(dS1, dI1, dR1, dS2, dI2, dR2), Q=Q)
     })
 } 
 
 ## parameters taken from Earn et al
 
-par <- c(b0=1250, b1=0.15, gamma=365/5, m = 0.001, mu = 0.02, period=1)
+SIR.par <- c(b0=1250, b1=0.15, gamma=365/5, m = 0, mu = 0.02, period=1)
 y <- c(S1=0.05, I1=0.001, R1=1-0.05-0.001, S2=0.07, I2=0.001, R2=1-0.07-0.001)
 tvec <- seq(from=1, to=50, by=1/52)
 
-df <- as.data.frame(rk(y, tvec, SI.grad, par))
+SIR.df <- as.data.frame(rk(y, tvec, SIR.grad, SIR.par))
 
-plot(tvec, df$I1, type="l", xlim=c(30, 50), log='y')
-lines(tvec, df$I2, col=2)
+plot(tvec, SIR.df$I1, type="l", log='y')
+lines(tvec, SIR.df$I2, col=2)
 @
 
+\section*{\Sexpr{date.string(this.year, 3, 21)}}
+
+\textbf{Group work} \\
+\emph{Approximate Duration: 1 Hour}
+
+\begin{itemize}
+    \item debugging code; further discussion on how to approach analytical results.
+\end{itemize}
+
+\section*{\Sexpr{date.string(this.year, 3, 22)}}
+
+\textbf{Solo work} \\
+\emph{Approximate Duration: 3 Hour}
+
+\begin{itemize}
+    \item worked a bit more on analytical stuff but didn't get far
+    \item Instead, I made a bifurcation diagram
+\end{itemize}
+
+Let's try to work on the SI model a little more. I'm wondering if we get any interesting dynamics in the discrete case.
+
+Assuming discrete time steps and equal coupling, the model would reduce down to
+$$
+\begin{aligned}
+I_1(t + \Delta t) &= I_1(t) + (1 - e^{-\beta(t) ((1-m)I_1 + m I_2) \Delta t}) (N - I_1) + (1 - e^{-\gamma \Delta t}) I_1(t)\\
+I_2(t + \Delta t) &= I_2(t) + (1 - e^{-\beta(t) (m I_1 + (1-m) I_2) \Delta t}) (N - I_2) + (1 - e^{-\gamma \Delta t}) I_2(t)\\
+\end{aligned}
+$$
+
+I'm curious whether 
+$$
+\beta(t) (1 - 2m) - \gamma < 0
+$$
+condition is any helpful here.
+
+<<discrete_model>>==
+SI.discrete <- function(dt, t.step, y, param) {
+    with(as.list(param),{
+        I1 <- rep(NA, t.step+1)
+        I2 <- rep(NA, t.step+1)
+        
+        I1[1] <- y[1]
+        I2[1] <- y[2]
+    
+        quantity <- rep(NA, t.step+1)
+        
+        for (i in 1:t.step) {
+            t <- i * dt
+            
+            beta <- b0 * (1 + b1 * cos (2 * pi * t/period))
+            I1[i+1] <- I1[i] + (1 - exp(-beta * ((1-m) * I1[i] + m * I2[i]) * dt)) * (1 - I1[i]) - (1 - exp(-gamma * dt)) * I1[i]
+            I2[i+1] <- I2[i] + (1 - exp(-beta * (m * I1[i] + (1-m) * I2[i]) * dt)) * (1 - I2[i]) - (1 - exp(-gamma * dt)) * I2[i]
+            quantity[i+1] <- beta * (1 - 2 * m + (m-1) * (I1[i] + I2[i])) - gamma
+        }
+        
+        data.frame(
+            time=1:(t.step+1)*dt,
+            I1=I1,
+            I2=I2,
+            quantity=quantity
+        )
+    })
+}
+
+SI.par <- c(b0=0.9, b1=0.2, gamma=4, m=1, period=2)
+
+df.discrete <- SI.discrete(1, 200, c(0.01, 0.04), SI.par)
+
+plot(df.discrete$time, df.discrete$I1, col=1, type="l")
+lines(df.discrete$time, df.discrete$I2, col=2, type="l")
+@
+
+I tried out some values and it seems like we can't really get interesting dynamics in this case??
+With these parameters, we get something interesting but they seem to become coherent eventually.
+
+<<>>==
+plot((df.discrete$I1 - df.discrete$I2)/df.discrete$I2, 
+     type="l", 
+     ylim=c(-1e-2, 1e-2),
+     ylab="Relative difference bewteen two patches",
+     xlab="Time")
+@
+
+Our ``true'' quantity of interest was actually this (we're going to call this $Q(t)$):
+$$
+Q(t) = \beta(t) (1 - 2m - (1-m) (I_1 + I_2)) - \gamma
+$$
+How does this change over time?
+<<>>==
+plot(df.discrete$time, df.discrete$quantity, type="l")
+@
+It happens so that this quantity is always negative. This explains coherence!!
+
+OK so is it possible to make this quantity positive?
+When $m=1$, we have 
+$$
+Q(t) = -\beta(t) -\gamma < 0.
+$$
+So I should have expected coherence...
+
+I tried checking this value for the measles model but I don't think it really helps... 
 
 
 \section*{Total time spent on this project}

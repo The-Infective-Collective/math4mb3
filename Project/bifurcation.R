@@ -16,7 +16,7 @@ initlist <- list(
     c(S=0.01, I=0.00001, R=1-0.01-0.00001)
 )
 
-pdf("bifurcation_R0.pdf", width=8, height=6)
+pdf("bifurcation_R0.pdf", width=10, height=8)
 
 plot(NA, 
      xlim=c(0, R0max), 
@@ -42,7 +42,7 @@ for (R in R0) {
         ## run the model once
         res <- SIRmodel(params, init)
         
-        inc <- tail(res$incidence[res$time%%1==0], -50)/N
+        inc <- tail(res$incidence[res$time%%1==0], -80)/N
         
         points(rep(R, length(inc)), inc, pch=".")
     })
@@ -55,11 +55,11 @@ b1by <- 0.001
 
 b1 <- seq(0, b1max, by=b1by)
 
-pdf("bifurcation_amplitude.pdf", width=8, height=6)
+pdf("bifurcation_amplitude.pdf", width=10, height=8)
 
 plot(NA, 
      xlim=c(0, b1max), 
-     ylim=c(1e-40, 1), 
+     ylim=c(1e-50, 1), 
      log="y",
      xlab="Seasonal amplitude",
      ylab="Incidence")
@@ -81,7 +81,7 @@ for (b in b1) {
         ## run the model once
         res <- SIRmodel(params, init)
         
-        inc <- tail(res$incidence[res$time%%1==0], -50)/N
+        inc <- tail(res$incidence[res$time%%1==0], -80)/N
         
         points(rep(b, length(inc)), inc, pch=".")
     })

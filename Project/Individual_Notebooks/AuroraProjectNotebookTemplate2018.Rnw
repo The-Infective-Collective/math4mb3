@@ -95,6 +95,15 @@ date.string <- function(year,month,day) {
 \item Met in class to discuss our progress.
 \end{itemize}
 
+\section*{\Sexpr{date.string(this.year, 3, 31)}}
+
+\textbf{Group Meeting (with everyone)} \\
+\emph{Approximate Duration: 1 Hour}
+
+\begin{itemize}
+\item Met in class to discuss our progress. The two Daniels are running into some deadends with analytical stuff. We've decided to switch it up a bit.  Michael and I will try out the analytical stuff, and they will switch to numerical stuff. The next steps for numerical stuff (for them to attempt) is adding seasonal forcing and stochasticity.
+\end{itemize}
+
 \section*{Total time spent on this project}
 
 \begin{quote}

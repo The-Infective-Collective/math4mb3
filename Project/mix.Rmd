@@ -1,0 +1,83 @@
+---
+title: "Investigating mixing structure"
+author: "The Infective Collective (Michael Chong)"
+date:
+output: html_document:
+  toc: true
+---
+
+```{r setup } 
+library(Rcpp)
+library(tidyverse)
+library(reshape2)
+sourceCpp("SIRmodel_mix.cpp")
+source("params.R")
+```
+
+
+```{r changing parameter values}
+library(Rcpp)
+library(tidyverse,stringr)
+sourceCpp("SIRmodel_mix.cpp")
+source("params.R")
+
+# change number of patches
+params$mpatches <- mpatches <- 6
+
+# set seed
+set.seed(params$seed)
+
+# function to run model and return data frame
+run_SIR <- function(p) {
+  # Run the model
+  raw.result <- SIRmodel(p)
+  
+  # Initialize result data frame
+  result <- data_frame(t = raw.result$time)
+  
+  # Pull results
+  S <- raw.result$S
+  I <- raw.result$I
+  R <- raw.result$R
+  
+  # Change column names
+  colnames(S) <- str_c("S", 1:p$mpatches)
+  colnames(I) <- str_c("I", 1:p$mpatches)
+  colnames(R) <- str_c("R", 1:p$mpatches)
+  
+  # Combine data frames 
+  cbind(result, S, I, R) 
+}
+
+# character vector containing "I#" column names
+Icols <- str_c("I", 1:mpatches)
+
+# set plotting theme for ggplot
+theme_set(theme_bw())
+
+# run model
+result <- run_SIR(params)
+
+# Calculating coherence ---------------
+coherence_calc <- function(x) {
+  norm(x - rep(mean(x), length(x)), type = "2")
+}
+
+# find mean prevalence
+coherence <- apply(result[,Icols], 1, coherence_calc)
+
+# plot coherence
+qplot(result$t, coherence)
+
+# Plot of prevalence --------
+# melt data frame for easy plotting
+plot.df <- melt(result, c("t"), Icols, variable.name = "compartment", value.name = "prevalence")
+```
+
+# Plot result
+```{r}
+# plot
+ggplot(plot.df) +
+  geom_line(aes(t, prevalence, colour = compartment)) +
+  geom_line(data = result, aes(t, coherence), size = 1)
+```

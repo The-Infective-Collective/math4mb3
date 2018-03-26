@@ -23,13 +23,6 @@ List SIRmodel(List params) {
   double Iinit = init["I"];
   double Rinit = init["R"];
   
-  // Set initial conditions in the first row
-  for (int i = 0; i < mpatches; i++) {
-    SS(0, i) = Sinit;
-    II(0, i) = Iinit;
-    RR(0, i) = Rinit;
-  }
-  
   // Initialize time vector
   NumericVector time(nsteps);
   
@@ -42,6 +35,13 @@ List SIRmodel(List params) {
   double births = mu*pop*dt;
   double recoveryrate = 1 - exp(-(gamma+mu)*dt);
   double deathrate = 1 - exp(-mu*dt);
+  
+  // Set initial conditions in the first row
+  for (int i = 0; i < mpatches; i++) {
+    SS(0, i) = (R::runif(1, pop));
+    II(0, i) = (R::runif(0, pop - SS(0, i)));
+    RR(0, i) = pop - SS(0, i) - II(0, i);
+  }
   
   // Connectivity matrix
   NumericMatrix m = params["conmat"];

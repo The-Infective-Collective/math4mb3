@@ -1,7 +1,10 @@
 library(Rcpp)
 library(tidyverse,stringr)
-sourceCpp("SIRmodel.cpp")
+sourceCpp("SIRmodel_mix.cpp")
 source("params.R")
+
+# change number of patches
+params$mpatches <- 6
 
 # set seed
 set.seed(params$seed)
@@ -24,13 +27,21 @@ run_SIR <- function(p) {
   colnames(I) <- str_c("I", 1:p$mpatches)
   colnames(R) <- str_c("R", 1:p$mpatches)
   
-  # Combine data frames and return
-  cbind(result, S, I, R) 
+  # Combine data frames 
+  df <- cbind(result, S, I, R) 
+  
+  # melt for easy plotting
+  melt(df, c("t"), str_c("I", 1:params$mpatches), variable.name = "compartment", value.name = "prevalence")
 }
+
+# set plotting theme for ggplot
+theme_set(theme_bw())
 
 # run model
 result <- run_SIR(params)
 result
 
-# plot result
-plot(result$t, result$I1, type = "l")
+# plot
+ggplot(result, aes(t, prevalence, colour = compartment)) +
+  geom_line()
+

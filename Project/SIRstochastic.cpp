@@ -2,7 +2,7 @@
 using namespace Rcpp;
 
 // [[Rcpp::export]]
-List SIRmodel(List params) {
+List SIRstochastic(List params) {
   
   // Number of time steps
   int nsteps = as<int>(params["nsteps"]);

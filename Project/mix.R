@@ -1,0 +1,36 @@
+library(Rcpp)
+library(tidyverse,stringr)
+sourceCpp("SIRmodel.cpp")
+source("params.R")
+
+# set seed
+set.seed(params$seed)
+
+# function to run model and return data frame
+run_SIR <- function(p) {
+  # Run the model
+  raw.result <- SIRmodel(p)
+  
+  # Initialize result data frame
+  result <- data_frame(t = raw.result$time)
+  
+  # Pull results
+  S <- raw.result$S
+  I <- raw.result$I
+  R <- raw.result$R
+  
+  # Change column names
+  colnames(S) <- str_c("S", 1:p$mpatches)
+  colnames(I) <- str_c("I", 1:p$mpatches)
+  colnames(R) <- str_c("R", 1:p$mpatches)
+  
+  # Combine data frames and return
+  cbind(result, S, I, R) 
+}
+
+# run model
+result <- run_SIR(params)
+result
+
+# plot result
+plot(result$t, result$I1, type = "l")

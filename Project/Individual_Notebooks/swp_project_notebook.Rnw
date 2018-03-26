@@ -435,9 +435,9 @@ SIR.grad <- function(t, y, par) {
 
 ## parameters taken from Earn et al
 
-SIR.par <- c(b0=1250, b1=0.15, gamma=365/5, m = 0, mu = 0.02, period=1)
+SIR.par <- c(b0=17*365/5, b1=0.25, gamma=365/5, m = 0, mu = 0.02, period=1)
 y <- c(S1=0.05, I1=0.001, R1=1-0.05-0.001, S2=0.07, I2=0.001, R2=1-0.07-0.001)
-tvec <- seq(from=1, to=50, by=1/52)
+tvec <- seq(from=1, to=100, by=1/365)
 
 SIR.df <- as.data.frame(rk(y, tvec, SIR.grad, SIR.par))
 
@@ -546,6 +546,33 @@ $$
 So I should have expected coherence...
 
 I tried checking this value for the measles model but I don't think it really helps... 
+
+\section*{\Sexpr{date.string(this.year, 3, 15)}}
+
+\textbf{Solo work} \\
+\emph{Approximate Duration: 1.5 Hour}
+
+\begin{itemize}
+    \item Writing methods
+\end{itemize}
+
+\section*{\Sexpr{date.string(this.year, 3, 26)}}
+
+\textbf{Group work} \\
+\emph{Approximate Duration: 1 Hour}
+
+\begin{itemize}
+    \item Discussing direction
+    \item Abandon analytical work for now
+\end{itemize}
+
+\textbf{Solo work} \\
+\emph{Approximate Duration: 1.5 Hour}
+
+\begin{itemize}
+    \item Organizing code
+    \item Wrote a general purpose code that everyone can use for their parts so that we don't have to create several copies.
+\end{itemize}
 
 
 \section*{Total time spent on this project}

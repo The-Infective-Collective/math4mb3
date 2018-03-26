@@ -2,7 +2,7 @@
 using namespace Rcpp;
 
 // [[Rcpp::export]]
-List SIRmodel(List params, List init) {
+List SIRmodel_onepatch(List params, List init) {
     
     // Number of time steps
     int nsteps = as<int>(params["nsteps"]);

@@ -6,50 +6,7 @@
 library(Rcpp)
 library(tidyverse,stringr)
 sourceCpp("SIRstochastic.cpp")
-
-params <- list()
-params <- within(params, {
-    
-    # RNG seed
-    seed <- 0
-    
-    # time step length
-    dt <- 0.1
-    
-    # number of years
-    nyears <- 10
-    
-    # number of time steps
-    nsteps <- nyears/dt
-    
-    # number of spatial patches
-    mpatches <- 3
-    
-    # birth/death rate
-    mu <- 1/70
-    
-    # recovery rate
-    gamma <- 365/10 
-    
-    # R0
-    R0 <- 10
-    
-    # population size in each patch
-    pop <- 1e6
-    
-    # transmission rate
-    beta <- R0*(gamma+mu)/pop 
-
-    # connectivity matrix
-    conmat <- matrix(rep(mpatches^(-1), mpatches^2), nrow = mpatches, ncol = mpatches)
-    
-    # initial conditions, 
-    init <- within(list(), {
-        S <- round(pop/R0)
-        I <- round(pop*mu*(1-1/R0)/(gamma+mu))
-        R <- pop-S-I
-    })
-})
+source("params.R")
 
 # set seed
 set.seed(params$seed)

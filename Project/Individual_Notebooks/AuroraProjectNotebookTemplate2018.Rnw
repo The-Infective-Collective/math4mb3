@@ -95,13 +95,36 @@ date.string <- function(year,month,day) {
 \item Met in class to discuss our progress.
 \end{itemize}
 
-\section*{\Sexpr{date.string(this.year, 3, 31)}}
+\section*{\Sexpr{date.string(this.year, 3, 23)}}
 
 \textbf{Group Meeting (with everyone)} \\
 \emph{Approximate Duration: 1 Hour}
 
 \begin{itemize}
 \item Met in class to discuss our progress. The two Daniels are running into some deadends with analytical stuff. We've decided to switch it up a bit.  Michael and I will try out the analytical stuff, and they will switch to numerical stuff. The next steps for numerical stuff (for them to attempt) is adding seasonal forcing and stochasticity.
+\end{itemize}
+
+\section*{\Sexpr{date.string(this.year, 3, 26)}}
+\textbf{Individual work} \\
+\emph{Approximate Duration: 0.5 Hours}
+
+\begin{itemize}
+\item Started writing my section of the draft on numerical methods and results. 
+\end{itemize}
+
+\textbf{Group Meeting (with everyone)} \\
+\emph{Approximate Duration: 1 Hour}
+
+\begin{itemize}
+\item Discussed the progress so far and changed our project plan a bit. We will stop doing analytical stuff and just focus on numerical (because the analytical stuff was not working).
+\item Nailed down a plan for what exactly we want to do with the numerical simulations. The new outlook of our project will be what changing parameters ($R_0$ mostly), seasonal forcing, and adding stochasticity do to the patch model.
+\end{itemize}
+
+\textbf{Group Meeting (with everyone)} \\
+\emph{Approximate Duration: 1 Hour}
+
+\begin{itemize}
+\item Met in the evening to continue discussing our plan for the draft.
 \end{itemize}
 
 \section*{Total time spent on this project}

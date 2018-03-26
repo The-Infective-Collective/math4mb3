@@ -6,10 +6,10 @@
 library(Rcpp)
 library(tidyverse,stringr)
 sourceCpp("SIRstochastic_seasonal.cpp")
-source("params_seasonal.R")
+source("params.R")
 
 # set seed
-set.seed(params_seasonal$seed)
+set.seed(params$seed)
 
 # function to run model and return data frame
 run_SIRstochastic_seasonal <- function(p) {
@@ -34,7 +34,7 @@ run_SIRstochastic_seasonal <- function(p) {
 }
 
 # run model
-result <- run_SIRstochastic_seasonal(params_seasonal)
+result <- run_SIRstochastic_seasonal(params)
 result
 
 # plot result

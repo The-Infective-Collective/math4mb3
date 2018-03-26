@@ -1,4 +1,3 @@
-
 params <- list()
 params <- within(params, {
   
@@ -38,7 +37,8 @@ params <- within(params, {
   # initial conditions, 
   init <- within(list(), {
     S <- round(pop/R0)
-    I <- mu/(mu + gamma)*(1 - 1/R0)*pop
+    I <- round(mu/(mu + gamma)*(1 - 1/R0)*pop)
     R <- pop-S-I
   })
 })
+

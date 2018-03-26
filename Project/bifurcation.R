@@ -1,7 +1,7 @@
 library(Rcpp)
 sourceCpp("SIRmodel_onepatch.cpp")
 
-N <- 10000
+N <- 1
 
 R0max <- 100
 R0by <- 0.1
@@ -27,13 +27,13 @@ plot(NA,
 
 for (R in R0) {
     params <- list(
-        b0=R*365/5/N,
+        b0=17*365/5/N,
         b1=0.25,
         gamma=365/5,
         mu=0.02,
         a=2*pi,
-        dt=1/365,
-        nsteps=365*100
+        dt=1/3650,
+        nsteps=3650*400
     )
     
     L <- lapply(initlist, function(x) {
@@ -42,7 +42,7 @@ for (R in R0) {
         ## run the model once
         res <- SIRmodel(params, init)
         
-        inc <- tail(res$incidence[res$time%%1==0], -80)/N
+        inc <- tail(res$I[res$time%%1==0], -300)/N
         
         points(rep(R, length(inc)), inc, pch=".")
     })

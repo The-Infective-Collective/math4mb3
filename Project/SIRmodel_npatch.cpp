@@ -222,15 +222,18 @@ double term_time(double t, List params) {
   // Reduce to a yearly loop
   // Data will repeat itself in simplified calendar
   
-  t = t - floor(t);
+  t = (t - floor(t)) * 365;
   
-  if(t >= 7/365 && t <= 68/365){
+  if(t >= 7 && t <= 68){
     ret = (1 + 2*(1-p)*a)*meantrans;
-  } else if(t >= 76/365 && t <= 182/365) {
+  } 
+  else if(t >= 76 && t <= 182) {
     ret = (1 + 2*(1-p)*a)*meantrans;
-  } else if(t >= 246/365 && t <= 356/365) {
+  } 
+  else if(t >= 246 && t <= 356) {
     ret = (1 + 2*(1-p)*a)*meantrans;
-  } else {
+  } 
+  else {
     ret = (1 - 2*p*a)*meantrans;
   }
   

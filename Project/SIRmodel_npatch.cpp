@@ -225,13 +225,9 @@ double term_time(double t, List params) {
   t = t - floor(t);
   
   if(t >= 7/365 && t <= 68/365){
-    ret = (1 + 2*(1-p)*a)*meantrans;
-  } else if(t >= 76/365 && t <= 182/365) {
-    ret = (1 + 2*(1-p)*a)*meantrans;
-  } else if(t >= 246/365 && t <= 356/365) {
-    ret = (1 + 2*(1-p)*a)*meantrans;
+    ret = 1;
   } else {
-    ret = (1 - 2*p*a)*meantrans;
+    ret = 4;
   }
   
   return ret;

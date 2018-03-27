@@ -54,34 +54,32 @@ coherence_calc <- function(x) {
   norm(x - rep(mean(x), length(x)), type = "2")
 }
 
+# Generate initial conditions
+r.init <- function(m) { 
+  initial <- list(
+      S = round(rep(base.init$S, m) + runif(m, -base.init$S, base.init$S)),
+      I = round(rep(base.init$I, m) + runif(m, - base.init$I, 30*base.init$I))
+  )
+  initial$R <- rep(base.params$pop, m) - initial$S - initial$I
+  initial
+}
+
 ```
 
-## Simulation settings
-```{r simulation-settings}
+## Test run
+```{r test-run}
 # Dispersal matrix
-mpatches <- 2
+mpatches <- 3
 M <- matrix(rep(mpatches^(-1), mpatches^2), mpatches, mpatches)
-
-# initial conditions
-initial <- list(
-    S = rep(base.init$S, 2) + runif(2, -base.init$S, base.init$S),
-    I = rep(base.init$I, 2) + runif(2, - base.init$I, 20*base.init$I)
-)
-initial$R <- rep(base.params$pop, 2) - initial$S - initial$I
 
 # character vector containing "I#" column names
 Icols <- str_c("I", 1:mpatches)
 
-```
-
-## Result
-```{r run-model}
 # run model
-result <- run_SIR(base.params, initial, M, seasonal_cosine)
+result <- run_SIR(base.params, r.init(mpatches), M, seasonal_cosine)
 
 # calculate coherence
 coherence <- apply(result[,Icols], 1, coherence_calc)
-
 
 # melt data frame for easy plotting
 plot.df <- melt(result, c("t"), Icols, variable.name = "compartment", value.name = "prevalence")
@@ -89,5 +87,69 @@ plot.df <- melt(result, c("t"), Icols, variable.name = "compartment", value.name
 # plot result
 ggplot(plot.df) +
   geom_line(aes(t, prevalence, colour = compartment)) +
-  geom_line(data = result, aes(t, coherence), size = 1)
+  geom_line(data = result, aes(t, coherence), size = 1.5, alpha = 0.35)
 ```
+
+## Nearest Neighbour Coupling
+Note that there is only a distinction between nearest-neighbour coupling and equal coupling when there are more than 3 patches.
+```{r nn-settings}
+mpatches <- 4
+p <- 0.6 #proportion that stay in their own 
+M <- matrix(c(p, (1-p)/2, 0, (1-p)/2,
+              (1-p)/2, p, (1-p)/2, 0,
+              0, (1-p)/2, p, (1-p)/2, 
+              (1-p)/2, 0, (1-p)/2, p), 
+            nrow = mpatches, ncol = mpatches)
+
+# character vector containing "I#" column names
+Icols <- str_c("I", 1:mpatches)
+
+result <- run_SIR(base.params, r.init(mpatches), M, seasonal_cosine)
+
+# calculate coherence
+coherence <- apply(result[,Icols], 1, coherence_calc)
+
+# melt data frame for easy plotting
+plot.df <- melt(result, c("t"), Icols, variable.name = "compartment", value.name = "prevalence")
+
+# print settings
+print(M, digits = 1)
+print(result[1, ])
+
+# plot result
+ggplot(plot.df) +
+  geom_line(aes(t, prevalence, colour = compartment)) +
+  geom_line(data = result, aes(t, coherence), size = 1.5, alpha = 0.35) +
+  scale_y_log10()
+```
+
+## Equal coupling
+```{r eq-settings}
+mpatches <- 4
+p <- 0.99 # proportion that only interact within their own
+M <- matrix((1-p)/(mpatches-1), nrow = mpatches, ncol = mpatches)
+diag(M) <- p
+
+# character vector containing "I#" column names
+Icols <- str_c("I", 1:mpatches)
+
+# run model
+result <- run_SIR(base.params, r.init(mpatches), M, seasonal_cosine)
+
+# calculate coherence
+coherence <- apply(result[,Icols], 1, coherence_calc)
+
+# melt data frame for easy plotting
+plot.df <- melt(result, c("t"), Icols, variable.name = "compartment", value.name = "prevalence")
+
+# print settings
+print(M, digits = 1)
+print(result[1, ])
+
+# plot result
+ggplot(plot.df) +
+  geom_line(aes(t, prevalence, colour = compartment)) +
+  geom_line(data = result, aes(t, coherence), size = 1.5, alpha = 0.35) +
+  scale_y_log10()
+```
+

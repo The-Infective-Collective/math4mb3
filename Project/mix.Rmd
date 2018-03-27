@@ -63,7 +63,6 @@ r.init <- function(m) {
   initial$R <- rep(base.params$pop, m) - initial$S - initial$I
   initial
 }
-
 ```
 
 ## Test run
@@ -123,6 +122,54 @@ ggplot(plot.df) +
   scale_y_log10()
 ```
 
+### Multiple runs
+```{r nn-multiple}
+mpatches <- 4
+p <- 0.99 # proportion that only interact within their own
+M <- matrix(c(p, (1-p)/2, 0, (1-p)/2,
+              (1-p)/2, p, (1-p)/2, 0,
+              0, (1-p)/2, p, (1-p)/2, 
+              (1-p)/2, 0, (1-p)/2, p), 
+            nrow = mpatches, ncol = mpatches)
+Icols <- str_c("I", 1:mpatches)
+runs <- 10
+
+# Initialize with a first run
+result <- run_SIR(base.params, r.init(mpatches), M, seasonal_cosine)
+
+# calculuate coherence for the first run
+coherence <- apply(result[,Icols], 1, coherence_calc)
+
+# initialize a data frame holding the coherence vector for the first run
+coherence.df <- result %>%
+  select(t) %>%
+  cbind(tibble("1" = coherence))
+
+for (i in as.character(2:runs)) {
+  # run model
+  result <- run_SIR(base.params, r.init(mpatches), M, seasonal_cosine)
+
+  # calculate coherence
+  coherence <- apply(result[,Icols], 1, coherence_calc)
+  
+  # add to the data frame of coherences
+  coherence.df[, i ] <-  coherence
+  
+}
+plot.df <- melt(coherence.df, c("t"), as.character(1:runs), variable.name = "run", value.name = "coherence")
+
+# print settings
+print(M, digits = 1)
+print(result[1, ])
+
+# plot result
+ggplot(plot.df) +
+  geom_line(aes(t, coherence, colour = run)) +
+  scale_y_log10() +
+  theme(legend.position = "none")
+```
+
+
 ## Equal coupling
 ```{r eq-settings}
 mpatches <- 4
@@ -151,5 +198,49 @@ ggplot(plot.df) +
   geom_line(aes(t, prevalence, colour = compartment)) +
   geom_line(data = result, aes(t, coherence), size = 1.5, alpha = 0.35) +
   scale_y_log10()
+```
+
+### Multiple runs
+```{r eq-multiple}
+mpatches <- 4
+p <- 0.99 # proportion that only interact within their own
+M <- matrix((1-p)/(mpatches-1), nrow = mpatches, ncol = mpatches)
+diag(M) <- p
+Icols <- str_c("I", 1:mpatches)
+runs <- 10
+
+# Initialize with a first run
+result <- run_SIR(base.params, r.init(mpatches), M, seasonal_cosine)
+
+# calculuate coherence for the first run
+coherence <- apply(result[,Icols], 1, coherence_calc)
+
+# initialize a data frame holding the coherence vector for the first run
+coherence.df <- result %>%
+  select(t) %>%
+  cbind(tibble("1" = coherence))
+
+for (i in as.character(2:runs)) {
+  # run model
+  result <- run_SIR(base.params, r.init(mpatches), M, seasonal_cosine)
+
+  # calculate coherence
+  coherence <- apply(result[,Icols], 1, coherence_calc)
+  
+  # add to the data frame of coherences
+  coherence.df[, i ] <-  coherence
+  
+}
+plot.df <- melt(coherence.df, c("t"), as.character(1:runs), variable.name = "run", value.name = "coherence")
+
+# print settings
+print(M, digits = 1)
+print(result[1, ])
+
+# plot result
+ggplot(plot.df) +
+  geom_line(aes(t, coherence, colour = run)) +
+  scale_y_log10() +
+  theme(legend.position = "none")
 ```
 

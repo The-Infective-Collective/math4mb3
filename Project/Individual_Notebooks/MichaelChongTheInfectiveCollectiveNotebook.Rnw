@@ -1,0 +1,191 @@
+\documentclass[12pt]{article}
+\usepackage{scrtime} % for \thistime (this package MUST be listed first!)
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\pagestyle{fancyplain}
+\usepackage[T1]{fontenc}
+\usepackage{tikz-cd}
+\usepackage{amsmath}
+% So David can comment:
+\newcommand{\de}[1]{{\color{red}{\bfseries DE:} #1}}
+% Use the R logo when referring to R:
+\usepackage{xspace}
+\newcommand{\Rlogo}{\protect\includegraphics[height=2ex,keepaspectratio]
+{images/Rlogo.pdf}\xspace} 
+% Note: must have the R logo saved in
+%       an "images" directory
+
+<<echo=FALSE>>=
+this.year <- 2018
+date.string <- function(year,month,day) {
+  return(sprintf("%s %d %s %d",
+                 weekdays(as.Date(paste(year,month,day,sep="-")),abbreviate=FALSE),
+                 day, month.name[month], year))
+}
+@ 
+
+\rhead{\fancyplain{}{4MB3 Project Notebook \Sexpr{this.year} \hfill Paul McCartney}}
+\title{Math 4MB3 Project Notebook \Sexpr{this.year}}
+\author{Michael Chong (The Infective Collective)}
+\date{\today\ @ \thistime}
+
+\begin{document}
+\maketitle
+
+\section*{\Sexpr{date.string(this.year, 3, 9)}}
+
+\textbf{Group Meeting (in class)} \\
+\emph{Approximate Duration: 0.5 Hours}
+
+\begin{itemize}
+\item We discussed project topics, and settled on ``Spatial Epidemic Dynamics: Synchronization" as our topic. This was communicated to Dr. Earn
+\end{itemize}
+
+\section*{\Sexpr{date.string(this.year, 3, 14)}}
+
+\textbf{Group Meeting (in class)} \\
+\emph{Approximate Duration: 1  Hours}
+
+\begin{itemize}
+\item Updated ``README.md" in the GitHub to keep track of the project
+\item Agreed to read papers suggested in the project document by Friday Mar. 16
+\item Brainstorm and discuss step (b) (construction of spatial SIR model) on Friday Mar. 16
+\item Try to complete step (b) by Monday Mar. 19
+\item Spent rest of the meeting reading papers individually
+\end{itemize}
+
+\section*{\Sexpr{date.string(this.year, 3, 16)}}
+
+\textbf{Group Meeting (in class)} \\
+\emph{Approximate Duration: 1 Hours}
+
+\begin{itemize}
+\item Tried to construct spatial SIR model
+\item Checked in with Dr. Earn about a possible construction
+\subitem Feedback: try to incorporate a decay within time steps (due to people leaving in between)
+\item Had my vote taken for pizza
+\end{itemize}
+
+\section*{\Sexpr{date.string(this.year, 3, 19)}}
+
+\textbf{Solo Work} \\
+\emph{Approximate Duration: 1 Hours}
+
+\begin{itemize}
+\item Try to formulate my own SIR model that takes into account feedback 
+\end{itemize}
+
+We previously came up with this model:
+\begin{equation}
+\begin{aligned}
+S_{t+1}^i &= \mu (1 - S_t) - \beta \left( \sum_{i=1}^M m_{ij} I_t^j \right) S_t^i \\
+I_{t+1}^i &= \beta \left( \sum_{i=1}^M m_{ij} I_t^j \right) S_t^i  - (\gamma + \mu) I_t^i\\
+R_{t+1} &= \gamma I_t^i - \mu R_t^i 
+\end{aligned}
+\end{equation}
+
+\textbf{Group Meeting} \\
+\emph{Approximate Duration: 1 Hours}
+
+\begin{itemize}
+\item Organization: 
+\item AB and MC to work on coding the simulation
+\item DPa and DPr try to connect this model to existing theorems
+\end{itemize}
+
+\section*{\Sexpr{date.string(this.year, 3, 20)}}
+
+\textbf{Group Work with Aurora} \\
+\emph{Approximate Duration: 3 Hours}
+
+\begin{itemize}
+\item Tried to implement model using R.
+\item Attempts on using pomp and Rcpp
+\item Ended up implementing Rcpp, but ran some errors. Will revisit tomorrow morning.
+\end{itemize}
+
+\section*{\Sexpr{date.string(this.year, 3, 21)}}
+
+\textbf{Group Work with Aurora} \\
+\emph{Approximate Duration: 2 Hours}
+
+\begin{itemize}
+\item Resolved errors, and the implementation now successfully produces output as a table
+\item Next steps are to implement stochasticity, and clean up and comment the code
+\end{itemize}
+
+\textbf{Group meeting (in class)} \\
+\emph{Approximate Duration: 2 Hours}
+\begin{itemize}
+\item Troubleshoot code -- second patch wasn't updating because the loop wasn't reaching the last patch
+\end{itemize}
+
+\textbf{Solo work} \\
+\emph{Approximate Duration: 1 Hours}
+\begin{itemize}
+\item Clean up code
+\item Return results in a dataframe
+\end{itemize}
+
+\section*{\Sexpr{date.string(this.year, 3, 23)}}
+
+\textbf{Group Meeting (in class)} \\
+\emph{Approximate Duration: 1 Hours}
+
+\begin{itemize}
+\item Split up work for draft
+\item Switch work responsibilities so that Presta & Park are doing the numerical work, Aurora and I are doing analytical work
+\end{itemize}
+
+\section*{\Sexpr{date.string(this.year, 3, 25)}}
+
+\textbf{Solo work} \\
+\emph{Approximate Duration: 0.5 Hours}
+\begin{itemize}
+\item Write part of introduction that outlines the rest of the paper
+\item Can't really keep writing without the rest of the content
+\end{itemize}
+
+\textbf{Group Meeting (in class)} \\
+\emph{Approximate Duration: 1 Hours}
+\begin{itemize}
+\item Discuss direction for the paper -- we will now be focusing on numerical results
+\item I will be working primarily on investigating the effects of mixing structure
+\end{itemize}
+
+\textbf{Group Meeting (evening)} \\
+\emph{Approximate Duration: 1 Hour}
+\begin{itemize}
+\item Discuss plan for the draft
+\end{itemize}
+
+\textbf{Solo work} \\
+\emph{Apprxomiate Duration: 3 Hours}
+\begin{itemize}
+\item Change some of my code to use SWP's general .cpp file
+\item Worked on setting up simulations to investigate different dispersal matrices
+\subitem implement incoherence calculation
+\subitem set up code to wrangle data and plot
+\subitem set up loop to run multiple iterations
+\end{itemize}
+
+\section*{\Sexpr{date.string(this.year, 3, 27)}}
+
+\textbf{Group meeting (evening)} \\
+\emph{Approximate Duration: 1 Hours}
+\begin{itemize}
+\item Help fix some bugs in Presta's code
+\item Discuss timeline for handing in draft. Everyone will have things done by 9 AM tomorrow.
+\end{itemize}
+
+\section*{Total time spent on this project}
+
+\begin{quote}
+
+\emph{Group work:}  hours
+
+\emph{Solo work:}  hours
+
+\end{quote}
+
+\end{document}

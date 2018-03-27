@@ -201,3 +201,40 @@ double seasonal_cosine(double t, List params) {
     
     return ret;
 }
+
+// [[Rcpp::export]]
+double term_time(double t, List params) {
+  double R0 = params["R0"];
+  double gamma = params["gamma"];
+  double pop = params["pop"];
+  double b1 = params["b1"];
+  // proportion of days in school year (weekends count, holidays do not)
+  double p = 0.7589;
+  
+  // mean transmission rate
+  double meantrans = R0 * gamma / pop;
+  
+  // seasonal amplitude
+  double a = b1;
+  
+  double ret;
+  
+  // Reduce to a yearly loop
+  // Data will repeat itself in simplified calendar
+  
+  t = t - floor(t);
+  
+  if(t >= 7/365 && t <= 68/365){
+    ret = (1 + 2*(1-p)*a)*meantrans;
+  } else if(t >= 76/365 && t <= 182/365) {
+    ret = (1 + 2*(1-p)*a)*meantrans;
+  } else if(t >= 246/365 && t <= 356/365) {
+    ret = (1 + 2*(1-p)*a)*meantrans;
+  } else {
+    ret = (1 - 2*p*a)*meantrans;
+  }
+  
+  return ret;
+  
+  
+}

@@ -1,0 +1,82 @@
+---
+title: "changingR0"
+author: "The Infective Collective (Aurora)"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(Rcpp)
+library(tidyverse)
+library(reshape2)
+source("params.R")
+sourceCpp("SIRmodel_npatch.cpp")
+set.seed(20)
+
+# set plotting theme for ggplot
+theme_set(theme_bw())
+```
+
+#
+```{functions}
+coherence_calc <- function(x) {
+  norm(x - rep(mean(x), length(x)), type = "2")
+}
+
+run_SIR <- function(p, init, m, seas) {
+  # get number of patches
+  n <- nrow(m)
+  
+  # Run the model
+  raw.result <- SIRmodel_npatch(p, init, m, seas)
+  
+  # Initialize result data frame
+  result <- data_frame(t = raw.result$time)
+  
+  # Pull results
+  S <- raw.result$S
+  I <- raw.result$I
+  R <- raw.result$R
+  
+  # Change column names
+  colnames(S) <- str_c("S", 1:n)
+  colnames(I) <- str_c("I", 1:n)
+  colnames(R) <- str_c("R", 1:n)
+  
+  # Combine data frames 
+  cbind(result, S, I, R) 
+}
+```
+
+```{initialinvestigation}
+## initial value takes vector of lists (need to specify initial value for each patch)
+initial <- list(
+  S = rep(base.init$S, 2) + rnorm(2),
+  I = rep(base.init$I, 2) + rnorm(2),
+  R = rep(base.init$R, 2) + rnorm(2)
+)
+
+## If you want to use a different parameter. below we plot time versus incidence with different R_0 values
+
+pp <- base.params
+
+pp[["R0"]] <- 20
+df2 <- SIRmodel_npatch(pp, initial, base.M, seasonal_cosine)
+
+plot(df2$time,df2$I[,1], type="l")
+lines(df2$time,df2$I[,2], col=2)
+```
+
+```{Coherencestuff}
+Icols <- str_c("I", 1:mpatches)
+df2 <- SIRmodel_npatch(pp, initial, base.M, seasonal_cosine)
+
+coherence <- apply(df2[,Icols], 1, coherence_calc)
+# melt data frame for easy plotting
+plot.df <- melt(df2, c("t"), Icols, variable.name = "compartment", value.name = "prevalence")
+
+# plot result
+ggplot(plot.df) +
+  geom_line(aes(t, prevalence, colour = compartment)) +
+  geom_line(data = result, aes(t, coherence), size = 1.5, alpha = 0.35)
+```
+```

@@ -12,7 +12,7 @@ initial <- list(
     R = rep(base.init$R, 2) + rnorm(2)
 )
 
-df <- SIRmodel_npatch(base.params, initial, base.M, seasonal_cosine)
+df <- SIRmodel_npatch(base.params, initial, base.M, term_time)
 
 plot(df$I[,1], type="l")
 lines(df$I[,2], col=2)
@@ -21,8 +21,8 @@ lines(df$I[,2], col=2)
 
 pp <- base.params
 
-pp[["R0"]] <- 12.345
-df2 <- SIRmodel_npatch(pp, initial, base.M, seasonal_cosine)
+pp[["b1"]] <- 0.2
+df2 <- SIRmodel_npatch(pp, initial, base.M, term_time)
 
 plot(df2$I[,1], type="l")
 lines(df2$I[,2], col=2)
@@ -36,7 +36,7 @@ initial3 <- list(
     R=(1-0.0001-c(0.05, 0.07)) * 1e6
 )
 
-df3 <- SIRmodel_npatch(base.params, initial3, new.M, seasonal_cosine)
+df3 <- SIRmodel_npatch(base.params, initial3, new.M, term_time)
 
 plot(df3$I[,1], type="l", xlim=c(30000, 35000))
 lines(df3$I[,2], col=2)

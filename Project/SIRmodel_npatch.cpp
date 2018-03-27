@@ -236,5 +236,4 @@ double term_time(double t, List params) {
   
   return ret;
   
-  
 }

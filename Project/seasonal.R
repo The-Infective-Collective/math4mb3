@@ -21,9 +21,9 @@ lines(df$I[,2], col=2)
 
 pp <- base.params
 
-pp[["b1"]] <- 0.3
+pp[["b1"]] <- 0.05
 
-df2 <- SIRmodel_npatch(pp, initial, base.M, seasonal_cosine)
+df2 <- SIRmodel_npatch(pp, initial, base.M, term_time)
 
 plot(df2$I[,1], type="l", xlim=c(0, 30000))
 lines(df2$I[,2], col=2)

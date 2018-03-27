@@ -36,8 +36,8 @@ initial3 <- list(
     R=(1-0.0001-c(0.05, 0.07)) * 1e6
 )
 
-df3 <- SIRmodel_npatch(base.params, initial3, new.M, term_time)
+df3 <- SIRmodel_npatch(pp, initial3, new.M, term_time)
 
-plot(df3$I[,1], type="l", xlim=c(30000, 35000))
+plot(df3$I[,1], type="l")
 lines(df3$I[,2], col=2)
 

@@ -2,35 +2,35 @@
 title: "Investigating mixing structure"
 author: "The Infective Collective (Michael Chong)"
 date:
-output: html_document:
-  toc: true
+output:
+  html_document:
+    toc: true
+    code_folding: hide
 ---
 
-```{r setup } 
+## Setup 
+### Load packages
+```{r setup} 
 library(Rcpp)
 library(tidyverse)
 library(reshape2)
-sourceCpp("SIRmodel_mix.cpp")
 source("params.R")
+sourceCpp("SIRmodel_npatch.cpp")
+set.seed(20)
+
+# set plotting theme for ggplot
+theme_set(theme_bw())
 ```
 
-
-```{r changing parameter values}
-library(Rcpp)
-library(tidyverse,stringr)
-sourceCpp("SIRmodel_mix.cpp")
-source("params.R")
-
-# change number of patches
-params$mpatches <- mpatches <- 6
-
-# set seed
-set.seed(params$seed)
-
+### Convenience functions
+```{r convenience-functions}
 # function to run model and return data frame
-run_SIR <- function(p) {
+run_SIR <- function(p, init, m, seas) {
+  # get number of patches
+  n <- nrow(m)
+  
   # Run the model
-  raw.result <- SIRmodel(p)
+  raw.result <- SIRmodel_npatch(p, init, m, seas)
   
   # Initialize result data frame
   result <- data_frame(t = raw.result$time)
@@ -41,42 +41,52 @@ run_SIR <- function(p) {
   R <- raw.result$R
   
   # Change column names
-  colnames(S) <- str_c("S", 1:p$mpatches)
-  colnames(I) <- str_c("I", 1:p$mpatches)
-  colnames(R) <- str_c("R", 1:p$mpatches)
+  colnames(S) <- str_c("S", 1:n)
+  colnames(I) <- str_c("I", 1:n)
+  colnames(R) <- str_c("R", 1:n)
   
   # Combine data frames 
   cbind(result, S, I, R) 
 }
 
-# character vector containing "I#" column names
-Icols <- str_c("I", 1:mpatches)
-
-# set plotting theme for ggplot
-theme_set(theme_bw())
-
-# run model
-result <- run_SIR(params)
-
-# Calculating coherence ---------------
+# coherence metric calculation
 coherence_calc <- function(x) {
   norm(x - rep(mean(x), length(x)), type = "2")
 }
 
-# find mean prevalence
-coherence <- apply(result[,Icols], 1, coherence_calc)
-
-# plot coherence
-qplot(result$t, coherence)
-
-# Plot of prevalence --------
-# melt data frame for easy plotting
-plot.df <- melt(result, c("t"), Icols, variable.name = "compartment", value.name = "prevalence")
 ```
 
-# Plot result
-```{r}
-# plot
+## Simulation settings
+```{r simulation-settings}
+# Dispersal matrix
+mpatches <- 2
+M <- matrix(rep(mpatches^(-1), mpatches^2), mpatches, mpatches)
+
+# initial conditions
+initial <- list(
+    S = rep(base.init$S, 2) + runif(2, -base.init$S, base.init$S),
+    I = rep(base.init$I, 2) + runif(2, - base.init$I, 20*base.init$I)
+)
+initial$R <- rep(base.params$pop, 2) - initial$S - initial$I
+
+# character vector containing "I#" column names
+Icols <- str_c("I", 1:mpatches)
+
+```
+
+## Result
+```{r run-model}
+# run model
+result <- run_SIR(base.params, initial, M, seasonal_cosine)
+
+# calculate coherence
+coherence <- apply(result[,Icols], 1, coherence_calc)
+
+
+# melt data frame for easy plotting
+plot.df <- melt(result, c("t"), Icols, variable.name = "compartment", value.name = "prevalence")
+
+# plot result
 ggplot(plot.df) +
   geom_line(aes(t, prevalence, colour = compartment)) +
   geom_line(data = result, aes(t, coherence), size = 1)

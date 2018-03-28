@@ -252,6 +252,6 @@ ggplot(plot.df) +
   labs(subtitle = str_c("p = " , p, ", ", runs, " random initial conditions"))
 
 # save plot as .png to use in report (may not be necessary for final)
-ggsave(str_c("eq", floor(p*100), ".png"), device = "png", width = 4.5, height = 2.5, units = "in")
+#ggsave(str_c("eq", floor(p*100), ".png"), device = "png", width = 4.5, height = 2.5, units = "in")
 ```
 

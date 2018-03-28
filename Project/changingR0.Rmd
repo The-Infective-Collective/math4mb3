@@ -8,6 +8,7 @@ output: html_document
 library(Rcpp)
 library(tidyverse)
 library(reshape2)
+library(latex2exp) #lets you use latex in graph title
 source("params.R")
 sourceCpp("SIRmodel_npatch.cpp")
 set.seed(20)
@@ -46,7 +47,7 @@ run_SIR <- function(p, init, m, seas) {
   cbind(result, S, I, R) 
 }
 
-# Generate initial conditions
+# Generate initial conditions randomly
 r.init <- function(m) { 
   initial <- list(
       S = round(rep(base.init$S, m) + runif(m, -base.init$S, base.init$S)),
@@ -56,6 +57,7 @@ r.init <- function(m) {
   initial
 }
 
+#define earn's random conditions
 initial3 <- list(
     S=c(0.05, 0.07) * 1e6,
     I=c(0.0001, 0.0001) * 1e6,
@@ -66,11 +68,12 @@ initial3 <- list(
 
 ```{r initialinvestigation}
 ## If you want to use a different parameter. below we plot time versus incidence with different R_0 values
-mpatches <- 2 #2 gives no coherence and 17 gives coherence
+mpatches <- 2
 pp <- base.params
 
 pp[["R0"]] <- 17
-pp[["nsteps"]]<-365*100
+
+pp[["nsteps"]]<-365*200
 ```
 
 ```{r Coherencestuff}
@@ -82,13 +85,16 @@ coherence <- apply(df3[,Icols], 1, coherence_calc)
 plot.df <- melt(df3, c("t"), Icols, variable.name = "compartment", value.name = "prevalence")
 
 # plot result
-ggplot(plot.df) +
-  geom_line(aes(t, prevalence, colour = compartment)) +
-  geom_line(data = result, aes(t, coherence), size = 1, alpha = 0.35) #+
-  #scale_y_log10()
+ggplot(data_frame(t = df3$t, coherence)[2:length(coherence),]) +
+  #geom_line(aes(t, prevalence, colour = compartment)) +
+  geom_line(aes(t, coherence), size = 1, alpha = 0.35)+
+  scale_y_log10() +
+  labs(y="Incoherence", x="Time (years)")#+
+  #ggtitle(TeX('Synchrony with two patches and $R_0=17$'))
 ```
 
 ```{r multipleruns}
+######ONLY USE THIS WHEN VARYING INITIAL CONDITIONS (NOT WHEN USING EARNS)
 runs <- 10
 
 # Initialize with a first run
@@ -104,7 +110,7 @@ coherence.df <- result %>%
 
 for (i in as.character(2:runs)) {
   # run model
-  result <- run_SIR(pp, initial3, new.M, seasonal_cosine)
+  result <- run_SIR(pp, r.init(mpatches), base.M, seasonal_cosine) 
 
   # calculate coherence
   coherence <- apply(result[,Icols], 1, coherence_calc)
@@ -114,10 +120,6 @@ for (i in as.character(2:runs)) {
   
 }
 plot.df <- melt(coherence.df, c("t"), as.character(1:runs), variable.name = "run", value.name = "coherence")
-
-# print settings
-print(M, digits = 1)
-print(result[1, ])
 
 # plot result
 ggplot(plot.df) +

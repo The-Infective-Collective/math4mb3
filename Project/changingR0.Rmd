@@ -66,7 +66,7 @@ initial3 <- list(
 
 ```{r initialinvestigation}
 ## If you want to use a different parameter. below we plot time versus incidence with different R_0 values
-mpatches <- 2
+mpatches <- 2 #2 gives no coherence and 17 gives coherence
 pp <- base.params
 
 pp[["R0"]] <- 17
@@ -76,7 +76,7 @@ pp[["nsteps"]]<-365*100
 ```{r Coherencestuff}
 new.M <- matrix(c(0.999, 0.001, 0.001, 0.999), 2, 2)
 Icols <- str_c("I", 1:mpatches)
-df3 <- run_SIR(pp, r.init(mpatches), new.M, seasonal_cosine)
+df3 <- run_SIR(pp, initial3, new.M, seasonal_cosine)
 coherence <- apply(df3[,Icols], 1, coherence_calc)
 # melt data frame for easy plotting
 plot.df <- melt(df3, c("t"), Icols, variable.name = "compartment", value.name = "prevalence")
@@ -84,7 +84,7 @@ plot.df <- melt(df3, c("t"), Icols, variable.name = "compartment", value.name = 
 # plot result
 ggplot(plot.df) +
   geom_line(aes(t, prevalence, colour = compartment)) +
-  geom_line(data = result, aes(t, coherence), size = 1.5, alpha = 0.35) +
-  scale_y_log10()
+  geom_line(data = result, aes(t, coherence), size = 1, alpha = 0.35) #+
+  #scale_y_log10()
 ```
 ```

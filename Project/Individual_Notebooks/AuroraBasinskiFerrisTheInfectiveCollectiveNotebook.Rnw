@@ -47,7 +47,7 @@ date.string <- function(year,month,day) {
 
 \begin{itemize}
 \item We discussed next steps for the project. We planned to read the recommended paper today (and in the next few days individually). 
-\item We will aim to have the spatial SIR model that must be checked by Dr. Earn (part b of the synchronization question) done by 19 March
+\item We will aim to have the spatial SIR model that must be checked by Dr. Earn (part b of the synchronization question in the project outline) done by 19 March
 \end{itemize}
 
 \section*{\Sexpr{date.string(this.year, 3, 16)}}
@@ -73,7 +73,7 @@ date.string <- function(year,month,day) {
 \emph{Approximate Duration: 3 Hours}
 
 \begin{itemize}
-\item Learned Rcpp (C++ addon to R) to construct deterministic discrete patch model previously created
+\item Learned Rcpp (C++ addon to R) to construct deterministic discrete patch model previously created.
 \end{itemize}
 
 \section*{\Sexpr{date.string(this.year, 3, 21)}}
@@ -117,7 +117,7 @@ date.string <- function(year,month,day) {
 
 \begin{itemize}
 \item Discussed the progress so far and changed our project plan a bit. We will stop doing analytical stuff and just focus on numerical (because the analytical stuff was not working).
-\item Nailed down a plan for what exactly we want to do with the numerical simulations. The new outlook of our project will be what changing parameters ($R_0$ mostly), seasonal forcing, and adding stochasticity do to the patch model.
+\item Nailed down a plan for what exactly we want to do with the numerical simulations. The new outlook of our project will be investigating what changing parameters ($R_0$), seasonal forcing, and the connectivity matrix do to the deterministic model. We will additionally investigate the effects of adding stochasticity to the patch model.
 \end{itemize}
 
 \textbf{Group Meeting (with everyone)} \\
@@ -126,6 +126,23 @@ date.string <- function(year,month,day) {
 \begin{itemize}
 \item Met in the evening to continue discussing our plan for the draft.
 \end{itemize}
+
+\section*{\Sexpr{date.string(this.year, 3, 27)}}
+\textbf{Individual work} \\
+\emph{Approximate Duration: 0.5 Hours}
+
+\begin{itemize}
+\item work
+\end{itemize}
+
+\textbf{Group meeting (with everyone)} \\
+\emph{Approximate Duration: 1 Hour}
+
+\begin{itemize}
+\item Discussed issues people were having with getting code to run. Fixed these in group meeting.
+\item Final discussion on what we should do for draft. Coordinated what should be said in each section and some formatting.
+\end{itemize}
+
 
 \section*{Total time spent on this project}
 

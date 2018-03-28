@@ -1,0 +1,111 @@
+\documentclass[12pt]{article}
+\usepackage{scrtime} % for \thistime (this package MUST be listed first!)
+\usepackage[margin=1in]{geometry}
+\usepackage{listings}
+
+
+%% Language and font encodings
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+
+%% Useful packages
+\usepackage{amsmath}
+\usepackage{amsthm} % for theorems and proofs
+\usepackage{amsfonts} % mathbb
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\definecolor{aqua}{RGB}{0, 128, 225}
+\usepackage[colorlinks=true,citecolor=aqua,linkcolor=aqua,urlcolor=aqua]{hyperref}
+\usepackage[nameinlink]{cleveref}
+
+\usepackage{fancyhdr,lastpage}
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer parameters
+%%%\lhead{Student Name: \theblank{4cm}}
+%%%\chead{}
+%%%\rhead{Student Number: \theblank{3cm}}
+%%%\lfoot{\small\bfseries\ifnum\thepage<\pageref{LastPage}{CONTINUED\\on next page}\else{LAST PAGE}\fi}
+\lfoot{}
+\cfoot{{\small\bfseries Page \thepage\ of \pageref{LastPage}}}
+\rfoot{}
+\renewcommand\headrulewidth{0pt} % Removes funny header line
+
+\newcommand{\R}{{\cal R}}
+
+\title{Math 4MB3: Draft Group Project - Supplementary file}
+\author{\underline{\emph{Group Name}}: \texttt{{\color{blue}The Infective Collective}}\\
+{}\\
+\underline{\emph{Group Members}}: {\color{blue}Aurora Basinski-Ferris, Michael Chong, Daniel Park, Daniel Presta}}
+
+\date{\today\ @ \thistime}
+
+
+\begin{document}
+\maketitle
+
+\section{Construction of the model}
+
+First, consider the following coupled seasonally forced SIR model consisting of $n$ patches:
+\begin{equation}
+\begin{aligned}
+\frac{dS_i}{dt} &= \mu N - \left(\sum_{j=1}^n \beta(t) m_{ij} I_j + \mu\right) S_i \\
+\frac{dI_i}{dt} &= \left(\sum_{j=1}^n \beta(t) m_{ij} I_j + \mu\right) S_i - (\mu  + \gamma) I_i\\
+\frac{dR_i}{dt} &= \gamma I_i - \mu R_i
+\end{aligned}
+\end{equation}
+where $S_i$, $I_i$ and $R_i$ are numbers of susceptible, infected and recovered individuals in patch $i$, respectively. 
+$N$ is population size in every patch and is assumed to be constant. 
+$\beta(t)$ is the transmission rate, $\gamma$ is the per capita recovery rate and $\mu$ is the per capita death rate as well as birth rate. 
+$m_{ij}$ is the proportion of contacts from patch $j$ that are dispersed to patch $i$. 
+The dispersal matrix is then given by $M = \left[m_{ij}\right]$ and we have $\sum_{i=1}^n m_{ij} = 1$. 
+To allow for seasonal forcing, we model the transmission rate using a trigonometric function [CITE]:
+\begin{equation}
+\beta(t) = b_0 (1 + b_1 \cos(2 \pi t))
+\end{equation}
+
+Note that a susceptible individual in patch $i$ leaves the susceptible compartment at rate $\sum_{j=1}^n \beta(t) m_{ij} I_j + \mu$. We can view this quantity as hazard and obtain the probability that a susceptible individual survives during a time interval $(t, t + \Delta t)$:
+\begin{equation}
+\exp \left(-\int_{t}^{t + \Delta t} \sum_{j=1}^n \beta(s) m_{ij} I_j(s) + \mu d s \right),
+\end{equation}
+where for sufficiently small $\Delta t$, we can write
+\begin{equation}
+\int_{t}^{t + \Delta t} \sum_{j=1}^n \beta(s) m_{ij} I_j(s) + \mu d s \approx \left(\sum_{j=1}^n \beta(t) m_{ij} I_j(s) + \mu \right) \Delta t.
+\end{equation}
+Rearranging, number of individuals that leave the susceptible compartment after $\Delta$ time step is given by
+$$
+S_{i, \tiny{\textrm{leave}}}(t) = \left(1 - \exp \left(-\left(\sum_{j=1}^n \beta(t) m_{ij} I_j(s) + \mu \right) \Delta t \right) \right) S_i(t)
+$$
+Assuming that the transmission rate and number of infected individuals stays constant over the interval $(t, t+\Delta)$, the probability that a susceptible individual leaves the compartment due to infection is given by 
+\begin{equation}
+\frac{\sum_{j=1}^n \beta(t) m_{ij} I_j(s)}{\sum_{j=1}^n \beta(t) m_{ij} I_j(s) + \mu}
+\end{equation}
+Incidence (i.e., number of suseptible individuals that become infected during $(t, t+\Delta t)$ interval) is then given by the product of above probability and $S_{i, \tiny{\textrm{leave}}}(t)$.
+Similarly, an infected individual and a recovered individual suffer from constant hazard of $\gamma + \mu$ and $\mu$, respectively, and these can each be translated into survival probability, yielding
+\begin{equation}
+\begin{aligned}
+I_{i, \tiny{\textrm{leave}}}(t) &= (1 - \exp(-(\gamma + \mu)\Delta t)) I_i(t) \\
+R_{i, \tiny{\textrm{leave}}}(t) &= (1 - \exp(-\mu \Delta t)) R_i(t)
+\end{aligned}
+\end{equation}
+Then, the full discrete time model is given by
+\begin{equation}
+\label{eq:discretedeterministic}
+\begin{aligned}
+S_{k}(t+\Delta t) &= b_k(t) + S_k(t) - S_{k, \tiny{\textrm{leave}}}(t)\\
+I_{k}(t+\Delta t) &= i_k(t) + I_k(t) - I_{k, \tiny{\textrm{leave}}}(t)\\
+R_{k}(t+\Delta t) &= r_k(t) + R_k(t) - R_{k, \tiny{\textrm{leave}}}(t)
+\end{aligned}
+\end{equation}
+where $b_k(t)$, $i_k(t)$, and $r_k(t)$ represent number of new susceptible, infected, and recovered individuals that are produced between the interval $(t, t+\Delta t)$:
+\begin{equation}
+\begin{aligned}
+i_k(t) &= \frac{\sum_{j=1}^n \beta(t) m_{ij} I_j(s)}{\sum_{j=1}^n \beta(t) m_{ij} I_j(s) + \mu} S_{k, \tiny{\textrm{leave}}}(t)\\
+r_k(t) &= \frac{\gamma}{\gamma + \mu} R_{k, \tiny{\textrm{leave}}}(t)\\
+b_k(t) &= S_{k, \tiny{\textrm{leave}}}(t) - i_k(t) + I_{k, \tiny{\textrm{leave}}}(t) - r_k(t)\\
+\end{aligned}
+\end{equation}
+
+\bibliographystyle{vancouver}
+\bibliography{synchrony}
+\end{document}

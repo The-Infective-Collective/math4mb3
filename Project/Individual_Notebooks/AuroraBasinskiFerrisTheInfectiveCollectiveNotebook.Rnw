@@ -23,7 +23,7 @@ date.string <- function(year,month,day) {
 }
 @ 
 
-\rhead{\fancyplain{}{4MB3 Project Notebook \Sexpr{this.year} \hfill Paul McCartney}}
+\rhead{\fancyplain{}{4MB3 Project Notebook \Sexpr{this.year} \hfill Aurora Basinski-Ferris}}
 \title{Math 4MB3 Project Notebook \Sexpr{this.year}}
 \author{Aurora Basinski-Ferris}
 \date{\today\ @ \thistime}

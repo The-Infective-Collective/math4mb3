@@ -129,10 +129,11 @@ date.string <- function(year,month,day) {
 
 \section*{\Sexpr{date.string(this.year, 3, 27)}}
 \textbf{Individual work} \\
-\emph{Approximate Duration: 0.5 Hours}
+\emph{Approximate Duration: 5 Hours}
 
 \begin{itemize}
-\item work
+\item I worked on the R code for my section (the section examining the effect of changing $R_0$)
+\item I wrote my draft section and put the relevant R code in the supplementary file
 \end{itemize}
 
 \textbf{Group meeting (with everyone)} \\
@@ -148,9 +149,9 @@ date.string <- function(year,month,day) {
 
 \begin{quote}
 
-\emph{Group work:} 96 hours
+\emph{Group work:} 13.5 hours
 
-\emph{Solo work:} 132 hours
+\emph{Solo work:} 5.5 hours
 
 \end{quote}
 

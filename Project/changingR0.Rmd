@@ -71,7 +71,7 @@ initial3 <- list(
 mpatches <- 2
 pp <- base.params
 
-pp[["R0"]] <- 17
+pp[["R0"]] <- 16
 
 pp[["nsteps"]]<-365*200
 ```
@@ -94,11 +94,11 @@ ggplot(data_frame(t = df3$t, coherence)[2:length(coherence),]) +
 ```
 
 ```{r multipleruns}
-######ONLY USE THIS WHEN VARYING INITIAL CONDITIONS (NOT WHEN USING EARNS)
+######ONLY USE THIS WHEN VARYING INITIAL CONDITIONS (using r.init(mpatches) NOT WHEN USING initial3
 runs <- 10
 
 # Initialize with a first run
-result <- run_SIR(pp, initial3, new.M, seasonal_cosine)
+result <- run_SIR(pp, r.init(mpatches), new.M, seasonal_cosine)
 
 # calculuate coherence for the first run
 coherence <- apply(result[,Icols], 1, coherence_calc)
@@ -110,7 +110,7 @@ coherence.df <- result %>%
 
 for (i in as.character(2:runs)) {
   # run model
-  result <- run_SIR(pp, r.init(mpatches), base.M, seasonal_cosine) 
+  result <- run_SIR(pp, r.init(mpatches), new.M, seasonal_cosine) 
 
   # calculate coherence
   coherence <- apply(result[,Icols], 1, coherence_calc)

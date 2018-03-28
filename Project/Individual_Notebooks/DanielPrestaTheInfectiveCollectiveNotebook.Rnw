@@ -1,0 +1,196 @@
+\documentclass[12pt]{article}
+\usepackage{scrtime} % for \thistime (this package MUST be listed first!)
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\pagestyle{fancyplain}
+\usepackage[T1]{fontenc}
+\usepackage{tikz-cd}
+\usepackage{amsmath}
+% So David can comment:
+\newcommand{\de}[1]{{\color{red}{\bfseries DE:} #1}}
+% Use the R logo when referring to R:
+\usepackage{xspace}
+\newcommand{\Rlogo}{\protect\includegraphics[height=2ex,keepaspectratio]
+{images/Rlogo.pdf}\xspace} 
+% Note: must have the R logo saved in
+%       an "images" directory
+
+<<echo=FALSE>>=
+this.year <- 2018
+date.string <- function(year,month,day) {
+  return(sprintf("%s %d %s %d",
+                 weekdays(as.Date(paste(year,month,day,sep="-")),abbreviate=FALSE),
+                 day, month.name[month], year))
+}
+@ 
+
+\rhead{\fancyplain{}{4MB3 Project Notebook \Sexpr{this.year} \hfill Daniel Presta}}
+\title{Math 4MB3 Project Notebook \Sexpr{this.year}}
+\author{Daniel Presta (The Infective Collective)}
+\date{\today\ @ \thistime}
+
+\begin{document}
+\maketitle
+
+\section*{\Sexpr{date.string(this.year, 3, 9)}}
+
+\textbf{Group Meeting (in class)} \\
+\emph{Approximate Duration: 0.5 Hours}
+
+\begin{itemize}
+\item We discussed project topics, and settled on ``Spatial Epidemic Dynamics: Synchronization" as our topic
+\item We sent an email to Dr. Earn, confirming our topic choice.
+\end{itemize}
+
+\section*{\Sexpr{date.string(this.year, 3, 14)}}
+
+\textbf{Group Meeting (in class)} \\
+\emph{Approximate Duration: 1  Hour}
+
+\begin{itemize}
+\item Updated ``README.md" in the GitHub repository; added papers that should be read for the next meeting.
+\item Discuss step (b) (construction of spatial SIR model) next meeting, will hopefully have model approved by Dr. Earn by the end of the next meeting.
+\item Read suggested papers.
+\end{itemize}
+
+\section*{\Sexpr{date.string(this.year, 3, 16)}}
+
+\textbf{Group Meeting (in class)} \\
+\emph{Approximate Duration: 1 Hour}
+
+\begin{itemize}
+\item Tried to construct spatial SIR model after reading suggested papers.
+\item We approached Dr. Earn about a possible idea for a model.
+\end{itemize}
+
+\textbf{Group Meeting} \\
+\emph{Approximate Duration: 1 Hour}
+
+\begin{itemize}
+\item Split up work 
+\item Aurora and Michael are to work on numerical/computational simulations.
+\item DPark and DPresta will try to connect this model to existing theorems
+\item DPark and DPresta will try to use existing theorems to analytically determine/prove a set of criteria for coherence in our model.
+\end{itemize}
+
+\section*{\Sexpr{date.string(this.year, 3, 20)}}
+
+\textbf{Solo Work} \\
+\emph{Approximate Duration: 2 Hours}
+
+\begin{itemize}
+\item Read (Earn \& Levin 2006) and (McCluskey \& Earn 2011) to better understand analytical approaches
+\item Using their approaches, attempted to derive a set of criteria for coherence in our model.
+\item Messed around with possible reproductive functions, before stopping and realizing that the dispersal matrix in the exponent cannot be simplified.
+\end{itemize}
+
+\section*{\Sexpr{date.string(this.year, 3, 21)}}
+
+\textbf{Solo Work} \\
+\emph{Approximate Duration: 2 Hours}
+
+\begin{itemize}
+\item Took different approach to finding analytical condition.
+\item Like DPark, I analyzed a two patch SIS model and tried to derive a coherence criterion.
+\item Difference is that I did not assume equal coupling.
+\item Algebra did not simplify, ran into a wall.
+\end{itemize}
+
+\textbf{Group meeting} \\
+\emph{Approximate Duration: 1 Hour}
+\begin{itemize}
+\item Aurora, Michael, and DPark all troubleshooted code and fixed their error in the Rcpp file.
+\item I worked on simplifying the algebra required to derive a coherence criterion for a two patch SIS system (where dispersal matrix does not have equal coupling).
+\end{itemize}
+
+\section*{\Sexpr{date.string(this.year, 3, 22)}}
+
+\textbf{Solo work} \\
+\emph{Approximate Duration: 1.5 Hours}
+\begin{itemize}
+\item Attempted to find coherence criterion for continuous time version of our SIR model (first examined the continuous time version of the SIS model).
+\item Once again assumed that dispersal matrix did not have equal coupling.
+\item Algebra became impossible to simplify; looking like analysis may not be as easy we thought. Only results obtained so far come from basic two patch SIS models.
+\end{itemize}
+
+\section*{\Sexpr{date.string(this.year, 3, 23)}}
+
+\textbf{Group Meeting (in class)} \\
+\emph{Approximate Duration: 1 Hour}
+
+\begin{itemize}
+\item Split up work for draft.
+\item Decided that DPark and I will be doing numerical work now, while Aurora and Michael will be doing analytical work.
+\end{itemize}
+
+\section*{\Sexpr{date.string(this.year, 3, 25)}}
+
+\textbf{Solo work} \\
+\emph{Approximate Duration: 1.5 Hours}
+\begin{itemize}
+\item Learned basics of Rcpp so that I can write a source file in Rcpp for a stochastic SIR model.
+\item Began to tinker with Rcpp source file for our simple SIR model (no alterations); will write code tomorrow
+\end{itemize}
+
+\section*{\Sexpr{date.string(this.year, 3, 26)}}
+
+\textbf{Group Meeting (in class)} \\
+\emph{Approximate Duration: 1 Hour}
+\begin{itemize}
+\item Discussed direction for the paper and further split up work.
+\item Analytical work will be shelved, for now; only focusing on numerical simulations.
+\item I will be working on the investigation of effects of seasonal forcing and the changes in seasonal amplitude.
+\end{itemize}
+
+\textbf{Solo Work} \\
+\emph{Approximate Duration: 2.5 Hours}
+\begin{itemize}
+\item Wrote a function in Rcpp that simulates changes for a stochastic version of our SIR model.
+\item This file was then used by DPark and he copied the important bits into the "SIRmodelnpatch.cpp" file, in order to keep repository clean and code easy to work with.
+\item Began to analyze different functions for $\beta (t)$. Will use sinusoidally-forced transmission rate, will also use a term-time transmission rate similar to one seen in (He et al. 2009).
+\end{itemize}
+
+
+\textbf{Group Meeting (evening)} \\
+\emph{Approximate Duration: 1 Hour}
+\begin{itemize}
+\item Discussed plan for the draft.
+\end{itemize}
+
+\section*{\Sexpr{date.string(this.year, 3, 27)}}
+
+\textbf{Solo work} \\
+\emph{Apprxomiate Duration: 3.5 Hours}
+\begin{itemize}
+\item Wrote a function for term-time forced transmission rate and added it to the general source file ("SIRmodelnpatch.cpp").
+\item Encountered several errors; prevalence vs. time graph looked extremely incorrect.
+\item Also simulated various runs of sinusoidally-forced transmission rate when seasonal amplitude is changed, observed trends.
+\item Wrote a paragraph in introduction.
+\end{itemize}
+
+\textbf{Group meeting} \\
+\emph{Approximate Duration: 1 Hour}
+\begin{itemize}
+\item DPark and Michael helped fix the bug in my code, turned out it was a simple int/float conflict error in Rcpp.
+\item Agreed that everyone will have things done by 9 AM tomorrow.
+\end{itemize}
+
+\textbf{Solo work} \\
+\emph{Apprxomiate Duration: 3 Hours}
+\begin{itemize}
+\item Adapted the code previously used by Aurora and Michael to account for changes in seasonal amplitude (and ignore changes in $\mathcal{R}_0$ and connectivity matrices).
+\item Ran simulations for different seasonal amplitude values for both forced transmission rates. Coherence trends are difficult to detect right now. A bifurcation diagram will be necessary to better understand the effects of seasonal amplitude.
+\item Wrote up my findings in the project document, while also explaining a bit about time-dependent transmission rates in general.
+\end{itemize}
+
+\section*{Total time spent on this project}
+
+\begin{quote}
+
+\emph{Group work:} 8.5 hours
+
+\emph{Solo work:} 16 hours
+
+\end{quote}
+
+\end{document}

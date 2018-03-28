@@ -8,8 +8,7 @@ output:
     code_folding: hide
 ---
 
-## Setup 
-### Load packages
+## Setup (load packages, convenience functions)
 ```{r setup} 
 library(Rcpp)
 library(tidyverse)
@@ -18,13 +17,8 @@ source("params.R")
 sourceCpp("SIRmodel_npatch.cpp")
 set.seed(20)
 
-# set plotting theme for ggplot
-theme_set(theme_bw())
-```
+## Convenience Functions ----------------------------
 
-
-### Convenience functions
-```{r convenience-functions}
 # function to run model and return data frame
 run_SIR <- function(p, init, m, seas) {
   # get number of patches
@@ -56,6 +50,7 @@ coherence_calc <- function(x) {
 }
 
 # Generate initial conditions
+## generate by adding noise to the endemic equilibrium
 r.init <- function(m) { 
   initial <- list(
       S = round(rep(base.init$S, m) + runif(m, -base.init$S, base.init$S)),
@@ -64,6 +59,15 @@ r.init <- function(m) {
   initial$R <- rep(base.params$pop, m) - initial$S - initial$I
   initial
 }
+
+## generate by sampling uniform 
+r.init.unif <- function(m) { 
+  initial <- list(S = round(runif(m, 0, base.params$pop)))
+  initial$I <- round(runif(m, 0, base.params$pop - initial$S))
+  initial$R <- rep(base.params$pop, m) - initial$S - initial$I
+  initial
+}
+
 ```
 
 ## Test run
@@ -203,15 +207,17 @@ ggplot(plot.df) +
 
 ### Multiple runs
 ```{r eq-multiple}
-mpatches <- 4
-p <- 0.99 # proportion that only interact within their own
+set.seed(11)
+
+mpatches <- 2
+p <- 0.75# proportion that only interact within their own
 M <- matrix((1-p)/(mpatches-1), nrow = mpatches, ncol = mpatches)
 diag(M) <- p
 Icols <- str_c("I", 1:mpatches)
-runs <- 10
+runs <- 20
 
 # Initialize with a first run
-result <- run_SIR(base.params, r.init(mpatches), M, seasonal_cosine)
+result <- run_SIR(base.params, r.init.unif(mpatches), M, seasonal_cosine)
 
 # calculuate coherence for the first run
 coherence <- apply(result[,Icols], 1, coherence_calc)
@@ -223,7 +229,7 @@ coherence.df <- result %>%
 
 for (i in as.character(2:runs)) {
   # run model
-  result <- run_SIR(base.params, r.init(mpatches), M, seasonal_cosine)
+  result <- run_SIR(base.params, r.init.unif(mpatches), M, seasonal_cosine)
 
   # calculate coherence
   coherence <- apply(result[,Icols], 1, coherence_calc)
@@ -232,7 +238,7 @@ for (i in as.character(2:runs)) {
   coherence.df[, i ] <-  coherence
   
 }
-plot.df <- melt(coherence.df, c("t"), as.character(1:runs), variable.name = "run", value.name = "coherence")
+plot.df <- melt(coherence.df, c("t"), as.character(1:runs), variable.name = "run", value.name = "incoherence")
 
 # print settings
 print(M, digits = 1)
@@ -240,8 +246,12 @@ print(result[1, ])
 
 # plot result
 ggplot(plot.df) +
-  geom_line(aes(t, coherence, colour = run)) +
+  geom_line(aes(t, incoherence, colour = run), alpha = 0.35) +
   scale_y_log10() +
-  theme(legend.position = "none")
+  theme(legend.position = "none") +
+  labs(subtitle = str_c("p = " , p, ", ", runs, " random initial conditions"))
+
+# save plot as .png to use in report (may not be necessary for final)
+ggsave(str_c("eq", floor(p*100), ".png"), device = "png", width = 4.5, height = 2.5, units = "in")
 ```
 

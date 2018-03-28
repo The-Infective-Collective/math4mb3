@@ -22,6 +22,7 @@ set.seed(20)
 theme_set(theme_bw())
 ```
 
+
 ### Convenience functions
 ```{r convenience-functions}
 # function to run model and return data frame

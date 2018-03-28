@@ -87,4 +87,41 @@ ggplot(plot.df) +
   geom_line(data = result, aes(t, coherence), size = 1, alpha = 0.35) #+
   #scale_y_log10()
 ```
+
+```{r multipleruns}
+runs <- 10
+
+# Initialize with a first run
+result <- run_SIR(pp, initial3, new.M, seasonal_cosine)
+
+# calculuate coherence for the first run
+coherence <- apply(result[,Icols], 1, coherence_calc)
+
+# initialize a data frame holding the coherence vector for the first run
+coherence.df <- result %>%
+  select(t) %>%
+  cbind(tibble("1" = coherence))
+
+for (i in as.character(2:runs)) {
+  # run model
+  result <- run_SIR(pp, initial3, new.M, seasonal_cosine)
+
+  # calculate coherence
+  coherence <- apply(result[,Icols], 1, coherence_calc)
+  
+  # add to the data frame of coherences
+  coherence.df[, i ] <-  coherence
+  
+}
+plot.df <- melt(coherence.df, c("t"), as.character(1:runs), variable.name = "run", value.name = "coherence")
+
+# print settings
+print(M, digits = 1)
+print(result[1, ])
+
+# plot result
+ggplot(plot.df) +
+  geom_line(aes(t, coherence, colour = run)) +
+  scale_y_log10() +
+  theme(legend.position = "none")
 ```

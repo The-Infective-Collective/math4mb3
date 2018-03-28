@@ -1,0 +1,131 @@
+---
+title: "SeasonalAmplitude_effects"
+author: "The Infective Collective (Daniel Presta)"
+date: "March 27, 2018"
+output: html_document
+---
+
+## Setup, load packages
+```{r setup, include=FALSE}
+library(Rcpp)
+library(tidyverse)
+library(reshape2)
+library(latex2exp) #lets you use latex in graph title
+source("params.R")
+sourceCpp("SIRmodel_npatch.cpp")
+set.seed(20)
+
+# set plotting theme for ggplot
+theme_set(theme_bw())
+```
+
+## Convenience Functions
+```{r functions}
+coherence_calc <- function(x) {
+  norm(x - rep(mean(x), length(x)), type = "2")
+}
+
+run_SIR <- function(p, init, m, seas) {
+  # get number of patches
+  n <- nrow(m)
+  
+  # Run the model
+  raw.result <- SIRmodel_npatch(p, init, m, seas)
+  
+  # Initialize result data frame
+  result <- data_frame(t = raw.result$time)
+  
+  # Pull results
+  S <- raw.result$S
+  I <- raw.result$I
+  R <- raw.result$R
+  
+  # Change column names
+  colnames(S) <- str_c("S", 1:n)
+  colnames(I) <- str_c("I", 1:n)
+  colnames(R) <- str_c("R", 1:n)
+  
+  # Combine data frames 
+  cbind(result, S, I, R) 
+}
+
+# Generate initial conditions randomly
+r.init <- function(m) { 
+  initial <- list(
+      S = round(rep(base.init$S, m) + runif(m, -base.init$S, base.init$S)),
+      I = round(rep(base.init$I, m) + runif(m, - base.init$I, 30*base.init$I))
+  )
+  initial$R <- rep(base.params$pop, m) - initial$S - initial$I
+  initial
+}
+
+#define earn's random conditions
+initial3 <- list(
+    S=c(0.05, 0.07) * 1e6,
+    I=c(0.0001, 0.0001) * 1e6,
+    R=(1-0.0001-c(0.05, 0.07)) * 1e6
+)
+
+```
+
+```{r initialinvestigation}
+## If you want to use a different parameter. below we plot time versus incidence with different R_0 values
+mpatches <- 2
+pp <- base.params
+
+pp[["b1"]] <- 0.5 #change seasonal amplitude
+
+pp[["nsteps"]]<-365*200
+```
+
+```{r Coherencestuff}
+new.M <- matrix(c(0.999, 0.001, 0.001, 0.999), 2, 2)
+Icols <- str_c("I", 1:mpatches)
+df3 <- run_SIR(pp, initial3, new.M, term_time)
+coherence <- apply(df3[,Icols], 1, coherence_calc)
+# melt data frame for easy plotting
+plot.df <- melt(df3, c("t"), Icols, variable.name = "compartment", value.name = "prevalence")
+
+# plot result
+ggplot(data_frame(t = df3$t, coherence)[2:length(coherence),]) +
+  #geom_line(aes(t, prevalence, colour = compartment)) +
+  geom_line(aes(t, coherence), size = 1, alpha = 0.35)+
+  scale_y_log10() +
+  labs(y="Incoherence", x="Time (years)")+
+  ggtitle(TeX('Synchrony with two patches and term-time forcing; $b_1=0.5$'))
+```
+
+```{r multipleruns}
+######ONLY USE THIS WHEN VARYING INITIAL CONDITIONS (NOT WHEN USING EARNS)
+runs <- 10
+
+# Initialize with a first run
+result <- run_SIR(pp, initial3, new.M, seasonal_cosine)
+
+# calculuate coherence for the first run
+coherence <- apply(result[,Icols], 1, coherence_calc)
+
+# initialize a data frame holding the coherence vector for the first run
+coherence.df <- result %>%
+  select(t) %>%
+  cbind(tibble("1" = coherence))
+
+for (i in as.character(2:runs)) {
+  # run model
+  result <- run_SIR(pp, r.init(mpatches), base.M, seasonal_cosine) 
+
+  # calculate coherence
+  coherence <- apply(result[,Icols], 1, coherence_calc)
+  
+  # add to the data frame of coherences
+  coherence.df[, i ] <-  coherence
+  
+}
+plot.df <- melt(coherence.df, c("t"), as.character(1:runs), variable.name = "run", value.name = "coherence")
+
+# plot result
+ggplot(plot.df) +
+  geom_line(aes(t, coherence, colour = run)) +
+  scale_y_log10() +
+  theme(legend.position = "none")
+```

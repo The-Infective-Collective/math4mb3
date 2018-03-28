@@ -132,8 +132,8 @@ List SIRmodel_npatch_stochastic(List params, List init, NumericMatrix m,
     double deathrate = 1 - exp(-mu*dt);
     
     double beta;
-    double leaveS, leaveI, leaveR;
-    double enterS, enterI, enterR;
+    int leaveS, leaveI, leaveR;
+    int enterS, enterI, enterR;
     
     // Iterate over time steps
     for (int istep = 0; istep < (nsteps-1); istep++) {
@@ -144,9 +144,9 @@ List SIRmodel_npatch_stochastic(List params, List init, NumericMatrix m,
         for (int jpatch = 0; jpatch < mpatches; jpatch++) {
             
             // Get current S, I, and R states
-            double iS1 = SS(istep, jpatch);  
-            double iI1 = II(istep, jpatch);
-            double iR1 = RR(istep, jpatch);
+            int iS1 = SS(istep, jpatch);  
+            int iI1 = II(istep, jpatch);
+            int iR1 = RR(istep, jpatch);
             
             // Initialize variable to hold the sum of (connectivity)*(# infected)
             double transsum = 0;

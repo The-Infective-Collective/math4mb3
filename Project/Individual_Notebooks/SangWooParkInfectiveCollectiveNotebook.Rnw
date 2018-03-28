@@ -601,19 +601,20 @@ I tried checking this value for the measles model but I don't think it really he
 \end{itemize}
 
 \textbf{Solo work} \\
-\emph{Approximate Duration: 5 Hour}
+\emph{Approximate Duration: 6 Hour}
 
 \begin{itemize}
-    \item Coding, writing 
+    \item Coding, writing, editing and making figures
+    \item Worked mostly on methods and stochastic
 \end{itemize}
 
 \section*{Total time spent on this project}
 
 \begin{quote}
 
-\emph{Group work:} $n$ hours
+\emph{Group work:} $7.5$ hours
 
-\emph{Solo work:} $m$ hours
+\emph{Solo work:} $24$ hours
 
 \end{quote}
 

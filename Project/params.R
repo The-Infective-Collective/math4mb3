@@ -1,12 +1,19 @@
-initfun <- function(param) {
+initfun <- function(param,
+                    n.patch=1,
+                    round=FALSE) {
     with(param,{
         epsilon <- mu/(mu+gamma)
         
-        list(
-            S=pop/R0,
-            I=epsilon*(1-1/R0)*pop,
-            R=pop-(1-R0-epsilon*(1-1/R0))
+        ll <- list(
+            S=rep(pop/R0, n.patch),
+            I=rep(epsilon*(1-1/R0)*pop, n.patch)
         )
+        
+        if (round) ll <- lapply(ll, round)
+        
+        ll$R <- pop - ll$S - ll$I
+        
+        ll
     })
 }
 

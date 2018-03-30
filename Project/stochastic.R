@@ -2,70 +2,54 @@ library(Rcpp)
 source("params.R")
 sourceCpp("SIRmodel_npatch.cpp")
 
-pp <- base.params
-pop <- pp[["pop"]]
+nsim <- 50
+R0vec <- seq(1, 20, by=0.2)
+mvec <- c(0.001, 0.01, 0.1, 0.5)
 
-init <- list(
-    S=c(0.05, 0.07) * pop,
-    I=c(0.0001, 0.0001) *  pop,
-    R=(1-0.0001-c(0.05, 0.07)) * pop
-)
+reslist <- vector('list', length(mvec))
 
-M <- matrix(c(0.999, 0.001, 0.001, 0.999), 2, 2)
+set.seed(101)
+for (m in mvec) {
+    
+    M <- matrix(c(1-m, m, m, 1-m), 2, 2)
+    
+    subreslist <- vector('list', length(R0vec))
+    
+    for (R in R0vec) {
+        print(paste(m,R, sep=","))
+        
+        pp <- base.params
+        pp[["R0"]] <- R
+        
+        subsubreslist <- vector('list', nsim)
+        
+        for (i in 1:nsim) {
+            
+            init <- initfun(pp, 2, T)
+            
+            df <- SIRmodel_npatch_stochastic(pp, init, M, seasonal_cosine)
+            
+            zero1 <- which(df$I[,1]==0)
+            zero2 <- which(df$I[,2]==0)
+            
+            subsubreslist[[i]] <- data.frame(
+                sim=i,
+                R0=R,
+                local=(any(df$I[,1]==0) || any(df$I[,2]==0)),
+                global=(any(df$I[,1]==0 & df$I[,2]==0)),
+                rescue1=length(which(diff(zero1) != 1)),
+                rescue2=length(which(diff(zero2) != 1))
+            )
+            
+        }
+        
+        subreslist[[which(R0vec==R)]] <- do.call("rbind", subsubreslist)
+    }
+    
+    ss <- do.call("rbind", subreslist)
+    ss$m <- m
+    
+    reslist[[which(mvec==m)]] <- ss
+}
 
-set.seed(2)
-df2 <- SIRmodel_npatch_stochastic(base.params, init, M, seasonal_cosine)
-
-pdf("stochastic1.pdf", width=8, height=6)
-
-plot(df2$time, 
-     df2$I[,2], 
-     col=1, 
-     type="l", 
-     ylim=c(0, 3300), xlim=c(50, 100),
-     xlab="Time (years)",
-     ylab="Prevalence")
-lines(df2$time, df2$I[,1], col="blue")
-legend(
-    "topleft",
-    legend=c("Patch 1", "Patch 2"),
-    col=c("blue", 1),
-    lty=1
-)
-
-dev.off()
-
-pp2 <- base.params
-pop <- pp2[["pop"]] <- 7e5
-
-init <- list(
-    S=c(0.05, 0.07) * pop,
-    I=c(0.0001, 0.0001) *  pop,
-    R=(1-0.0001-c(0.05, 0.07)) * pop
-)
-
-M <- matrix(c(0.999, 0.001, 0.001, 0.999), 2, 2)
-
-set.seed(4)
-df2 <- SIRmodel_npatch_stochastic(base.params, init, M, seasonal_cosine)
-
-pdf("stochastic2.pdf", width=8, height=6)
-
-plot(df2$time, 
-     df2$I[,2], 
-     col=1, 
-     type="l", 
-     xlab="Time (years)",
-     ylab="Prevalence",
-     xlim=c(50, 100))
-lines(df2$time, df2$I[,1], col="blue")
-points(df2$time[df2$I[,2]==0], rep(0, sum(df2$I[,2]==0)), col=2)
-legend(
-    "topleft",
-    legend=c("Patch 1", "Patch 2"),
-    col=c("blue", 1),
-    lty=1
-)
-
-dev.off()
-
+save("reslist", file="stochastic.rda")

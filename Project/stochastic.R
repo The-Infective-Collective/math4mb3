@@ -2,9 +2,9 @@ library(Rcpp)
 source("params.R")
 sourceCpp("SIRmodel_npatch.cpp")
 
-nsim <- 50
+nsim <- 100
 R0vec <- seq(1, 20, by=0.2)
-mvec <- c(0.001, 0.01, 0.1, 0.5)
+mvec <- c(0.001, 0.1)
 
 reslist <- vector('list', length(mvec))
 
@@ -27,7 +27,7 @@ for (m in mvec) {
             
             init <- initfun(pp, 2, T)
             
-            df <- SIRmodel_npatch_stochastic(pp, init, M, seasonal_cosine)
+            df <- SIRmodel_npatch_stochastic(pp, init, M, term_time)
             
             zero1 <- which(df$I[,1]==0)
             zero2 <- which(df$I[,2]==0)

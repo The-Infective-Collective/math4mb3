@@ -618,7 +618,24 @@ I tried checking this value for the measles model but I don't think it really he
     \item Uploaded the code to collywobbles and it's running
 \end{itemize}
 
+\section*{\Sexpr{date.string(this.year, 3, 31)}}
 
+\textbf{Solo work} \\
+\emph{Approximate Duration: 1 Hour}
+
+I made a preliminary figure:
+
+\includegraphics[width=0.9\textwidth]{stochastic.pdf}
+
+Realized that there is not much going on. I need to increase R0 range and/or switch to term-time forcing.
+
+\emph{Approximate Duration: 1 Hour}
+
+\begin{itemize}
+    \item Further exploring different parameter regions and term time.
+    \item Switching to term time forcing and writing a big bifurcation file so that everyone can use.
+    \item Fix stochstic.R code and rerun on collywobbles
+\end{itemize}
 
 \section*{Total time spent on this project}
 
@@ -626,7 +643,7 @@ I tried checking this value for the measles model but I don't think it really he
 
 \emph{Group work:} $7.5$ hours
 
-\emph{Solo work:} $26$ hours
+\emph{Solo work:} $28$ hours
 
 \end{quote}
 

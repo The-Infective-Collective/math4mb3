@@ -10,7 +10,7 @@ L <- load("stochastic.rda")
 rinit <- function(param) {
     with(as.list(param), {
         ll <- list(
-            S=runif(1, 0, 1) * pop,
+            S=runif(1, 0, 0.1) * pop,
             I=runif(1, 0, 0.0001) * pop
         )
         
@@ -20,17 +20,7 @@ rinit <- function(param) {
     })
 }
 
-base.params <- list(
-    R0=17,
-    pop=1e6,
-    b1=0.25,
-    gamma=365/13,
-    mu=0.02,
-    dt=1/365,
-    nsteps=365*100
-)
-
-nsim <- 20
+nsim <- 40
 R0vec <- seq(1, 20, by=0.2)
 
 blist <- vector('list', length(R0vec))
@@ -48,9 +38,7 @@ for (R in R0vec) {
         
         df <- SIRmodel_npatch(pp, init, matrix(1), term_time)
         
-        prev <- tail(df$I[df$time%%1==0], 50)/pp[["pop"]]
-        
-        plot(prev)
+        prev <- tail(df$I[df$time%%1==0], 20)/pp[["pop"]]
         
         data.frame(
             prevalence=prev,
@@ -58,6 +46,7 @@ for (R in R0vec) {
         )
     }, simplify=FALSE)
     
+    save("blist", file="bifurcation.rda")
 }
 
 save("blist", file="bifurcation.rda")

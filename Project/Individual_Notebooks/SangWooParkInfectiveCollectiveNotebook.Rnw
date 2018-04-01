@@ -637,13 +637,17 @@ Realized that there is not much going on. I need to increase R0 range and/or swi
     \item Fix stochstic.R code and rerun on collywobbles
 \end{itemize}
 
+\emph{Approximate Duration: 30 minutes}
+
+Bifurcation diagram looks crap. I tried to diagnose what's going on and tried to write down a more efficient ways to sample initial point (via Latin Hypercube Sample). I'm allowing it to run longer time so that I can remove transient dynamics for sure (hopefully).
+
 \section*{Total time spent on this project}
 
 \begin{quote}
 
 \emph{Group work:} $7.5$ hours
 
-\emph{Solo work:} $28$ hours
+\emph{Solo work:} $28.5$ hours
 
 \end{quote}
 

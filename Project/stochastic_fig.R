@@ -37,7 +37,7 @@ gstoch <- ggplot(bifur_df_norm) +
     facet_wrap(~m) +
     scale_color_manual(values=c(1, 1, 2, 3, 4, 5), guide=FALSE) +
     theme(
-        legend.position = c(0.08, 0.1),
+        legend.position = "top",
         legend.title = element_blank(),
         strip.background = element_blank(),
         panel.spacing = grid::unit(0, "cm"),

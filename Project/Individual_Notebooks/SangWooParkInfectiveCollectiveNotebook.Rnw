@@ -641,13 +641,24 @@ Realized that there is not much going on. I need to increase R0 range and/or swi
 
 Bifurcation diagram looks crap. I tried to diagnose what's going on and tried to write down a more efficient ways to sample initial point (via Latin Hypercube Sample). I'm allowing it to run longer time so that I can remove transient dynamics for sure (hopefully).
 
+\section*{\Sexpr{date.string(this.year, 4, 1)}}
+
+\textbf{Solo work} \\
+\emph{Approximate Duration: 1.5 Hour}
+
+Worked on a preliminary (?) bifurcation diagram:
+
+\includegraphics[width=0.9\textwidth]{bifurcation.pdf}
+
+Made more progress on combining stochastic figure and bifurcation figure.
+
 \section*{Total time spent on this project}
 
 \begin{quote}
 
 \emph{Group work:} $7.5$ hours
 
-\emph{Solo work:} $28.5$ hours
+\emph{Solo work:} $30$ hours
 
 \end{quote}
 

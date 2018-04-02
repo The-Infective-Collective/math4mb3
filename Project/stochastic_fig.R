@@ -1,11 +1,15 @@
 library(Rcpp)
 library(tidyr)
 library(dplyr)
-library(ggplot2); theme_set(theme_bw())
-source("params.R")
-sourceCpp("SIRmodel_npatch.cpp")
+library(ggplot2); theme_set(theme_bw(base_size = 12,
+                                     base_family = "Times"))
 
-L <- load("stochastic.rda")
+if (.Platform$OS.type=="windows") {
+    windowsFonts(Times=windowsFont("Times"))
+} 
+
+L1 <- load("stochastic.rda")
+L2 <- load("bifurcation_data.rda")
 
 sdf <- reslist %>%
     bind_rows %>%
@@ -15,17 +19,28 @@ sdf <- reslist %>%
         global=mean(global)
     ) %>%
     gather(key, value, -R0, -m) %>%
-    mutate(m=paste0("m = ", m))
+    mutate(m=paste0("m = ", m),
+           key=factor(key, levels=c("global", "local"), 
+                      labels=c("Global extinction", "Local extinction")))
 
-gstoch <- ggplot(sdf) +
-    geom_line(aes(R0, value, col=key)) +
-    scale_y_continuous("Probability", expand=c(0,0)) +
+bifur_df_norm <- bifur_df %>%
+    mutate(lp=log(prevalence)) %>%
+    mutate(nlp=lp-min(lp)) %>%
+    mutate(nlp=nlp/max(nlp))
+
+gstoch <- ggplot(bifur_df_norm) +
+    geom_path(aes(R0, nlp, group=interaction(i, j), col=factor(i)), alpha=0.5) +
+    geom_line(data=sdf, aes(R0, value, lty=key), lwd=1.5) +
+    scale_y_continuous("Probability of extinction") +
     scale_x_continuous("Reprouctive number", expand=c(0,0)) +
     facet_wrap(~m) +
+    scale_color_manual(values=c(1, 1, 2, 3, 4, 5), guide=FALSE) +
     theme(
+        legend.position = c(0.08, 0.1),
+        legend.title = element_blank(),
         strip.background = element_blank(),
         panel.spacing = grid::unit(0, "cm"),
         panel.grid = element_blank()
     )
 
-# ggsave("stochastic.pdf", gstoch, width=8, height=6)
+ggsave("stochastic.pdf", gstoch, width=12, height=5)

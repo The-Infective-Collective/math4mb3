@@ -48,3 +48,4 @@ r.init.unif <- function(m) {
   initial$R <- rep(base.params$pop, m) - initial$S - initial$I
   initial
 }
+

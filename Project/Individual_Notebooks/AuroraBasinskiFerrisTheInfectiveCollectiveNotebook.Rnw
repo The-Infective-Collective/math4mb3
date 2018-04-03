@@ -145,6 +145,23 @@ date.string <- function(year,month,day) {
 \end{itemize}
 
 
+\section*{\Sexpr{date.string(this.year, 4, 2)}}
+\textbf{Group Work} \\
+\emph{Approximate Duration: 1 Hour}
+
+\begin{itemize}
+\item Met in class to discuss the progress with our project. Made sure everyone knew what to do in this final stretch.
+\end{itemize}
+
+\section*{\Sexpr{date.string(this.year, 4, 2)}}
+\textbf{Group Work (Michael and I)} \\
+\emph{Approximate Duration: 3 Hours}
+
+\begin{itemize}
+\item Worked on developing some code which will spit out whether or not coherent based on many R_0 values and with many initial conditions. It takes a long time to run. We will each run half the simulation overnight and then reconvene tomorrow to discuss.
+\end{itemize}
+
+
 \section*{Total time spent on this project}
 
 \begin{quote}

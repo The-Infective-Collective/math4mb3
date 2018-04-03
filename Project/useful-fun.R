@@ -43,9 +43,15 @@ r.init <- function(m) {
 
 ## generate by sampling uniform 
 r.init.unif <- function(m) { 
-  initial <- list(S = round(runif(m, 0, base.params$pop)))
-  initial$I <- round(runif(m, 0, base.params$pop - initial$S))
+  initial <- list(S = runif(m, 0, base.params$pop))
+  initial$I <- runif(m, 0, base.params$pop - initial$S)
   initial$R <- rep(base.params$pop, m) - initial$S - initial$I
   initial
 }
 
+r.init.science <- function(m) {
+    initial <- list(S = runif(m, 0, 0.1*base.params$pop))
+    initial$I <- runif(m, 0, 0.0001*base.params$pop)
+    initial$R <- rep(base.params$pop, m) - initial$S - initial$I
+    initial
+}

@@ -57,4 +57,4 @@ for (m in mvec) {
   reslist[[which(mvec==m)]] <- ss
 }
 
-save("reslist", file="stochastic.rda")
+save("reslist", file="R0.rda")

@@ -6,7 +6,7 @@ sourceCpp("SIRmodel_npatch.cpp")
 
 
 nsim <- 100
-R0vec <- seq(1, 20, by=0.2)
+R0vec <- seq(1, 20, by=0.4)
 mvec <- c(0.001, 0.01, 0.1, 0.5)
 
 reslist <- vector('list', length(mvec))

@@ -16,8 +16,8 @@ init <- data.frame(
     I=seq(from=0, to=0.0001, length.out=nsim) * base.params[["pop"]]
 )
 
-init$R <- base.params[["pop"]] - (init$S + init$I)
 init[] <- apply(init, 2, sample)
+init$R <- base.params[["pop"]] - (init$S + init$I)
 
 blist <- vector('list', length(R0vec))
 

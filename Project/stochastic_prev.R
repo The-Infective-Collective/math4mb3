@@ -12,8 +12,6 @@ M <- matrix(c(1-m, m, m, 1-m), 2, 2)
 set.seed(2)
 df2 <- SIRmodel_npatch_stochastic(base.params, init, M, term_time)
 
-#pdf("stochastic1.pdf", width=8, height=6)
-
 plot(df2$time, 
      df2$I[,2], 
      col=1, 

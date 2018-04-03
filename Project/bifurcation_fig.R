@@ -39,20 +39,19 @@ bifur_df <- bdf %>%
         prevalence=sort(prevalence),
         j=seq_along(i)
     ) %>%
-    group_by(R0, i, j) %>%
+    group_by %>%
+    mutate(
+        sim=ifelse(i==5 & round(R0, 1)==6.8, 2, 1)
+    ) %>%
+    group_by(R0, i, j, sim) %>%
     summarize(
         prevalence=mean(prevalence)
-    ) %>%
-    filter(
-        !(i==2 & R0 < 13.6),
-        !(i==1 & R0 > 13.8),
-        !(i==3 & R0 > 15.5 & R0 < 15.7)
     ) %>%
     as.data.frame
 
 gbifur <- ggplot(bifur_df) +
-    geom_point(data=filter(bifur_df, i==6), aes(R0, prevalence, group=interaction(i, j), col=factor(i))) +
-    geom_path(aes(R0, prevalence, group=interaction(i, j), col=factor(i)), lwd=2) +
+    geom_point(data=filter(bifur_df, i==5, round(R0, 1)==6.8), aes(R0, prevalence, group=interaction(i, j), col=factor(i))) +
+    geom_path(aes(R0, prevalence, group=interaction(i, j, sim), col=factor(i)), lwd=2) +
     scale_y_log10("Prevalence I/N", breaks=c(1e-3, 1e-4, 1e-5, 1e-6, 1e-7)) +
     scale_x_continuous("Basic reproductive number") +
     scale_color_manual(values=c(1, 1, 2, 3, 4, 5, 6)) +

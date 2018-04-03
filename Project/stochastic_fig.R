@@ -29,8 +29,9 @@ bifur_df_norm <- bifur_df %>%
     mutate(nlp=nlp/max(nlp))
 
 gstoch <- ggplot(bifur_df_norm) +
-    geom_point(data=filter(bifur_df_norm, i==6), aes(R0, nlp, col=factor(i)), alpha=0.5, size=0.7) +
-    geom_path(aes(R0, nlp, group=interaction(i, j), col=factor(i)), alpha=0.5) +
+    geom_point(data=filter(bifur_df_norm, i==5, round(R0, 1)==6.8), 
+               aes(R0, nlp, group=interaction(i, j), col=factor(i)), size=0.5, alpha=0.5) +
+    geom_path(aes(R0, nlp, group=interaction(i, j, sim), col=factor(i)), alpha=0.5) +
     geom_line(data=sdf, aes(R0, value, lty=key), lwd=1.5) +
     scale_y_continuous("Probability of extinction") +
     scale_x_continuous("Reprouctive number", expand=c(0,0)) +

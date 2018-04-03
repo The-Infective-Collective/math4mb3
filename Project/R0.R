@@ -1,6 +1,9 @@
 library(Rcpp)
+library(tidyverse)
 source("params.R")
+source("useful-fun.R")
 sourceCpp("SIRmodel_npatch.cpp")
+
 
 nsim <- 100
 R0vec <- seq(1, 20, by=0.2)
@@ -9,6 +12,7 @@ mvec <- c(0.001, 0.01, 0.1, 0.5)
 reslist <- vector('list', length(mvec))
 
 set.seed(101)
+
 for (m in mvec) {
   
   M <- matrix(c(1-m, m, m, 1-m), 2, 2)
@@ -21,29 +25,30 @@ for (m in mvec) {
     pp <- base.params
     pp[["R0"]] <- R
     
-    subsubreslist <- vector('list', nsim)
+    subsubreslist <- vector("list", nsim)
     
+ 
     for (i in 1:nsim) {
       
-      init <- initfun(pp, 2, T)
+      init <- r.init.science(2)
       
-      df <- SIRmodel_npatch_stochastic(pp, init, M, term_time)
+      df <- run_SIR(pp, init, M, term_time)
+
+      incoherence2 <- apply(df[(nrow(df) - 2*365):nrow(df), c("I1", "I2")], 1, coherence_calc) %>% mean()
+      incoherence5 <- apply(df[(nrow(df) - 5*365):nrow(df), c("I1", "I2")], 1, coherence_calc) %>% mean()
       
-      zero1 <- which(df$I[,1]==0)
-      zero2 <- which(df$I[,2]==0)
-      
-      subsubreslist[[i]] <- data.frame(
-        sim=i,
-        R0=R,
-        local=(any(df$I[,1]==0) || any(df$I[,2]==0)),
-        global=(any(df$I[,1]==0 & df$I[,2]==0)),
-        rescue1=length(which(diff(zero1) != 1)),
-        rescue2=length(which(diff(zero2) != 1))
+      subsubreslist[[i]] <- data_frame(
+          S01 = init$S[1],
+          S02 = init$S[2],
+          I01 = init$I[1],
+          I02 = init$I[2],
+          R0=R,
+          incoherence2 = incoherence2,
+          incoherence5 = incorherence5
       )
-      
     }
     
-    subreslist[[which(R0vec==R)]] <- do.call("rbind", subsubreslist)
+    subreslist[[which(R0vec ==R)]] <-do.call("rbind", subsubreslist)
   }
   
   ss <- do.call("rbind", subreslist)

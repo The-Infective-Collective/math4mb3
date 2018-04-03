@@ -44,7 +44,7 @@ for (m in mvec) {
           I02 = init$I[2],
           R0=R,
           incoherence2 = incoherence2,
-          incoherence5 = incorherence5
+          incoherence5 = incoherence5
       )
     }
     

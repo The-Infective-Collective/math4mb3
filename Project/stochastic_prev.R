@@ -77,27 +77,7 @@ gglobal <- ggplot(simdf2) +
 
 ggsave("globalext2.pdf", gglobal, width=8, height=6)
 
-#pdf("globalext.pdf", width=8, height=6)
-
-plot(df3$time, 
-     df3$I[,2], 
-     col=1, 
-     type="l", 
-     ylim=c(0, 6000), xlim=c(20, 50),
-     xlab="Time (years)",
-     ylab="Prevalence",
-     main="Global Extinction Example")
-lines(df3$time, df3$I[,1], col="blue")
-points(df3$time[df3$I[,1]==0], rep(0, sum(df3$I[,1]==0)), col=3)
-points(df3$time[df3$I[,2]==0], rep(0, sum(df3$I[,2]==0)), col=2)
-legend(
-    "topright",
-    legend=c("Patch 1", "Patch 2"),
-    col=c("blue", 1),
-    lty=1
-)
-
-dev.off()
+## ASYNCHRONY WITH LOW M
 
 pp3 <- base.params
 pp3[["R0"]] <- 17.0
@@ -109,27 +89,31 @@ M <- matrix(c(1-m, m, m, 1-m), 2, 2)
 set.seed(10)
 df4 <- SIRmodel_npatch_stochastic(pp3, init, M, term_time)
 
-pdf("asynchrony_lowm.pdf", width=8, height=6)
+simdf3 <- list(
+    patch1=data.frame(
+        time=df4$time,
+        I=df4$I[,1]
+    ),
+    patch2=data.frame(
+        time=df4$time,
+        I=df4$I[,2]
+    )
+) %>%
+    bind_rows(.id="patch") %>%
+    gather(key, value, -time, -patch) %>%
+    filter(time > 0, time < 50)
 
-plot(df4$time, 
-     df4$I[,2], 
-     col=1, 
-     type="l", 
-     ylim=c(0, 5000), xlim=c(0, 30),
-     xlab="Time (years)",
-     ylab="Prevalence",
-     main="Observed asynchrony with low m")
-lines(df4$time, df4$I[,1], col="blue")
-points(df4$time[df4$I[,2]==0], rep(0, sum(df4$I[,2]==0)), col=2)
-points(df4$time[df4$I[,1]==0], rep(0, sum(df4$I[,1]==0)), col=3)
-legend(
-    "topleft",
-    legend=c("Patch 1", "Patch 2"),
-    col=c("blue", 1),
-    lty=1
-)
+extdf3 <-simdf3 %>%
+    filter(value==0)
 
-dev.off()
+gasynch <- ggplot(simdf3) +
+    geom_line(aes(time, value, col=patch)) +
+    geom_point(data=extdf3, aes(time, value), col=3)+
+    labs(x="Time (years)", y="Prevalence")
+
+ggsave("asynchrony_lowm2.pdf", gasynch, width=8, height=6)
+
+## SYNCHRONY WITH HIGH M
 
 pp4 <- base.params
 pp4[["R0"]] <- 17.0
@@ -141,25 +125,26 @@ M <- matrix(c(1-m, m, m, 1-m), 2, 2)
 set.seed(10)
 df5 <- SIRmodel_npatch_stochastic(pp4, init, M, term_time)
 
-pdf("synchrony_highm.pdf", width=8, height=6)
+simdf4 <- list(
+    patch1=data.frame(
+        time=df5$time,
+        I=df5$I[,1]
+    ),
+    patch2=data.frame(
+        time=df5$time,
+        I=df5$I[,2]
+    )
+) %>%
+    bind_rows(.id="patch") %>%
+    gather(key, value, -time, -patch) %>%
+    filter(time > 0, time < 50)
 
-plot(df5$time, 
-     df5$I[,2], 
-     col=1, 
-     type="l", 
-     ylim=c(0, 5000), xlim=c(0, 30),
-     xlab="Time (years)",
-     ylab="Prevalence",
-     main="Observed synchrony with high m")
-lines(df5$time, df5$I[,1], col="blue")
-points(df5$time[df5$I[,2]==0], rep(0, sum(df5$I[,2]==0)), col=2)
-points(df5$time[df5$I[,1]==0], rep(0, sum(df5$I[,1]==0)), col=3)
-legend(
-    "topleft",
-    legend=c("Patch 1", "Patch 2"),
-    col=c("blue", 1),
-    lty=1
-)
+extdf4 <-simdf4 %>%
+    filter(value==0)
 
-dev.off()
+gsynch <- ggplot(simdf4) +
+    geom_line(aes(time, value, col=patch)) +
+    geom_point(data=extdf4, aes(time, value), col=3)+
+    labs(x="Time (years)", y="Prevalence")
 
+ggsave("synchrony_highm2.pdf", gsynch, width=8, height=6)

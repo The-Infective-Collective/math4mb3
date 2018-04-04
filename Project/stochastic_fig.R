@@ -40,7 +40,6 @@ gstoch <- ggplot(bifur_df_norm) +
     theme(
         legend.position = "top",
         legend.title = element_blank(),
-        strip.background = element_blank(),
         panel.spacing = grid::unit(0, "cm"),
         panel.grid = element_blank()
     )

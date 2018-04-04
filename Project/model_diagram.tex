@@ -1,0 +1,60 @@
+\documentclass{article}
+
+\usepackage{graphics}
+\usepackage[vcentering]{geometry}
+
+\geometry{papersize={6in,3.6in}, top=0in, bottom=0in, left=0in, right=0in}
+
+\pagestyle{empty}
+
+\input{tikzlib.tex}
+\input{diagram_geom.tex}
+
+\begin{document}
+
+\begin{tikzpicture}
+    \node(S1)[bigcompartment]{$S_1$};
+    \node(S1toI1)[right=of S1]{};
+    \node(I1)[bigcompartment, right=3cm of S1toI1]{$I_1$};
+    \node(I1toR1)[right=of I1]{};
+    \node(R1)[bigcompartment, right=0.5cm of I1toR1]{$R_1$};
+    \draw[->, very thick] (S1) --  node [text width=3.5cm, midway, above] {$\beta(t)( (1-m) I_1 + m I_2)$} (I1); 
+    \draw[->, very thick] (I1) -- node [text width=0.5cm, midway, above] {$\gamma$} (R1); 
+    \node(S2)[bigcompartment, below=2cm of S1]{$S_2$};
+    \node(S2toI2)[right=of S2]{};
+    \node(I2)[bigcompartment, right=3cm of S2toI2]{$I_2$};
+    \node(I2toR2)[right=of I2]{};
+    \node(R2)[bigcompartment, right=0.5cm of I2toR2]{$R_2$};
+    \draw[->, very thick] (S2) -- node [text width=3.5cm, midway, below] {$\beta(t)(m I_1 + (1-m) I_2)$} (I2); 
+    \draw[->, very thick] (I2) -- node [text width=0.5cm, midway, below] {$\gamma$} (R2); 
+    \node(S1mu)[above=of S1]{};
+    \node(I1mu)[above=of I1]{};
+    \node(R1mu)[above=of R1]{};
+    \draw[->, very thick] (S1) --  node [text width=0.2cm, midway, right] {$\mu$} (S1mu); 
+    \draw[->, very thick] (I1) --  node [text width=0.2cm, midway, right] {$\mu$} (I1mu); 
+    \draw[->, very thick] (R1) --  node [text width=0.2cm, midway, right] {$\mu$} (R1mu); 
+    \node(S2mu)[below=of S2]{};
+    \node(I2mu)[below=of I2]{};
+    \node(R2mu)[below=of R2]{};
+    \draw[->, very thick] (S2) --  node [text width=0.2cm, midway, right] {$\mu$} (S2mu); 
+    \draw[->, very thick] (I2) --  node [text width=0.2cm, midway, right] {$\mu$} (I2mu); 
+    \draw[->, very thick] (R2) --  node [text width=0.2cm, midway, right] {$\mu$} (R2mu); 
+    \node(S1birth)[left=of S1]{};
+    \node(S2birth)[left=of S2]{};
+    \draw[->, very thick] (S1birth) --  node [text width=0.5cm, midway, above] {$b(t)$} (S1); 
+    \draw[->, very thick] (S2birth) --  node [text width=0.5cm, midway, below] {$b(t)$} (S2); 
+    \draw[->, very thick, dashed] ([yshift=-1cm]I1.west) to [bend left=45] ([xshift=2cm]S1toI1.south); 
+    \draw[->, very thick, dashed] ([yshift=1cm]I2.west) to [bend right=45] ([xshift=2cm]S2toI2.north); 
+    \draw[->, very thick, dashed] (I1.south) to ([xshift=1cm]S2toI2.north); 
+    \draw[->, very thick, dashed] (I2.north) to ([xshift=1cm]S1toI1.south); 
+    \node(I2m2)[left=of I2, xshift=1cm, yshift=0.5cm]{\tiny$1-m$};
+    \node(I2m1)[above=of I2, xshift=0.2cm, yshift=-1cm]{\tiny$m$};
+    \node(I1m1)[left=of I1, xshift=1cm, yshift=-0.5cm]{\tiny$1-m$};
+    \node(I1m1)[below=of I1, xshift=0.2cm, yshift=1cm]{\tiny$m$};
+\end{tikzpicture}
+
+
+
+
+
+\end{document}

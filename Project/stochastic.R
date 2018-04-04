@@ -27,7 +27,7 @@ for (m in mvec) {
             
             init <- initfun(pp, 2, T)
             
-            df <- SIRmodel_npatch_stochastic(pp, init, M, term_time)
+            df <- SIRmodel_npatch_stochastic(base.params, init, M, term_time)
             
             zero1 <- which(df$I[,1]==0)
             zero2 <- which(df$I[,2]==0)

@@ -161,6 +161,30 @@ date.string <- function(year,month,day) {
 \item Worked on developing some code which will spit out whether or not coherent based on many R_0 values and with many initial conditions. It takes a long time to run. We will each run half the simulation overnight and then reconvene tomorrow to discuss.
 \end{itemize}
 
+\section*{\Sexpr{date.string(this.year, 4, 3)}}
+\textbf{Group Work (Everyone)} \\
+\emph{Approximate Duration: 1 Hour}
+
+\begin{itemize}
+\item Met to plan the presentation. Got a template started, planned the sections and what will be discussed in each section. Talked about the final plots that need to be created before the presentation on Friday.
+\end{itemize}
+
+\textbf{Group work (Michael and I)}
+\emph{Approximate Duration: 1 Hour}
+
+\begin{itemize}
+\item Combined the data that we made when we ran overnight. Made it into a plot and overlaid the bifurcation plot on top. 
+\end{itemize}
+
+
+\section*{\Sexpr{date.string(this.year, 4, 4)}}
+\textbf{Group Work (Everyone)} \\
+\emph{Approximate Duration: 1 Hour}
+
+\begin{itemize}
+\item Met in class. Changed our incoherence measure (to be relative to epidemic size rather than absolute). Also discussed some common themes for our plots so that our presentation looks consistent. We will meet again tonight to discuss further.
+\end{itemize}
+
 
 \section*{Total time spent on this project}
 

@@ -1,6 +1,11 @@
+library(tidyr)
+library(dplyr)
+library(ggplot2); theme_set(theme_bw())
 library(Rcpp)
 source("params.R")
 sourceCpp("SIRmodel_npatch.cpp")
+
+## LOCAL EXTINCTION
 
 pp <- base.params
 pp[["R0"]] <- 8.4
@@ -12,27 +17,31 @@ M <- matrix(c(1-m, m, m, 1-m), 2, 2)
 set.seed(10)
 df2 <- SIRmodel_npatch_stochastic(pp, init, M, term_time)
 
-pdf("localext.pdf", width=8, height=6)
+simdf1 <- list(
+    patch1=data.frame(
+        time=df2$time,
+        I=df2$I[,1]
+    ),
+    patch2=data.frame(
+        time=df2$time,
+        I=df2$I[,2]
+    )
+) %>%
+    bind_rows(.id="patch") %>%
+    gather(key, value, -time, -patch) %>%
+    filter(time > 20, time < 40)
 
-plot(df2$time, 
-     df2$I[,2], 
-     col=1, 
-     type="l", 
-     ylim=c(0, 8000), xlim=c(20, 40),
-     xlab="Time (years)",
-     ylab="Prevalence",
-     main="Local Extinction Example")
-lines(df2$time, df2$I[,1], col="blue")
-points(df2$time[df2$I[,2]==0], rep(0, sum(df2$I[,2]==0)), col=2)
-points(df2$time[df2$I[,1]==0], rep(0, sum(df2$I[,1]==0)), col=3)
-legend(
-    "topright",
-    legend=c("Patch 1", "Patch 2"),
-    col=c("blue", 1),
-    lty=1
-)
+extdf1 <-simdf1 %>%
+    filter(value==0)
 
-dev.off()
+glocal <- ggplot(simdf1) +
+    geom_line(aes(time, value, col=patch)) +
+    geom_point(data=extdf1, aes(time, value), col=3)+
+    labs(x="Time (years)", y="Prevalence")
+
+ggsave("localext_1.pdf", glocal, width=8, height=6)
+
+## GLOBAL EXTINCTION
 
 pp2 <- base.params
 pp2[["R0"]] <- 2.0
@@ -44,7 +53,31 @@ M <- matrix(c(1-m, m, m, 1-m), 2, 2)
 set.seed(10)
 df3 <- SIRmodel_npatch_stochastic(pp2, init, M, term_time)
 
-pdf("globalext.pdf", width=8, height=6)
+simdf2 <- list(
+    patch1=data.frame(
+        time=df3$time,
+        I=df3$I[,1]
+    ),
+    patch2=data.frame(
+        time=df3$time,
+        I=df3$I[,2]
+    )
+) %>%
+    bind_rows(.id="patch") %>%
+    gather(key, value, -time, -patch) %>%
+    filter(time > 20, time < 40)
+
+extdf2 <-simdf2 %>%
+    filter(value==0)
+
+gglobal <- ggplot(simdf2) +
+    geom_line(aes(time, value, col=patch)) +
+    geom_point(data=extdf2, aes(time, value), col=3)+
+    labs(x="Time (years)", y="Prevalence")
+
+ggsave("globalext2.pdf", gglobal, width=8, height=6)
+
+#pdf("globalext.pdf", width=8, height=6)
 
 plot(df3$time, 
      df3$I[,2], 

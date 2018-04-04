@@ -82,7 +82,7 @@ plot(df4$time,
      df4$I[,2], 
      col=1, 
      type="l", 
-     ylim=c(0, 6000), xlim=c(0, 50),
+     ylim=c(0, 5000), xlim=c(0, 30),
      xlab="Time (years)",
      ylab="Prevalence",
      main="Observed asynchrony with low m")
@@ -90,7 +90,7 @@ lines(df4$time, df4$I[,1], col="blue")
 points(df4$time[df4$I[,2]==0], rep(0, sum(df4$I[,2]==0)), col=2)
 points(df4$time[df4$I[,1]==0], rep(0, sum(df4$I[,1]==0)), col=3)
 legend(
-    "topright",
+    "topleft",
     legend=c("Patch 1", "Patch 2"),
     col=c("blue", 1),
     lty=1
@@ -99,30 +99,30 @@ legend(
 dev.off()
 
 pp4 <- base.params
-pp4[["R0"]] <- 9.0
+pp4[["R0"]] <- 17.0
 
-init <- initfun(pp, 2, T)
+init <- initfun(pp4, 2, T)
 m <- 0.5
 M <- matrix(c(1-m, m, m, 1-m), 2, 2)
 
 set.seed(10)
 df5 <- SIRmodel_npatch_stochastic(pp4, init, M, term_time)
 
-#pdf("asynchrony_lowm.pdf", width=8, height=6)
+pdf("synchrony_highm.pdf", width=8, height=6)
 
 plot(df5$time, 
      df5$I[,2], 
      col=1, 
      type="l", 
-     ylim=c(0, 6000), xlim=c(0, 50),
+     ylim=c(0, 5000), xlim=c(0, 30),
      xlab="Time (years)",
      ylab="Prevalence",
-     main="Observed asynchrony with low m")
+     main="Observed synchrony with high m")
 lines(df5$time, df5$I[,1], col="blue")
 points(df5$time[df5$I[,2]==0], rep(0, sum(df5$I[,2]==0)), col=2)
 points(df5$time[df5$I[,1]==0], rep(0, sum(df5$I[,1]==0)), col=3)
 legend(
-    "topright",
+    "topleft",
     legend=c("Patch 1", "Patch 2"),
     col=c("blue", 1),
     lty=1

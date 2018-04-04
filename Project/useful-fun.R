@@ -30,6 +30,11 @@ coherence_calc <- function(x) {
   norm(x - rep(mean(x), length(x)), type = "2")
 }
 
+# coherence metric scaled to the size of the epidemic
+coherence_calc_scaled <- function(x) {
+  norm(x - rep(mean(x), length(x)), type = "2") / mean(x)
+}
+
 # Generate initial conditions
 ## generate by adding noise to the endemic equilibrium
 r.init <- function(m) { 

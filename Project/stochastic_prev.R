@@ -125,13 +125,19 @@ simdf3 <- list(
 extdf3 <-simdf3 %>%
     filter(value==0)
 
-gasynch <- ggplot(simdf3) +
+gbase2 <- ggplot(simdf3) +
     geom_line(aes(time, value, col=patch)) +
-    geom_point(data=extdf3, aes(time, value), col=3)+
     labs(x="Time (years)", y="Prevalence")+
-    ggtitle("Observed asynchrony with low mixing rate (m = 0.001)")
+    ggtitle("Observed asynchrony with low mixing rate (m = 0.001)")+
+    scale_color_manual(labels=c("Patch 1", "Patch 2"), values=c(1,2)) +
+    theme(
+        legend.position = c(0.15, 0.9),
+        legend.title = element_blank()
+    )
 
-ggsave("asynchrony_lowm_1.pdf", gasynch, width=8, height=6)
+gasynch <- gbase2 + geom_point(data=extdf3, aes(time, value), col="blue")
+
+#ggsave("asynchrony_lowm_1.pdf", gasynch, width=8, height=6)
 
 ## SYNCHRONY WITH HIGH M
 
@@ -162,10 +168,18 @@ simdf4 <- list(
 extdf4 <-simdf4 %>%
     filter(value==0)
 
-gsynch <- ggplot(simdf4) +
+gbase3 <- ggplot(simdf4) +
     geom_line(aes(time, value, col=patch)) +
-    geom_point(data=extdf4, aes(time, value), col=3)+
     labs(x="Time (years)", y="Prevalence")+
-    ggtitle("Observed synchrony with high mixing rate (m = 0.5)")
+    ggtitle("Observed synchrony with high mixing rate (m = 0.5)")+
+    scale_color_manual(labels=c("Patch 1", "Patch 2"), values=c(1,2)) +
+    theme(
+        legend.position = "none"
+        )
 
-ggsave("synchrony_highm_1.pdf", gsynch, width=8, height=6)
+gsynch <- gbase3 + geom_point(data=extdf4, aes(time, value), col="blue")
+
+gtraj <- arrangeGrob(gasynch, gsynch, nrow=1)
+
+ggsave("trajectories.pdf", gtraj, width=10, height=6)
+

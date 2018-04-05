@@ -34,14 +34,15 @@ gstoch <- ggplot(bifur_df_norm) +
     geom_path(aes(R0, nlp, group=interaction(i, j, sim), col=factor(i)), alpha=0.5) +
     geom_line(data=sdf, aes(R0, value, lty=key), lwd=1.1) +
     scale_y_continuous("Probability of extinction") +
-    scale_x_continuous("Reprouctive number", expand=c(0,0)) +
+    scale_x_continuous("Reproductive number", expand=c(0,0)) +
     facet_wrap(~m) +
     scale_color_manual(values=c(1, 1, 2, 3, 4, 5), guide=FALSE) +
     theme(
         legend.position = "top",
         legend.title = element_blank(),
         panel.spacing = grid::unit(0, "cm"),
-        panel.grid = element_blank()
+        panel.grid = element_blank(),
+        strip.text = element_text(size=25)
     )
 
 ggsave("stochastic.pdf", gstoch, width=12, height=8)
@@ -55,7 +56,7 @@ gstoch_ex <- ggplot(bifur_df_norm) +
             hjust=2,
             method=list(dl.trans(x= x + .2), "last.bumpup")) +
     scale_y_continuous("Probability of extinction") +
-    scale_x_continuous("Reprouctive number", expand=c(0,0)) +
+    scale_x_continuous("Reproductive number", expand=c(0,0)) +
     scale_color_manual(values=c(1, 1, 2, 3, 4, 5), guide=FALSE) +
     theme(
         legend.position = "none",

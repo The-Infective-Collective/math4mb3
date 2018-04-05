@@ -42,16 +42,16 @@ extdf1 <-simdf1 %>%
     filter(value==0)
 
 gbase <- ggplot(simdf1) +
-    geom_line(aes(time, value, col=patch)) +
+    geom_line(aes(time, value, col=patch), lwd=1.1) +
     labs(x="Time (years)", y="Prevalence")+
     ggtitle("Local extinction (with rescue effects)") +
-    scale_color_manual(labels=c("Patch 1", "Patch 2"), values=c(1,2)) +
+    scale_color_manual(labels=c("Patch 1", "Patch 2"), values=c("#D55E00", "#0072B2")) +
     theme(
         legend.position = c(0.15, 0.9),
         legend.title = element_blank()
     )
 
-glocal <- gbase + geom_point(data=extdf1, aes(time, value), col="blue")
+glocal <- gbase + geom_point(data=extdf1, aes(time, value), col="red")
 
 # ggsave("localext_1.pdf", glocal, width=8, height=6)
 
@@ -183,4 +183,3 @@ gsynch <- gbase3 + geom_point(data=extdf4, aes(time, value), col="blue")
 gtraj <- arrangeGrob(gasynch, gsynch, ncol=1)
 
 ggsave("trajectories.pdf", gtraj, width=10, height=6)
-

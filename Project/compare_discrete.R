@@ -23,7 +23,7 @@ SIR <- function(t, y, param) {
     })
 }
 
-nyear <- 60
+nyear <- 40
 
 base.params$nsteps <- 365 * nyear
 
@@ -75,11 +75,12 @@ gcompare <- ggplot(rdf) +
     geom_line(aes(time, I, col=type, linetype=type),lwd=1.1) +
     scale_x_continuous("Time (years)") +
     scale_y_continuous("Prevalence") +
-    scale_color_manual(values=c(1, 2)) +
+    scale_color_manual(values=c("#D55E00", "#0072B2")) +
     scale_linetype_manual(values=c(1,2)) +
     facet_wrap(~sim, scale="free", ncol=1) +
     theme(
         strip.background = element_blank(),
+        panel.grid=element_blank(),
         legend.title = element_blank(),
         legend.position = c(0.85, 0.9),
         legend.key.width = grid::unit(2, "cm")

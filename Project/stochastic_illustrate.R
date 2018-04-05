@@ -40,7 +40,7 @@ gex <- ggplot(simdf3) +
     geom_line(aes(time, value, col=patch), lwd=1.1) +
     scale_x_continuous("Time (years)", expand=c(0, 0)) +
     scale_y_continuous("Prevalence") +
-    scale_color_manual(labels=c("Patch 1", "Patch 2"), values=c(1, 2)) +
+    scale_color_manual(labels=c("Patch 1", "Patch 2"), values=c("#D55E00", "#0072B2")) +
     theme(
         panel.grid = element_blank(),
         legend.title = element_blank(),
@@ -48,5 +48,3 @@ gex <- ggplot(simdf3) +
     )
 
 ggsave("stochastic_illustrate.pdf", gex, width=10, height=4)
-
-

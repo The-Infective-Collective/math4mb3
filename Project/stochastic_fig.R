@@ -44,7 +44,7 @@ gstoch <- ggplot(bifur_df_norm) +
         panel.grid = element_blank()
     )
 
-ggsave("stochastic.pdf", gstoch, width=12, height=5)
+ggsave("stochastic.pdf", gstoch, width=12, height=8)
 
 gstoch_ex <- ggplot(bifur_df_norm) +
     geom_point(data=filter(bifur_df_norm, i==5, round(R0, 1)==6.8), 
@@ -69,4 +69,3 @@ gt1 <- ggplotGrob(gstoch_ex)
 gt1$layout$clip[gt1$layout$name == "panel"] <- "off"
 
 ggsave("stochastic_example.pdf", gt1, width=10, height=5)
-

@@ -20,7 +20,7 @@ bifur_df <- bdf %>%
     filter(prevalence > 0) %>%
     filter(!duplicated(prevalence)) %>%
     group_by(R0) %>%
-    filter(!duplicated(round(prevalence, 7))) %>%
+    filter(!duplicated(round(prevalence, 10))) %>%
     group_by(sim, R0) %>%
     mutate(
         i=n()
@@ -50,7 +50,6 @@ bifur_df <- bdf %>%
     as.data.frame
 
 gbifur <- ggplot(bifur_df) +
-    geom_point(data=filter(bifur_df, i==5, round(R0, 1)==6.8), aes(R0, prevalence, group=interaction(i, j), col=factor(i))) +
     geom_path(aes(R0, prevalence, group=interaction(i, j, sim), col=factor(i)), lwd=2) +
     scale_y_log10("Prevalence I/N", breaks=c(1e-3, 1e-4, 1e-5, 1e-6, 1e-7)) +
     scale_x_continuous("Basic reproductive number") +

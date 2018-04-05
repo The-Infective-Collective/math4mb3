@@ -67,12 +67,12 @@ simdf2 <- list(
     gather(key, value, -time, -patch) %>%
     filter(time > 20, time < 40)
 
-extdf2 <-simdf2 %>%
-    filter(value==0)
+#extdf2 <-simdf2 %>%
+    #filter(value==0)
 
 gglobal <- ggplot(simdf2) +
     geom_line(aes(time, value, col=patch)) +
-    geom_point(data=extdf2, aes(time, value), col=3)+
+    #geom_point(data=extdf2, aes(time, value), col=3)+
     labs(x="Time (years)", y="Prevalence")
 
 ggsave("globalext2.pdf", gglobal, width=8, height=6)

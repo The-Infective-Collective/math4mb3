@@ -1,10 +1,16 @@
 library(tidyr)
 library(dplyr)
-library(ggplot2); theme_set(theme_bw())
-library(latex2exp)
+library(ggplot2); theme_set(theme_bw(base_size = 12,
+                                     base_family = "Times"))
+
 library(Rcpp)
+library(gridExtra)
 source("params.R")
 sourceCpp("SIRmodel_npatch.cpp")
+
+if (.Platform$OS.type=="windows") {
+    windowsFonts(Times=windowsFont("Times"))
+} 
 
 ## LOCAL EXTINCTION
 
@@ -35,13 +41,19 @@ simdf1 <- list(
 extdf1 <-simdf1 %>%
     filter(value==0)
 
-glocal <- ggplot(simdf1) +
+gbase <- ggplot(simdf1) +
     geom_line(aes(time, value, col=patch)) +
-    geom_point(data=extdf1, aes(time, value), col=3)+
     labs(x="Time (years)", y="Prevalence")+
-    ggtitle("Local extinction (with rescue effects)")
+    ggtitle("Local extinction (with rescue effects)") +
+    scale_color_manual(labels=c("Patch 1", "Patch 2"), values=c(1,2)) +
+    theme(
+        legend.position = c(0.15, 0.9),
+        legend.title = element_blank()
+    )
 
-ggsave("localext_1.pdf", glocal, width=8, height=6)
+glocal <- gbase + geom_point(data=extdf1, aes(time, value), col="blue")
+
+# ggsave("localext_1.pdf", glocal, width=8, height=6)
 
 ## GLOBAL EXTINCTION
 
@@ -72,13 +84,17 @@ simdf2 <- list(
 #extdf2 <-simdf2 %>%
     #filter(value==0)
 
-gglobal <- ggplot(simdf2) +
-    geom_line(aes(time, value, col=patch)) +
-    #geom_point(data=extdf2, aes(time, value), col=3)+
-    labs(x="Time (years)", y="Prevalence")+
-    ggtitle("Global extinction (no rescue effects)")
+gglobal <- (gbase %+% simdf2) +
+    ggtitle("Global extinction (no rescue effects)") +
+    theme(
+        legend.position = "none"
+    )
+    
+# ggsave("globalext_1.pdf", gglobal, width=8, height=6)
 
-ggsave("globalext_1.pdf", gglobal, width=8, height=6)
+gext <- arrangeGrob(glocal, gglobal, nrow=1)
+
+ggsave("extinction.pdf", gext, width=10, height=6)
 
 ## ASYNCHRONY WITH LOW M
 

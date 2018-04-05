@@ -129,7 +129,7 @@ extdf3 <-simdf3 %>%
 gbase2 <- ggplot(simdf3) +
     geom_line(aes(time, value, col=patch)) +
     labs(x="Time (years)", y="Prevalence")+
-    ggtitle("Observed asynchrony with low mixing rate (m = 0.001)")+
+    ggtitle("Asynchrony")+
     scale_color_manual(labels=c("Patch 1", "Patch 2"), values=c(1,2)) +
     theme(
         legend.position = c(0.05, 0.8),
@@ -172,7 +172,7 @@ extdf4 <-simdf4 %>%
 gbase3 <- ggplot(simdf4) +
     geom_line(aes(time, value, col=patch)) +
     labs(x="Time (years)", y="Prevalence")+
-    ggtitle("Observed synchrony with high mixing rate (m = 0.5)")+
+    ggtitle("Synchrony")+
     scale_color_manual(labels=c("Patch 1", "Patch 2"), values=c(1,2)) +
     theme(
         legend.position = "none"

@@ -132,7 +132,7 @@ gbase2 <- ggplot(simdf3) +
     ggtitle("Observed asynchrony with low mixing rate (m = 0.001)")+
     scale_color_manual(labels=c("Patch 1", "Patch 2"), values=c(1,2)) +
     theme(
-        legend.position = c(0.15, 0.9),
+        legend.position = c(0.05, 0.8),
         legend.title = element_blank()
     )
 
@@ -180,7 +180,7 @@ gbase3 <- ggplot(simdf4) +
 
 gsynch <- gbase3 + geom_point(data=extdf4, aes(time, value), col="blue")
 
-gtraj <- arrangeGrob(gasynch, gsynch, nrow=1)
+gtraj <- arrangeGrob(gasynch, gsynch, ncol=1)
 
 ggsave("trajectories.pdf", gtraj, width=10, height=6)
 

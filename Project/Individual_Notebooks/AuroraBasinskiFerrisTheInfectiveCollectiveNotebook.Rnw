@@ -185,6 +185,19 @@ date.string <- function(year,month,day) {
 \item Met in class. Changed our incoherence measure (to be relative to epidemic size rather than absolute). Also discussed some common themes for our plots so that our presentation looks consistent. We will meet again tonight to discuss further.
 \end{itemize}
 
+\textbf{Group Work (Everyone)}\\
+\emph{Approximate Duration: 1 Hour}
+\begin{itemize}
+\item Spent some more time discussing the incoherence measure. Turned it back into absolute but raised the threshold.
+\item Fleshed out planning for the presentation.
+\end{itemize}
+
+\textbf{Solo Work}
+\emph{Approximate Duration: 30 mins}
+\begin{itemize}
+\item Spent some time making plots look same as other plots. Also started work on the slides I was supposed to create.
+\end{itemize}
+
 
 \section*{Total time spent on this project}
 

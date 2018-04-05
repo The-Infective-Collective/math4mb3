@@ -11,7 +11,7 @@ df2 <- reslist
 
 R0df <- bind_rows(df1,df2) %>%
     group_by(R0, m) %>%
-    summarize(prob.coherence = length(which((incoherence2 < 0.2)))/100)
+    summarize(prob.coherence = length(which((incoherence2 < 100)))/100)
 
 
 bifur_df_norm <- bifur_df %>%

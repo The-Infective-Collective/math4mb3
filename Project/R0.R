@@ -7,7 +7,7 @@ sourceCpp("SIRmodel_npatch.cpp")
 
 nsim <- 100
 R0vec <- seq(1, 20, by=0.4)
-mvec <- c(0.001, 0.01, 0.1, 0.5)
+mvec <- c(0.0001)
 
 reslist <- vector('list', length(mvec))
 
@@ -57,4 +57,4 @@ for (m in mvec) {
   reslist[[which(mvec==m)]] <- ss
 }
 
-save("reslist", file="R0.rda")
+save("reslist", file="R0_0.0001.rda")

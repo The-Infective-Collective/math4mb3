@@ -24,7 +24,8 @@ gprob <- ggplot(R0df) +
   geom_line(aes(R0, prob.coherence)) +
   facet_wrap(~m, ncol =2) + 
   geom_path(data= bifur_df_norm, aes(R0, nlp, group=interaction(i, j, sim), col=factor(i)), alpha=0.5) +
-  labs(x=TeX('$R_0$'), y='Probability of coherence') + 
-  theme_bw()
+  labs(x='Reproductive number', y='Probability of coherence') + 
+  theme_bw()+
+  scale_color_manual(values=c(1,1,2,3,4,5,6))
 
 ggsave("probabilitycoherence.pdf", gprob, width=12, height=5)

@@ -1,6 +1,7 @@
 library(tidyr)
 library(dplyr)
 library(ggplot2); theme_set(theme_bw())
+library(latex2exp)
 library(Rcpp)
 source("params.R")
 sourceCpp("SIRmodel_npatch.cpp")
@@ -37,7 +38,8 @@ extdf1 <-simdf1 %>%
 glocal <- ggplot(simdf1) +
     geom_line(aes(time, value, col=patch)) +
     geom_point(data=extdf1, aes(time, value), col=3)+
-    labs(x="Time (years)", y="Prevalence")
+    labs(x="Time (years)", y="Prevalence")+
+    ggtitle("Local extinction (with rescue effects)")
 
 ggsave("localext_1.pdf", glocal, width=8, height=6)
 
@@ -73,9 +75,10 @@ simdf2 <- list(
 gglobal <- ggplot(simdf2) +
     geom_line(aes(time, value, col=patch)) +
     #geom_point(data=extdf2, aes(time, value), col=3)+
-    labs(x="Time (years)", y="Prevalence")
+    labs(x="Time (years)", y="Prevalence")+
+    ggtitle("Global extinction (no rescue effects)")
 
-ggsave("globalext2.pdf", gglobal, width=8, height=6)
+ggsave("globalext_1.pdf", gglobal, width=8, height=6)
 
 ## ASYNCHRONY WITH LOW M
 
@@ -109,9 +112,10 @@ extdf3 <-simdf3 %>%
 gasynch <- ggplot(simdf3) +
     geom_line(aes(time, value, col=patch)) +
     geom_point(data=extdf3, aes(time, value), col=3)+
-    labs(x="Time (years)", y="Prevalence")
+    labs(x="Time (years)", y="Prevalence")+
+    ggtitle("Observed asynchrony with low mixing rate (m = 0.001)")
 
-ggsave("asynchrony_lowm2.pdf", gasynch, width=8, height=6)
+ggsave("asynchrony_lowm_1.pdf", gasynch, width=8, height=6)
 
 ## SYNCHRONY WITH HIGH M
 
@@ -145,6 +149,7 @@ extdf4 <-simdf4 %>%
 gsynch <- ggplot(simdf4) +
     geom_line(aes(time, value, col=patch)) +
     geom_point(data=extdf4, aes(time, value), col=3)+
-    labs(x="Time (years)", y="Prevalence")
+    labs(x="Time (years)", y="Prevalence")+
+    ggtitle("Observed synchrony with high mixing rate (m = 0.5)")
 
-ggsave("synchrony_highm2.pdf", gsynch, width=8, height=6)
+ggsave("synchrony_highm_1.pdf", gsynch, width=8, height=6)

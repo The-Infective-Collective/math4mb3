@@ -1,9 +1,16 @@
 library(tidyr)
 library(dplyr)
-library(ggplot2); theme_set(theme_bw())
+library(ggplot2); theme_set(theme_bw(base_size = 12,
+                                     base_family = "Times"))
+
 library(Rcpp)
+library(gridExtra)
 source("params.R")
 sourceCpp("SIRmodel_npatch.cpp")
+
+if (.Platform$OS.type=="windows") {
+    windowsFonts(Times=windowsFont("Times"))
+} 
 
 ## LOCAL EXTINCTION
 
@@ -34,12 +41,19 @@ simdf1 <- list(
 extdf1 <-simdf1 %>%
     filter(value==0)
 
-glocal <- ggplot(simdf1) +
+gbase <- ggplot(simdf1) +
     geom_line(aes(time, value, col=patch)) +
-    geom_point(data=extdf1, aes(time, value), col=3)+
-    labs(x="Time (years)", y="Prevalence")
+    labs(x="Time (years)", y="Prevalence")+
+    ggtitle("Local extinction (with rescue effects)") +
+    scale_color_manual(labels=c("Patch 1", "Patch 2"), values=c(1,2)) +
+    theme(
+        legend.position = c(0.15, 0.9),
+        legend.title = element_blank()
+    )
 
-ggsave("localext_1.pdf", glocal, width=8, height=6)
+glocal <- gbase + geom_point(data=extdf1, aes(time, value), col="blue")
+
+# ggsave("localext_1.pdf", glocal, width=8, height=6)
 
 ## GLOBAL EXTINCTION
 
@@ -67,15 +81,20 @@ simdf2 <- list(
     gather(key, value, -time, -patch) %>%
     filter(time > 20, time < 40)
 
-extdf2 <-simdf2 %>%
-    filter(value==0)
+#extdf2 <-simdf2 %>%
+    #filter(value==0)
 
-gglobal <- ggplot(simdf2) +
-    geom_line(aes(time, value, col=patch)) +
-    geom_point(data=extdf2, aes(time, value), col=3)+
-    labs(x="Time (years)", y="Prevalence")
+gglobal <- (gbase %+% simdf2) +
+    ggtitle("Global extinction (no rescue effects)") +
+    theme(
+        legend.position = "none"
+    )
+    
+# ggsave("globalext_1.pdf", gglobal, width=8, height=6)
 
-ggsave("globalext2.pdf", gglobal, width=8, height=6)
+gext <- arrangeGrob(glocal, gglobal, nrow=1)
+
+ggsave("extinction.pdf", gext, width=10, height=6)
 
 ## ASYNCHRONY WITH LOW M
 
@@ -84,6 +103,7 @@ pp3[["R0"]] <- 17.0
 
 init <- initfun(pp3, 2, T)
 m <- 0.001
+
 M <- matrix(c(1-m, m, m, 1-m), 2, 2)
 
 set.seed(10)
@@ -101,17 +121,24 @@ simdf3 <- list(
 ) %>%
     bind_rows(.id="patch") %>%
     gather(key, value, -time, -patch) %>%
-    filter(time > 0, time < 50)
+    filter(time > 0, time < 20)
 
 extdf3 <-simdf3 %>%
     filter(value==0)
 
-gasynch <- ggplot(simdf3) +
+gbase2 <- ggplot(simdf3) +
     geom_line(aes(time, value, col=patch)) +
-    geom_point(data=extdf3, aes(time, value), col=3)+
-    labs(x="Time (years)", y="Prevalence")
+    labs(x="Time (years)", y="Prevalence")+
+    ggtitle("Observed asynchrony with low mixing rate (m = 0.001)")+
+    scale_color_manual(labels=c("Patch 1", "Patch 2"), values=c(1,2)) +
+    theme(
+        legend.position = c(0.15, 0.9),
+        legend.title = element_blank()
+    )
 
-ggsave("asynchrony_lowm2.pdf", gasynch, width=8, height=6)
+gasynch <- gbase2 + geom_point(data=extdf3, aes(time, value), col="blue")
+
+#ggsave("asynchrony_lowm_1.pdf", gasynch, width=8, height=6)
 
 ## SYNCHRONY WITH HIGH M
 
@@ -137,14 +164,23 @@ simdf4 <- list(
 ) %>%
     bind_rows(.id="patch") %>%
     gather(key, value, -time, -patch) %>%
-    filter(time > 0, time < 50)
+    filter(time > 0, time < 20)
 
 extdf4 <-simdf4 %>%
     filter(value==0)
 
-gsynch <- ggplot(simdf4) +
+gbase3 <- ggplot(simdf4) +
     geom_line(aes(time, value, col=patch)) +
-    geom_point(data=extdf4, aes(time, value), col=3)+
-    labs(x="Time (years)", y="Prevalence")
+    labs(x="Time (years)", y="Prevalence")+
+    ggtitle("Observed synchrony with high mixing rate (m = 0.5)")+
+    scale_color_manual(labels=c("Patch 1", "Patch 2"), values=c(1,2)) +
+    theme(
+        legend.position = "none"
+        )
 
-ggsave("synchrony_highm2.pdf", gsynch, width=8, height=6)
+gsynch <- gbase3 + geom_point(data=extdf4, aes(time, value), col="blue")
+
+gtraj <- arrangeGrob(gasynch, gsynch, nrow=1)
+
+ggsave("trajectories.pdf", gtraj, width=10, height=6)
+

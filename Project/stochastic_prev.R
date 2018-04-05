@@ -103,6 +103,7 @@ pp3[["R0"]] <- 17.0
 
 init <- initfun(pp3, 2, T)
 m <- 0.001
+
 M <- matrix(c(1-m, m, m, 1-m), 2, 2)
 
 set.seed(10)
@@ -120,7 +121,7 @@ simdf3 <- list(
 ) %>%
     bind_rows(.id="patch") %>%
     gather(key, value, -time, -patch) %>%
-    filter(time > 0, time < 50)
+    filter(time > 0, time < 20)
 
 extdf3 <-simdf3 %>%
     filter(value==0)
@@ -163,7 +164,7 @@ simdf4 <- list(
 ) %>%
     bind_rows(.id="patch") %>%
     gather(key, value, -time, -patch) %>%
-    filter(time > 0, time < 50)
+    filter(time > 0, time < 20)
 
 extdf4 <-simdf4 %>%
     filter(value==0)

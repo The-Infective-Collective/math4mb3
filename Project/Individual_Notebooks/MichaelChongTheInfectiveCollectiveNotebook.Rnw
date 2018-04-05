@@ -22,9 +22,12 @@ date.string <- function(year,month,day) {
                  weekdays(as.Date(paste(year,month,day,sep="-")),abbreviate=FALSE),
                  day, month.name[month], year))
 }
+
+group.hours <- 0 
+solo.hours <- 0
 @ 
 
-\rhead{\fancyplain{}{4MB3 Project Notebook \Sexpr{this.year} \hfill Paul McCartney}}
+\rhead{\fancyplain{}{4MB3 Project Notebook \Sexpr{this.year} \hfill Michael Chong}}
 \title{Math 4MB3 Project Notebook \Sexpr{this.year}}
 \author{Michael Chong (The Infective Collective)}
 \date{\today\ @ \thistime}
@@ -36,7 +39,10 @@ date.string <- function(year,month,day) {
 
 \textbf{Group Meeting (in class)} \\
 \emph{Approximate Duration: 0.5 Hours}
-
+<<echo=FALSE>>=
+group.hours <-  group.hours + 0.5
+solo.hours <- solo.hours
+@ 
 \begin{itemize}
 \item We discussed project topics, and settled on ``Spatial Epidemic Dynamics: Synchronization" as our topic. This was communicated to Dr. Earn
 \end{itemize}
@@ -45,7 +51,10 @@ date.string <- function(year,month,day) {
 
 \textbf{Group Meeting (in class)} \\
 \emph{Approximate Duration: 1  Hours}
-
+<<echo=FALSE>>=
+group.hours <-  group.hours + 1
+solo.hours <- solo.hours
+@ 
 \begin{itemize}
 \item Updated ``README.md" in the GitHub to keep track of the project
 \item Agreed to read papers suggested in the project document by Friday Mar. 16
@@ -58,7 +67,10 @@ date.string <- function(year,month,day) {
 
 \textbf{Group Meeting (in class)} \\
 \emph{Approximate Duration: 1 Hours}
-
+<<echo=FALSE>>=
+group.hours <-  group.hours + 1
+solo.hours <- solo.hours
+@ 
 \begin{itemize}
 \item Tried to construct spatial SIR model
 \item Checked in with Dr. Earn about a possible construction
@@ -70,7 +82,10 @@ date.string <- function(year,month,day) {
 
 \textbf{Solo Work} \\
 \emph{Approximate Duration: 1 Hours}
-
+<<echo=FALSE>>=
+group.hours <-  group.hours
+solo.hours <- solo.hours +1
+@ 
 \begin{itemize}
 \item Try to formulate my own SIR model that takes into account feedback 
 \end{itemize}
@@ -84,9 +99,13 @@ R_{t+1} &= \gamma I_t^i - \mu R_t^i
 \end{aligned}
 \end{equation}
 
+\noindent
 \textbf{Group Meeting} \\
 \emph{Approximate Duration: 1 Hours}
-
+<<echo=FALSE>>=
+group.hours <-  group.hours + 1
+solo.hours <- solo.hours
+@ 
 \begin{itemize}
 \item Organization: 
 \item AB and MC to work on coding the simulation
@@ -97,7 +116,10 @@ R_{t+1} &= \gamma I_t^i - \mu R_t^i
 
 \textbf{Group Work with Aurora} \\
 \emph{Approximate Duration: 3 Hours}
-
+<<echo=FALSE>>=
+group.hours <-  group.hours + 3
+solo.hours <- solo.hours
+@ 
 \begin{itemize}
 \item Tried to implement model using R.
 \item Attempts on using pomp and Rcpp
@@ -108,20 +130,33 @@ R_{t+1} &= \gamma I_t^i - \mu R_t^i
 
 \textbf{Group Work with Aurora} \\
 \emph{Approximate Duration: 2 Hours}
-
+<<echo=FALSE>>=
+group.hours <-  group.hours + 2
+solo.hours <- solo.hours
+@ 
 \begin{itemize}
 \item Resolved errors, and the implementation now successfully produces output as a table
 \item Next steps are to implement stochasticity, and clean up and comment the code
-\end{itemize}
+\end{itemize} 
 
+\noindent
 \textbf{Group meeting (in class)} \\
-\emph{Approximate Duration: 2 Hours}
+\emph{Approximate Duration: 1 Hours}
+<<echo=FALSE>>=
+group.hours <-  group.hours + 1
+solo.hours <- solo.hours
+@ 
 \begin{itemize}
 \item Troubleshoot code -- second patch wasn't updating because the loop wasn't reaching the last patch
-\end{itemize}
+\end{itemize} 
 
+\noindent
 \textbf{Solo work} \\
 \emph{Approximate Duration: 1 Hours}
+<<echo=FALSE>>=
+group.hours <-  group.hours 
+solo.hours <- solo.hours +1
+@ 
 \begin{itemize}
 \item Clean up code
 \item Return results in a dataframe
@@ -131,7 +166,10 @@ R_{t+1} &= \gamma I_t^i - \mu R_t^i
 
 \textbf{Group Meeting (in class)} \\
 \emph{Approximate Duration: 1 Hours}
-
+<<echo=FALSE>>=
+group.hours <-  group.hours + 1
+solo.hours <- solo.hours
+@ 
 \begin{itemize}
 \item Split up work for draft
 \item Switch work responsibilities so that Presta & Park are doing the numerical work, Aurora and I are doing analytical work
@@ -141,26 +179,46 @@ R_{t+1} &= \gamma I_t^i - \mu R_t^i
 
 \textbf{Solo work} \\
 \emph{Approximate Duration: 0.5 Hours}
+<<echo=FALSE>>=
+group.hours <-  group.hours 
+solo.hours <- solo.hours +0.5
+@ 
 \begin{itemize}
 \item Write part of introduction that outlines the rest of the paper
 \item Can't really keep writing without the rest of the content
-\end{itemize}
+\end{itemize} 
 
+\section*{\Sexpr{date.string(this.year, 3, 26)}}
+\noindent
 \textbf{Group Meeting (in class)} \\
 \emph{Approximate Duration: 1 Hours}
+<<echo=FALSE>>=
+group.hours <-  group.hours + 1
+solo.hours <- solo.hours
+@ 
 \begin{itemize}
 \item Discuss direction for the paper -- we will now be focusing on numerical results
 \item I will be working primarily on investigating the effects of mixing structure
 \end{itemize}
 
+\noindent
 \textbf{Group Meeting (evening)} \\
 \emph{Approximate Duration: 1 Hour}
+<<echo=FALSE>>=
+group.hours <-  group.hours + 1
+solo.hours <- solo.hours
+@ 
 \begin{itemize}
 \item Discuss plan for the draft
-\end{itemize}
+\end{itemize} 
 
+\noindent
 \textbf{Solo work} \\
 \emph{Apprxomiate Duration: 3 Hours}
+<<echo=FALSE>>=
+group.hours <-  group.hours 
+solo.hours <- solo.hours +3
+@ 
 \begin{itemize}
 \item Change some of my code to use SWP's general .cpp file
 \item Worked on setting up simulations to investigate different dispersal matrices
@@ -173,18 +231,82 @@ R_{t+1} &= \gamma I_t^i - \mu R_t^i
 
 \textbf{Group meeting (evening)} \\
 \emph{Approximate Duration: 1 Hours}
+<<echo=FALSE>>=
+group.hours <-  group.hours +1
+solo.hours <- solo.hours
+@ 
 \begin{itemize}
 \item Help fix some bugs in Presta's code
 \item Discuss timeline for handing in draft. Everyone will have things done by 9 AM tomorrow.
+\end{itemize} 
+
+\noindent
+\textbf{Solo work} \\
+\emph{Approximate Duration: 6 Hours}
+<<echo=FALSE>>=
+group.hours <-  group.hours 
+solo.hours <- solo.hours + 6
+@ 
+\begin{itemize}
+\item Prepared figures regarding mixing structure for draft
+\subitem Ran into problems where seemingly all initial conditions ended with synchrony. Seems like we only get asynchrony (with the base parameters) when the proportion $p$ that stay within their own patch is 0.999, and even then the initial conditions are rare.
+\subitem Decided to focus on the 2 patch case for now to simplify the problem.
+\item Wrote a brief outline of the mixing structure section for the draft.
 \end{itemize}
+
+\section*{\Sexpr{date.string(this.year, 4, 2)}}
+\textbf{Group meeting (in class)} \\
+\emph{Approximate Duration: 1 Hours}
+<<echo=FALSE>>=
+group.hours <-  group.hours +1
+solo.hours <- solo.hours
+@ 
+\begin{itemize}
+\item Discuss feedback given on our draft. We communicated electronically over the weekend about directions and we confirmed that we would be focusing on $R_0$ and adding stochasticity.
+\end{itemize} 
+
+\textbf{Group Work with Aurora} \\
+\emph{Approximate Duration: 3 Hours}
+<<echo=FALSE>>=
+group.hours <-  group.hours +1
+solo.hours <- solo.hours
+@ 
+\begin{itemize}
+\item Worked on code with Aurora regarding the probability of coherence with different $R_0$ values. We split the number of simulations in half to run overnight.
+\end{itemize}
+
+\section*{\Sexpr{date.string(this.year, 4, 3)}}
+\textbf{Group Meeting (evening)} \\
+\emph{Approximate Duration: 1 Hour}
+<<echo=FALSE>>=
+group.hours <-  group.hours +1
+solo.hours <- solo.hours
+@ 
+\begin{itemize}
+\item Discussed the results that were generated regarding the probability of coherence with different $R_0$ values. Larger values of $m$ are not particularly interesting (coherence is inevitable for almost all $R_0$ values), but at low values of $m$ (e.g. 0.001) we see some ``coherence possible" regions.
+\item Started planning the presentation. Started a new file on Overleaf for the presentation and chose a theme. We defined broad sections in our presentation and briefly went over the contents of each section,
+\end{itemize}
+
+
+\section*{\Sexpr{date.string(this.year, 4, 4)}}
+\textbf{Group Meeting (evening)} \\
+\emph{Approximate Duration: 1 Hour}
+<<echo=FALSE>>=
+group.hours <-  group.hours +1
+solo.hours <- solo.hours
+@ 
+\begin{itemize}
+\item Discussed more specific details about our presentation. Divided up the parts. I will be working on the discussion portion.
+\end{itemize}
+
 
 \section*{Total time spent on this project}
 
 \begin{quote}
 
-\emph{Group work:}  hours
+\emph{Group work:} \Sexpr{group.hours} hours
 
-\emph{Solo work:}  hours
+\emph{Solo work:} \Sexpr{solo.hours} hours
 
 \end{quote}
 

@@ -31,39 +31,28 @@ tvec <- seq(0, nyear, by=1/365)
 
 reslist <- vector('list', 3)
 
-iilist <- list(
-    list(
-        S=5000,
-        I=1000,
-        R=1e6-5000-1000
-    ),
-    list(
-        S=10000,
-        I=2000,
-        R=1e6-10000-2000
-    )
+ii <-list(
+    S=10000,
+    I=2000,
+    R=1e6-10000-2000
 )
 
-for (i in 1:2) {
-    pp <- base.params
-    ii <- iilist[[i]]
-    
-    cont.df <- as.data.frame(deSolve::ode(unlist(ii), tvec, SIR, base.params))
-    disc.df <- SIRmodel_npatch(base.params, ii, matrix(1), term_time)
-    
-    sl <- list(
-        continuous=cont.df[,c("time", "I")],
-        discrete=data.frame(
-            time=disc.df$time,
-            I=disc.df$I
-        )
-    ) %>%
-        bind_rows(.id="type")
-    
-    reslist[[i]] <- sl
-}
 
-rdf <- reslist %>%
+pp <- base.params
+    
+cont.df <- as.data.frame(deSolve::ode(unlist(ii), tvec, SIR, base.params))
+disc.df <- SIRmodel_npatch(base.params, ii, matrix(1), term_time)
+    
+sl <- list(
+    continuous=cont.df[,c("time", "I")],
+    discrete=data.frame(
+        time=disc.df$time,
+        I=disc.df$I
+    )
+) %>%
+    bind_rows(.id="type")
+
+rdf <- sl %>%
     bind_rows(.id="sim") %>%
     mutate(
         sim=factor(sim, levels=c(1,2), 

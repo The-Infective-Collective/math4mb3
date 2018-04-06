@@ -36,24 +36,26 @@ simdf1 <- list(
 ) %>%
     bind_rows(.id="patch") %>%
     gather(key, value, -time, -patch) %>%
-    filter(time > 20, time < 40)
+    filter(time > 23, time < 27)
 
 extdf1 <-simdf1 %>%
     filter(value==0)
 
 gbase <- ggplot(simdf1) +
     geom_line(aes(time, value, col=patch), lwd=1.1) +
+    scale_x_continuous(expand=c(0,0)) +
+    scale_y_sqrt(expand=c(0,0)) +
     labs(x="Time (years)", y="Prevalence")+
     ggtitle("Local extinction (with rescue effects)") +
     scale_color_manual(labels=c("Patch 1", "Patch 2"), values=c("#D55E00", "#0072B2")) +
     theme(
-        legend.position = c(0.15, 0.9),
+        legend.position = c(0.1, 0.12),
         legend.title = element_blank()
     )
 
-glocal <- gbase + geom_point(data=extdf1, aes(time, value), col="red")
+glocal <- gbase
 
-# ggsave("localext_1.pdf", glocal, width=8, height=6)
+ggsave("lextinction.pdf", glocal, width=6, height=4)
 
 ## GLOBAL EXTINCTION
 
@@ -79,22 +81,15 @@ simdf2 <- list(
 ) %>%
     bind_rows(.id="patch") %>%
     gather(key, value, -time, -patch) %>%
-    filter(time > 20, time < 40)
+    filter(time > 25, time < 40)
 
 #extdf2 <-simdf2 %>%
     #filter(value==0)
 
 gglobal <- (gbase %+% simdf2) +
-    ggtitle("Global extinction (no rescue effects)") +
-    theme(
-        legend.position = "none"
-    )
+    ggtitle("Global extinction (no rescue effects)")
     
-# ggsave("globalext_1.pdf", gglobal, width=8, height=6)
-
-gext <- arrangeGrob(glocal, gglobal, nrow=1)
-
-ggsave("extinction.pdf", gext, width=10, height=6)
+ggsave("gextinction.pdf", gglobal, width=8, height=6)
 
 ## ASYNCHRONY WITH LOW M
 

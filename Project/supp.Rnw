@@ -13,6 +13,8 @@
 \usepackage{amsthm} % for theorems and proofs
 \usepackage{amsfonts} % mathbb
 \usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\definecolor{aqua}{RGB}{0, 128, 225}
 \usepackage[colorlinks=true,citecolor=aqua,linkcolor=aqua,urlcolor=aqua]{hyperref}
 \usepackage[nameinlink]{cleveref}
 \usepackage{lineno}

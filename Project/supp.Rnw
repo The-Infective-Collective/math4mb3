@@ -191,6 +191,7 @@ base.init <- initfun(base.params)
 
 In order to make a bifurcation diagram, we vary $\R_0$ from 1 to 20 every 0.2 steps. 
 Then, for each $\R_0$, 20 simulations are run from random initial conditions for 4000 years to remove any transient behaviours that might be present.
+Here, we check whether the simulation file is present. If not, simulations are run and saved as an \texttt{.rda} file.
 Note that this simulation takes approximately 20 hours. Thus, we load a saved file instead.
 
 <<bifurcation>>==
@@ -282,8 +283,10 @@ The following code illustrates how bifurcation diagrams are created
 
 <<bifur_g>>===
 gbifur <- ggplot(bifur_df) +
-    geom_path(aes(R0, prevalence, group=interaction(i, j, sim), col=factor(i)), lwd=2) +
-    scale_y_log10("Prevalence I/N", breaks=c(1e-3, 1e-4, 1e-5, 1e-6, 1e-7)) +
+    geom_path(aes(R0, prevalence, group=interaction(i, j, sim),
+                  col=factor(i)), lwd=2) +
+    scale_y_log10("Prevalence I/N", 
+                  breaks=c(1e-3, 1e-4, 1e-5, 1e-6, 1e-7)) +
     scale_x_continuous("Basic reproductive number") +
     scale_color_manual(values=c(1, 1, 2, 3, 4, 5, 6)) +
     theme(

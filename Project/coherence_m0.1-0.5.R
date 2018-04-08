@@ -57,4 +57,4 @@ for (m in mvec) {
     reslist[[which(mvec==m)]] <- ss
 }
 
-save("reslist", file="R0.rda")
+save("reslist", file="coherence_m0.1-0.5.rda")

@@ -294,6 +294,345 @@ plot(gbifur)
 @
 
 \section{Probability of coherence in the deterministic model}
+Before going into the bulk of the deterministic model section, we load a few useful functions which will be used throughout. The first is a function to calculate the incoherence measure defined in the main paper:
+Let $\vec{I} (t) = (I_1(t), \dots, I_n(t))$ denote the number of individuals infected at time $t$ in patches $k = 1, \dots, n$. We then define incoherence $\delta$ at time $t$ as
+$$
+\delta(t) = || \vec{I}(t) - \langle \vec{I} (t) \rangle \vec{e}||_2,
+$$
+where $\langle \vec{I} (t) \rangle = \sum_{k=1}^n I_k(t) / n$ denotes the mean prevalence among the patches at time $t$, and $\vec{e} = (1, \dots, 1)$.
+
+<<incoherence-calculation, tidy=TRUE>>==
+# coherence metric calculation
+coherence_calc <- function(x) {
+  norm(x - rep(mean(x), length(x)), type = "2")
+}
+@
+
+Below is a function that generates random initial conditions with $0 < S_k < 0.1 N$, and $0 < I_k < 0.0001 N$ for each patch as described Earn et al. (2000): A Simple Model for Complex Dynamical Transitions in Epidemics.
+<<initialgenerate, tidy = TRUE>>==
+r.init.science <- function(m) {
+    initial <- list(S = runif(m, 0, 0.1*base.params$pop))
+    initial$I <- runif(m, 0, 0.0001*base.params$pop)
+    initial$R <- rep(base.params$pop, m) - initial$S - initial$I
+    initial
+}
+@
+
+Lastly, we have a function that returns the results of the model simulation (from the \texttt{.cpp} file) in a convenient format.
+<<conveniencefunction, tidy=TRUE>>==
+run_SIR <- function(p, init, m, seas) {
+  # get number of patches
+  n <- nrow(m)
+  
+  # Run the model
+  raw.result <- SIRmodel_npatch(p, init, m, seas)
+  
+  # Initialize result data frame
+  result <- data_frame(t = raw.result$time)
+  
+  # Pull results
+  S <- raw.result$S
+  I <- raw.result$I
+  R <- raw.result$R
+  
+  # Change column names
+  colnames(S) <- str_c("S", 1:n)
+  colnames(I) <- str_c("I", 1:n)
+  colnames(R) <- str_c("R", 1:n)
+  
+  # Combine data frames 
+  cbind(result, S, I, R) 
+}
+@
+Here we check if the data file corresponding to $m = 0.0001$ is present. If it is, then we load that file, and if it isn't, then we run the simulation that creates that file. Note that loading in the file will save a lot of time and if it is missing, we strongly recommend you get the file from us. Here we only show the code that loads data corresponding to $m =0.0001$, but the code for the remaining $m$ values (0.001, 0.01, 0.1, 0.5) are similar and therefore hidden.
+
+You may be asking why we run all of these separately. This was to split up the computational load among our measly laptops. The $m$ values were split up as follows (by assigning the \texttt{mvec} vector accordingly: 
+\begin{itemize}
+\item \texttt{mvec = 0.0001} (assigned to \texttt{df1})
+\item \texttt{mvec = c(0.001, 0.01)} (assigned to \texttt{df2})
+\item \texttt{mvec = c(0.1, 0.5)} (assigned to \texttt{df3})
+\end{itemize} 
+
+For each $m$ value we test 100 random initial conditions and run the model for 100 years. Then we record the average incoherence value in the last 2 years and the last 5 years of the simulation for each initial condition.
+
+<<df1-deterministic, tidy=TRUE>>==
+if (file.exists("coherence_m0.0001.rda")) {
+  load("coherence_m0.0001.rda")
+  df1 <- reslist
+  
+} else {
+  nsim <- 100
+  R0vec <- seq(1, 20, by=0.4)
+  mvec <- c(0.0001)
+  reslist <- vector('list', length(mvec))
+  set.seed(101)
+  for (m in mvec) {
+    M <- matrix(c(1-m, m, m, 1-m), 2, 2)
+    subreslist <- vector('list', length(R0vec))
+    for (R in R0vec) {
+      print(paste(m,R, sep=","))
+      
+      pp <- base.params
+      pp[["R0"]] <- R
+      
+      subsubreslist <- vector("list", nsim)
+      
+      for (i in 1:nsim) {
+        
+        init <- r.init.science(2)
+        
+        df <- run_SIR(pp, init, M, term_time)
+        
+        incoherence2 <- apply(df[(nrow(df) - 2*365):nrow(df), c("I1", "I2")], 1, coherence_calc) %>% mean()
+        incoherence5 <- apply(df[(nrow(df) - 5*365):nrow(df), c("I1", "I2")], 1, coherence_calc) %>% mean()
+        
+        subsubreslist[[i]] <- data_frame(
+          S01 = init$S[1],
+          S02 = init$S[2],
+          I01 = init$I[1],
+          I02 = init$I[2],
+          R0=R,
+          incoherence2 = incoherence2,
+          incoherence5 = incoherence5
+        )
+      }
+      
+      subreslist[[which(R0vec ==R)]] <-do.call("rbind", subsubreslist)
+    }
+    
+    ss <- do.call("rbind", subreslist)
+    ss$m <- m
+    
+    reslist[[which(mvec==m)]] <- ss
+  }
+}
+@
+
+<<df2-deterministic, echo = FALSE>>==
+if (file.exists("coherence_m0.001-0.01.rda")) {
+  load("coherence_m0.001-0.01.rda")
+  df2 <- reslist
+} else {
+  nsim <- 100
+  R0vec <- seq(1, 20, by=0.4)
+  mvec <- c(0.001, 0.01)
+  
+  reslist <- vector('list', length(mvec))
+  
+  set.seed(101)
+  
+  for (m in mvec) {
+    
+    M <- matrix(c(1-m, m, m, 1-m), 2, 2)
+    
+    subreslist <- vector('list', length(R0vec))
+    
+    for (R in R0vec) {
+      print(paste(m,R, sep=","))
+      
+      pp <- base.params
+      pp[["R0"]] <- R
+      
+      subsubreslist <- vector("list", nsim)
+      
+      
+      for (i in 1:nsim) {
+        
+        init <- r.init.science(2)
+        
+        df <- run_SIR(pp, init, M, term_time)
+        
+        incoherence2 <- apply(df[(nrow(df) - 2*365):nrow(df), c("I1", "I2")], 1, coherence_calc) %>% mean()
+        incoherence5 <- apply(df[(nrow(df) - 5*365):nrow(df), c("I1", "I2")], 1, coherence_calc) %>% mean()
+        
+        subsubreslist[[i]] <- data_frame(
+          S01 = init$S[1],
+          S02 = init$S[2],
+          I01 = init$I[1],
+          I02 = init$I[2],
+          R0=R,
+          incoherence2 = incoherence2,
+          incoherence5 = incoherence5
+        )
+      }
+      
+      subreslist[[which(R0vec ==R)]] <-do.call("rbind", subsubreslist)
+    }
+    
+    ss <- do.call("rbind", subreslist)
+    ss$m <- m
+    
+    reslist[[which(mvec==m)]] <- ss
+  }
+}
+@
+
+
+<<df3-deterministic, echo = FALSE>>==
+if (file.exists("coherence_m0.1-0.5.rda")) {
+  load("coherence_m0.1-0.5.rda")
+  df3 <- reslist
+} else {
+  nsim <- 100
+  R0vec <- seq(1, 20, by=0.4)
+  mvec <- c(0.001, 0.01)
+  
+  reslist <- vector('list', length(mvec))
+  
+  set.seed(101)
+  
+  for (m in mvec) {
+    
+    M <- matrix(c(1-m, m, m, 1-m), 2, 2)
+    
+    subreslist <- vector('list', length(R0vec))
+    
+    for (R in R0vec) {
+      print(paste(m,R, sep=","))
+      
+      pp <- base.params
+      pp[["R0"]] <- R
+      
+      subsubreslist <- vector("list", nsim)
+      
+      
+      for (i in 1:nsim) {
+        
+        init <- r.init.science(2)
+        
+        df <- run_SIR(pp, init, M, term_time)
+        
+        incoherence2 <- apply(df[(nrow(df) - 2*365):nrow(df), c("I1", "I2")], 1, coherence_calc) %>% mean()
+        incoherence5 <- apply(df[(nrow(df) - 5*365):nrow(df), c("I1", "I2")], 1, coherence_calc) %>% mean()
+        
+        subsubreslist[[i]] <- data_frame(
+          S01 = init$S[1],
+          S02 = init$S[2],
+          I01 = init$I[1],
+          I02 = init$I[2],
+          R0=R,
+          incoherence2 = incoherence2,
+          incoherence5 = incoherence5
+        )
+      }
+      
+      subreslist[[which(R0vec ==R)]] <-do.call("rbind", subsubreslist)
+    }
+    
+    ss <- do.call("rbind", subreslist)
+    ss$m <- m
+    
+    reslist[[which(mvec==m)]] <- ss
+  }
+}
+@
+
+Here we combine the three data frames that consist of the data for different $m$ values, and then we construct the plot showing the probability of coherence in the main paper. This particular figure uses a threshold of average incoherence < 100 in the last 2 years.
+
+<<coherenceplot-main, tidy = TRUE>>==
+R0df <- bind_rows(df1, df2,df3) %>% 
+    group_by(R0, m) %>%
+    summarize(prob.coherence = length(which((incoherence2 < 100)))/100) %>%
+    mutate(m.factor = as.factor(m))
+
+bifur_df_norm <- bifur_df %>%
+    mutate(lp=log(prevalence)) %>%
+    mutate(nlp=lp-min(lp)) %>%
+    mutate(nlp=nlp/max(nlp))
+
+levels(R0df$m.factor) <- c("m = 0.0001", "m = 0.001", "m = 0.01", "m = 0.1", "m = 0.5")
+
+gprob <- ggplot(R0df) +
+  geom_line(aes(R0, prob.coherence),size=1) +
+  facet_wrap(~m.factor, ncol =2) + 
+  geom_path(data= bifur_df_norm, aes(R0, nlp, group=interaction(i, j, sim), col=factor(i)), alpha=0.5) +
+  labs(x='Reproductive number', y='Probability of coherence') + 
+  scale_color_manual(values=c(1,1,2,3,4,5,6))+
+  theme(legend.position="none")
+
+gprob
+@
+
+\subsection{Choice of incoherence threshold}
+Here we demonstrate that we obtain similar coherence probabilities even with different choices of threshold. This demonstrates that our observed results and inferences aren't sensitive to our choice of coherence threshold.
+
+Threshold of 10:
+<<coherenceplot-5, echo = FALSE, tidy = TRUE>>==
+R0df <- bind_rows(df1, df2,df3) %>% 
+    group_by(R0, m) %>%
+    summarize(prob.coherence = length(which((incoherence2 < 10)))/100) %>%
+    mutate(m.factor = as.factor(m))
+
+bifur_df_norm <- bifur_df %>%
+    mutate(lp=log(prevalence)) %>%
+    mutate(nlp=lp-min(lp)) %>%
+    mutate(nlp=nlp/max(nlp))
+
+levels(R0df$m.factor) <- c("m = 0.0001", "m = 0.001", "m = 0.01", "m = 0.1", "m = 0.5")
+
+gprob <- ggplot(R0df) +
+  geom_line(aes(R0, prob.coherence),size=1) +
+  facet_wrap(~m.factor, ncol =2) + 
+  geom_path(data= bifur_df_norm, aes(R0, nlp, group=interaction(i, j, sim), col=factor(i)), alpha=0.5) +
+  labs(x='Reproductive number', y='Probability of coherence') + 
+  scale_color_manual(values=c(1,1,2,3,4,5,6))+
+  theme(legend.position="none")
+
+gprob
+@
+
+Threshold of 200:
+
+<<coherenceplot-200, echo = FALSE, tidy = TRUE>>==
+R0df <- bind_rows(df1, df2,df3) %>% 
+    group_by(R0, m) %>%
+    summarize(prob.coherence = length(which((incoherence2 < 200)))/100) %>%
+    mutate(m.factor = as.factor(m))
+
+bifur_df_norm <- bifur_df %>%
+    mutate(lp=log(prevalence)) %>%
+    mutate(nlp=lp-min(lp)) %>%
+    mutate(nlp=nlp/max(nlp))
+
+levels(R0df$m.factor) <- c("m = 0.0001", "m = 0.001", "m = 0.01", "m = 0.1", "m = 0.5")
+
+gprob <- ggplot(R0df) +
+  geom_line(aes(R0, prob.coherence),size=1) +
+  facet_wrap(~m.factor, ncol =2) + 
+  geom_path(data= bifur_df_norm, aes(R0, nlp, group=interaction(i, j, sim), col=factor(i)), alpha=0.5) +
+  labs(x='Reproductive number', y='Probability of coherence') + 
+  scale_color_manual(values=c(1,1,2,3,4,5,6))+
+  theme(legend.position="none")
+
+gprob
+@
+
+\subsection{Coherence in the last 5 years}
+Here we show that our inferences are also not sensitive to whether we measure the average incoherence over the last 2 or 5 years. The plot in the main paper uses a last-2-year measure of average incoherence, but we see below that changing this to the last 5 years (with the same incoherence < 100 threshold) results in similar behaviour.
+
+<<coherenceplot-5year, echo = FALSE, tidy = TRUE>>==
+R0df <- bind_rows(df1, df2,df3) %>% 
+    group_by(R0, m) %>%
+    summarize(prob.coherence = length(which((incoherence5 < 100)))/100) %>%
+    mutate(m.factor = as.factor(m))
+
+bifur_df_norm <- bifur_df %>%
+    mutate(lp=log(prevalence)) %>%
+    mutate(nlp=lp-min(lp)) %>%
+    mutate(nlp=nlp/max(nlp))
+
+levels(R0df$m.factor) <- c("m = 0.0001", "m = 0.001", "m = 0.01", "m = 0.1", "m = 0.5")
+
+gprob <- ggplot(R0df) +
+  geom_line(aes(R0, prob.coherence),size=1) +
+  facet_wrap(~m.factor, ncol =2) + 
+  geom_path(data= bifur_df_norm, aes(R0, nlp, group=interaction(i, j, sim), col=factor(i)), alpha=0.5) +
+  labs(x='Reproductive number', y='Probability of coherence') + 
+  scale_color_manual(values=c(1,1,2,3,4,5,6))+
+  theme(legend.position="none")
+
+gprob
+@
 
 \section{Probability of extinction}
 

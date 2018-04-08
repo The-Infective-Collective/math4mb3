@@ -1,0 +1,73 @@
+\documentclass[12pt]{article}
+\usepackage{scrtime} % for \thistime (this package MUST be listed first!)
+\usepackage[margin=1in]{geometry}
+\usepackage{subfig}
+
+%% Language and font encodings
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+
+%% Useful packages
+\usepackage{amsmath}
+\usepackage{amsthm} % for theorems and proofs
+\usepackage{amsfonts} % mathbb
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\definecolor{aqua}{RGB}{0, 128, 225}
+\usepackage[colorlinks=true,citecolor=aqua,linkcolor=aqua,urlcolor=aqua]{hyperref}
+\usepackage[nameinlink]{cleveref}
+\usepackage{lineno}
+
+\usepackage{fancyhdr,lastpage}
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer parameters
+%%%\lhead{Student Name: \theblank{4cm}}
+%%%\chead{}
+%%%\rhead{Student Number: \theblank{3cm}}
+%%%\lfoot{\small\bfseries\ifnum\thepage<\pageref{LastPage}{CONTINUED\\on next page}\else{LAST PAGE}\fi}
+\lfoot{}
+\cfoot{{\small\bfseries Page \thepage\ of \pageref{LastPage}}}
+\rfoot{}
+\renewcommand\headrulewidth{0pt} % Removes funny header line
+
+\newcommand{\R}{{\cal R}}
+
+\title{Synchrony and Persistence of Recurrent Epidemics (Supplementary Material)}
+\author{\underline{\emph{Group Name}}: \texttt{{\color{blue}The Infective Collective}}\\
+{}\\
+\underline{\emph{Group Members}}: {\color{blue}Aurora Basinski-Ferris, Michael Chong, Daniel Park, Daniel Presta}}
+
+\date{\today\ @ \thistime}
+
+\begin{document}
+
+<<echo=FALSE>>==
+start.time <- proc.time()
+@
+\linenumbers
+\maketitle
+
+\section{Introduction}
+This supplement contains the necessary code to reproduce the data and graphs in the main paper. We also include additional discussion and explanation of some of our methods and results.
+
+\section{The Model}
+
+
+
+\section{Probability of coherence in the deterministic model}
+
+
+\section{Save results for inclusion in main paper}
+
+\section{Time to generate this document}
+
+<<echo=FALSE>>==
+total.time <- proc.time() - start.time
+cpu.seconds <- summary(total.time)["user"]
+cpu.time.string <- as.character(lubridate::seconds_to_period(cpu.seconds))
+@
+
+CPU time to generate this document: \Sexpr{cpu.time.string} seconds
+
+\end{document}

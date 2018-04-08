@@ -113,6 +113,31 @@ b_k(t) &= S_{k, \tiny{\textrm{leave}}}(t) - i_k(t) + I_{k, \tiny{\textrm{leave}}
 \end{aligned}
 \end{equation}
 
+\subsection{Time-dependent transmission rate}
+
+Since many recurrent epidemics are childhood diseases, we choose to look at a time-dependent transmission rate that is dependent on an elementary student's school year. From Bauch and Earn, we define the time-dependent transmission rate as
+
+\begin{equation}
+\begin{aligned}
+\beta (t) &=
+\begin{cases} b_0 (1 + 2(1 - p_s) b_1) &\mbox{school days} \\
+b_0 (1 - 2 p_s b_1) & \mbox{non-school days}
+\end{cases},
+\end{aligned}
+\end{equation}
+where $b_0$ is the mean transmission rate, $b_1 = =0.25$ is the amplitude of the term-time forcing, and $p_s = 0.7589$ is the approximate proportion of the year that falls in the school term. We define our school days and non-school days in the following manner (all dates inclusive, leap years not considered):
+
+\begin{itemize}
+\item Each day (including weekends) from January 7th to March 9th is considered a school day.
+\item Each day from March 10th to March 17th is a non-school day, since March break approximately occurs during this time of year.
+\item Each day (including weekends) from March 18th to June 30th is a school day.
+\item Each day from July 1st to September 3rd is a non-school day, as summer vacation occurs during this time.
+\item Each day from September 4th to December 22nd is a school day.
+\item Each day from December 23rd to January 6th is a non-school day (Christmas, New Years break).
+\end{itemize}
+
+We chose these days after examining past school calendars from the Toronto District School Board and making reasonable assumptions regarding the average school opening and school closing dates, as well as the average beginning and end dates of school breaks. Furthermore, we included weekends to account for contact-heavy children's extracurricular activities that may take place on weekends during the school year, and to make the code easier to implement (greatly reduce the number of ``\texttt{if}" statements).
+
 \subsection{Load packages}
 
 Before we attempt any numerical analysis, we want to load all necessary pacakges first.

@@ -13,6 +13,8 @@
 \usepackage{amsthm} % for theorems and proofs
 \usepackage{amsfonts} % mathbb
 \usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\definecolor{aqua}{RGB}{0, 128, 225}
 \usepackage[colorlinks=true,citecolor=aqua,linkcolor=aqua,urlcolor=aqua]{hyperref}
 \usepackage[nameinlink]{cleveref}
 \usepackage{lineno}
@@ -282,6 +284,120 @@ plot(gbifur)
 \section{Probability of coherence in the deterministic model}
 
 \section{Probability of extinction}
+
+\subsection{Factorial simulation}
+
+Here, we vary $\R_0$ from 1 to 20 by 0.2 steps and simulate the stochastic model 100 times for each combination of $\R_0$ and mixing proportion $m$.
+Here, we do not use random initial conditions as it may lead to exaggeration of global extinction probability.
+Instead, we start from the endemic equilibrium.
+Once again, this simulation takes approximately 11 hours. Thus, we load a saved file instead.
+
+<<stoch_sim>>==
+if (file.exists("stochastic.rda")) {
+    load("stochastic.rda")
+} else {
+    nsim <- 100
+    R0vec <- seq(1, 20, by=0.2)
+    mvec <- c(0.001, 0.01, 0.1, 0.5)
+
+    reslist <- vector('list', length(mvec))
+    set.seed(101)
+    for (m in mvec) {
+    
+        M <- matrix(c(1-m, m, m, 1-m), 2, 2)
+        subreslist <- vector('list', length(R0vec))
+    
+        for (R in R0vec) {
+            pp <- base.params
+            pp[["R0"]] <- R
+        
+            subsubreslist <- vector('list', nsim)
+            for (i in 1:nsim) {
+                init <- initfun(pp, 2, T)
+                df <- SIRmodel_npatch_stochastic(base.params, init, M, term_time)
+                zero1 <- which(df$I[,1]==0)
+                zero2 <- which(df$I[,2]==0)
+                subsubreslist[[i]] <- data.frame(
+                    sim=i,
+                    R0=R,
+                    local=(any(df$I[,1]==0) || any(df$I[,2]==0)),
+                    global=(any(df$I[,1]==0 & df$I[,2]==0)),
+                    rescue1=length(which(diff(zero1) != 1)),
+                    rescue2=length(which(diff(zero2) != 1))
+                )
+            }
+            subreslist[[which(R0vec==R)]] <- do.call("rbind", subsubreslist)
+        }
+        ss <- do.call("rbind", subreslist)
+        ss$m <- m
+        reslist[[which(mvec==m)]] <- ss
+    }
+    save("reslist", file="stochastic.rda")
+}
+@
+
+\subsection{Plot}
+
+<<>>==
+sdf <- reslist %>%
+    bind_rows %>%
+    group_by(R0, m) %>%
+    summarize(
+        local=mean(local),
+        global=mean(global)
+    ) %>%
+    gather(key, value, -R0, -m) %>%
+    mutate(m=paste0("m = ", m),
+           key=factor(key, levels=c("global", "local"), 
+                      labels=c("Global extinction", "Local extinction")))
+@
+
+<<>>==
+sdf %>% 
+    filter(R0 > 12.5, R0 <=18, m=="m = 0.001") %>%
+    group_by(key) %>%
+    summarize(
+        lwr=range(value)[1],
+        upr=range(value)[2]
+    )
+@
+
+<<>>==
+sdf %>% 
+    filter(R0 > 10, key=="Global extinction") %>%
+    group_by(m) %>%
+    summarize(
+        lwr=range(value)[1],
+        upr=range(value)[2]
+    )
+@
+
+<<>>==
+bifur_df_norm <- bifur_df %>%
+    mutate(lp=log(prevalence)) %>%
+    mutate(nlp=lp-min(lp)) %>%
+    mutate(nlp=nlp/max(nlp))
+@
+
+<<>>==
+gstoch <- ggplot(bifur_df_norm) +
+    geom_point(data=filter(bifur_df_norm, i==5, round(R0, 1)==6.8), 
+               aes(R0, nlp, group=interaction(i, j), col=factor(i)), size=0.5, alpha=0.5) +
+    geom_path(aes(R0, nlp, group=interaction(i, j, sim), col=factor(i)), alpha=0.5) +
+    geom_line(data=sdf, aes(R0, value, lty=key), lwd=1.1) +
+    scale_y_continuous("Probability of extinction") +
+    scale_x_continuous("Reproductive number", expand=c(0,0)) +
+    facet_wrap(~m) +
+    scale_color_manual(values=c(1, 1, 2, 3, 4, 5), guide=FALSE) +
+    theme(
+        legend.position = "top",
+        legend.title = element_blank(),
+        panel.spacing = grid::unit(0, "cm"),
+        panel.grid = element_blank()
+    )
+
+plot(gstoch)
+@
 
 \section{Save results for inclusion in main paper}
 

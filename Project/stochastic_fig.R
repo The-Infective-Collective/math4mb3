@@ -23,6 +23,22 @@ sdf <- reslist %>%
            key=factor(key, levels=c("global", "local"), 
                       labels=c("Global extinction", "Local extinction")))
 
+sdf %>% 
+    filter(R0 > 12.5, R0 <=18, m=="m = 0.001") %>%
+    group_by(key) %>%
+    summarize(
+        lwr=range(value)[1],
+        upr=range(value)[2]
+    )
+
+sdf %>% 
+    filter(R0 > 10, key=="Global extinction") %>%
+    group_by(m) %>%
+    summarize(
+        lwr=range(value)[1],
+        upr=range(value)[2]
+    )
+    
 bifur_df_norm <- bifur_df %>%
     mutate(lp=log(prevalence)) %>%
     mutate(nlp=lp-min(lp)) %>%
@@ -41,11 +57,10 @@ gstoch <- ggplot(bifur_df_norm) +
         legend.position = "top",
         legend.title = element_blank(),
         panel.spacing = grid::unit(0, "cm"),
-        panel.grid = element_blank(),
-        strip.text = element_text(size=25)
+        panel.grid = element_blank()
     )
 
-ggsave("stochastic.pdf", gstoch, width=12, height=8)
+ggsave("stochastic.pdf", gstoch, width=7, height=5)
 
 gstoch_ex <- ggplot(bifur_df_norm) +
     geom_point(data=filter(bifur_df_norm, i==5, round(R0, 1)==6.8), 
@@ -69,4 +84,4 @@ gstoch_ex <- ggplot(bifur_df_norm) +
 gt1 <- ggplotGrob(gstoch_ex)
 gt1$layout$clip[gt1$layout$name == "panel"] <- "off"
 
-ggsave("stochastic_example.pdf", gt1, width=10, height=5)
+ggsave("stochastic_example.pdf", gt1, width=7, height=3)

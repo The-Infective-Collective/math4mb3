@@ -33,7 +33,7 @@ date.string <- function(year,month,day) {
 
 \section*{\Sexpr{date.string(this.year, 3, 9)}}
 
-\textbf{Group Meeting} \\
+\textbf{Group Work} \\
 \emph{Approximate Duration: 1/2 Hour}
 
 \begin{itemize}
@@ -42,7 +42,7 @@ date.string <- function(year,month,day) {
 
 \section*{\Sexpr{date.string(this.year, 3, 14)}}
 
-\textbf{Group Meeting} \\
+\textbf{Group Work} \\
 \emph{Approximate Duration: 1 Hour}
 
 \begin{itemize}
@@ -51,7 +51,7 @@ date.string <- function(year,month,day) {
 \end{itemize}
 
 \section*{\Sexpr{date.string(this.year, 3, 16)}}
-\textbf{Group Meeting} \\
+\textbf{Group Work (Everyone)} \\
 \emph{Approximate Duration: 1 Hour}
 
 \begin{itemize}
@@ -59,7 +59,7 @@ date.string <- function(year,month,day) {
 \end{itemize}
 
 \section*{\Sexpr{date.string(this.year, 3, 19)}}
-\textbf{Group Meeting} \\
+\textbf{Group Work (Everyone)} \\
 \emph{Approximate Duration: 1 Hour}
 
 \begin{itemize}
@@ -69,7 +69,7 @@ date.string <- function(year,month,day) {
 
 \section*{\Sexpr{date.string(this.year, 3, 20)}}
 
-\textbf{Group Meeting (Michael and I)} \\
+\textbf{Group Work (Michael and I)} \\
 \emph{Approximate Duration: 3 Hours}
 
 \begin{itemize}
@@ -78,7 +78,7 @@ date.string <- function(year,month,day) {
 
 \section*{\Sexpr{date.string(this.year, 3, 21)}}
 
-\textbf{Group Meeting (Michael and I)} \\
+\textbf{Group Work (Michael and I)} \\
 \emph{Approximate Duration: 2 Hours}
 
 \begin{itemize}
@@ -88,7 +88,7 @@ date.string <- function(year,month,day) {
 
 \section*{\Sexpr{date.string(this.year, 3, 21)}}
 
-\textbf{Group Meeting (with everyone)} \\
+\textbf{Group Work (Everyone)} \\
 \emph{Approximate Duration: 1 Hour}
 
 \begin{itemize}
@@ -97,7 +97,7 @@ date.string <- function(year,month,day) {
 
 \section*{\Sexpr{date.string(this.year, 3, 23)}}
 
-\textbf{Group Meeting (with everyone)} \\
+\textbf{Group Work (Everyone)} \\
 \emph{Approximate Duration: 1 Hour}
 
 \begin{itemize}
@@ -105,14 +105,14 @@ date.string <- function(year,month,day) {
 \end{itemize}
 
 \section*{\Sexpr{date.string(this.year, 3, 26)}}
-\textbf{Individual work} \\
-\emph{Approximate Duration: 0.5 Hours}
+\textbf{Solo work} \\
+\emph{Approximate Duration: 1/2 Hour}
 
 \begin{itemize}
 \item Started writing my section of the draft on numerical methods and results. 
 \end{itemize}
 
-\textbf{Group Meeting (with everyone)} \\
+\textbf{Group Work (Everyone)} \\
 \emph{Approximate Duration: 1 Hour}
 
 \begin{itemize}
@@ -120,7 +120,7 @@ date.string <- function(year,month,day) {
 \item Nailed down a plan for what exactly we want to do with the numerical simulations. The new outlook of our project will be investigating what changing parameters ($R_0$), seasonal forcing, and the connectivity matrix do to the deterministic model. We will additionally investigate the effects of adding stochasticity to the patch model.
 \end{itemize}
 
-\textbf{Group Meeting (with everyone)} \\
+\textbf{Group Work (Everyone)} \\
 \emph{Approximate Duration: 1 Hour}
 
 \begin{itemize}
@@ -128,7 +128,7 @@ date.string <- function(year,month,day) {
 \end{itemize}
 
 \section*{\Sexpr{date.string(this.year, 3, 27)}}
-\textbf{Individual work} \\
+\textbf{Solo work} \\
 \emph{Approximate Duration: 5 Hours}
 
 \begin{itemize}
@@ -136,7 +136,7 @@ date.string <- function(year,month,day) {
 \item I wrote my draft section and put the relevant R code in the supplementary file
 \end{itemize}
 
-\textbf{Group meeting (with everyone)} \\
+\textbf{Group Work (Everyone)} \\
 \emph{Approximate Duration: 1 Hour}
 
 \begin{itemize}
@@ -158,7 +158,7 @@ date.string <- function(year,month,day) {
 \emph{Approximate Duration: 3 Hours}
 
 \begin{itemize}
-\item Worked on developing some code which will spit out whether or not coherent based on many R_0 values and with many initial conditions. It takes a long time to run. We will each run half the simulation overnight and then reconvene tomorrow to discuss.
+\item Worked on developing some code which will spit out whether or not coherent based on many basic reporductive number values and with many initial conditions. It takes a long time to run. We will each run half the simulation overnight and then reconvene tomorrow to discuss.
 \end{itemize}
 
 \section*{\Sexpr{date.string(this.year, 4, 3)}}
@@ -192,20 +192,51 @@ date.string <- function(year,month,day) {
 \item Fleshed out planning for the presentation.
 \end{itemize}
 
-\textbf{Solo Work}
-\emph{Approximate Duration: 30 mins}
+\textbf{Solo Work}\\
+\emph{Approximate Duration: 1/2 Hour}
 \begin{itemize}
 \item Spent some time making plots look same as other plots. Also started work on the slides I was supposed to create.
 \end{itemize}
 
 
+\section*{\Sexpr{date.string(this.year, 4, 5)}}
+
+\textbf{Solo Work}\\
+\emph{Approximate Duration: 1 Hour}
+\begin{itemize}
+\item Created the slides I was supposed to. This was mostly getting the plots ready so that they looked good, and helping out with the introduction slides (definition of coherence, research questions etc.)
+\end{itemize}
+
+\textbf{Group Work (Everyone)} \\
+\emph{Approximate Duration: 3.5 Hour}
+
+\begin{itemize}
+\item Met to discuss the slides and presentation. We went through what needed to be said in each section and how to transition into different sections. Ran through the presentation and made changes as we noticed them when practicing (such as switching out plots if it made more sense to show a different ones).
+\end{itemize}
+
+\textbf{Solo Work}\\
+\emph{Approximate Duration: 1/2 Hour}
+\begin{itemize}
+\item Practiced my part to make sure that I knew it well enough for the presentation tomorrow.
+\end{itemize}
+
+\section*{\Sexpr{date.string(this.year, 4, 6)}}
+
+\textbf{Group Work}\\
+\emph{Approximate Duration: 1 Hour}
+\begin{itemize}
+\item We met the morning before our presentation to run through it a few times and make sure it all flowed well.
+\end{itemize}
+
 \section*{Total time spent on this project}
 
 \begin{quote}
 
-\emph{Group work:} 13.5 hours
+\emph{Group work (Everyone):} 
 
-\emph{Solo work:} 5.5 hours
+\emph{Group work (Michael and I):}
+
+\emph{Solo work:}
 
 \end{quote}
 

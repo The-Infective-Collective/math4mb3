@@ -3,10 +3,11 @@ library(latex2exp)
 
 # load data correctly
 load("R0m.rda")
+#load("R0_0.0001.rda")
 load("bifurcation_data.rda")
 df1 <- reslist
 
-R0df <- bind_rows(df1[[1]]) %>%
+R0df <- bind_rows(df1[[2]]) %>%
   group_by(R0, m) %>%
   summarize(prob.coherence = length(which((incoherence2 < 100)))/100)
 
@@ -25,4 +26,4 @@ gprob <- ggplot(R0df) +
   scale_color_manual(values=c(1,1,2,3,4,5,6))+
   theme(legend.position="none")
 
-ggsave("probabilitycoherence10-3.pdf", gprob, width=12, height=5)
+ggsave("probabilitycoherence0.01.pdf", gprob, width=12, height=5)

@@ -56,47 +56,43 @@ This supplement contains the necessary code to reproduce the data and graphs in 
 \subsection{Construction of the model}
 
 Here, we provide a detailed derivation of the model.
-First, consider the following coupled seasonally forced SIR model consisting of $n$ patches:
+First, consider the following coupled SIR model consisting of $n$ patches:
 \begin{equation}
 \begin{aligned}
-\frac{dS_i}{dt} &= \mu N - \left(\sum_{j=1}^n \beta(t) m_{ij} I_j + \mu\right) S_i \\
-\frac{dI_i}{dt} &= \left(\sum_{j=1}^n \beta(t) m_{ij} I_j + \mu\right) S_i - (\mu  + \gamma) I_i\\
-\frac{dR_i}{dt} &= \gamma I_i - \mu R_i
+\frac{dS_k}{dt} &= \mu N - \left(\sum_{j=1}^n \beta(t) m_{kj} I_j + \mu\right) S_k \\
+\frac{dI_k}{dt} &= \left(\sum_{j=1}^n \beta(t) m_{kj} I_j + \mu\right) S_k - (\mu  + \gamma) I_k\\
+\frac{dR_k}{dt} &= \gamma I_k - \mu R_k
 \end{aligned}
 \end{equation}
-where $S_i$, $I_i$ and $R_i$ are numbers of susceptible, infected and recovered individuals in patch $i$, respectively. 
+where $S_k$, $I_k$ and $R_k$ are numbers of susceptible, infected and recovered individuals in patch $k$, respectively. 
 $N$ is population size in every patch and is assumed to be constant. 
 $\beta(t)$ is the transmission rate, $\gamma$ is the per capita recovery rate and $\mu$ is the per capita death rate as well as birth rate. 
-$m_{ij}$ is the proportion of contacts from patch $j$ that are dispersed to patch $i$. 
-The dispersal matrix is then given by $M = \left[m_{ij}\right]$ and we have $\sum_{i=1}^n m_{ij} = 1$. 
-To allow for seasonal forcing, we model the transmission rate using a trigonometric function [CITE]:
-\begin{equation}
-\beta(t) = b_0 (1 + b_1 \cos(2 \pi t))
-\end{equation}
+$m_{kj}$ is the proportion of contacts from patch $j$ that are dispersed to patch $k$. 
+The dispersal matrix is then given by $M = \left[m_{kj}\right]$ and we have $\sum_{k=1}^n m_{kj} = 1$. 
 
 Note that a susceptible individual in patch $i$ leaves the susceptible compartment at rate $\sum_{j=1}^n \beta(t) m_{ij} I_j + \mu$. We can view this quantity as hazard and obtain the probability that a susceptible individual survives during a time interval $(t, t + \Delta t)$:
 \begin{equation}
-\exp \left(-\int_{t}^{t + \Delta t} \sum_{j=1}^n \beta(s) m_{ij} I_j(s) + \mu d s \right),
+\exp \left(-\int_{t}^{t + \Delta t} \sum_{j=1}^n \beta(s) m_{kj} I_j(s) + \mu d s \right),
 \end{equation}
 where for sufficiently small $\Delta t$, we can write
 \begin{equation}
-\int_{t}^{t + \Delta t} \sum_{j=1}^n \beta(s) m_{ij} I_j(s) + \mu d s \approx \left(\sum_{j=1}^n \beta(t) m_{ij} I_j(s) + \mu \right) \Delta t.
+\int_{t}^{t + \Delta t} \sum_{j=1}^n \beta(s) m_{kj} I_j(s) + \mu d s \approx \left(\sum_{j=1}^n \beta(t) m_{kj} I_j(s) + \mu \right) \Delta t.
 \end{equation}
 Rearranging, number of individuals that leave the susceptible compartment after $\Delta$ time step is given by
 \begin{equation}
-S_{i, \tiny{\textrm{leave}}}(t) = \left(1 - \exp \left(-\left(\sum_{j=1}^n \beta(t) m_{ij} I_j(s) + \mu \right) \Delta t \right) \right) S_i(t)
+S_{k, \tiny{\textrm{leave}}}(t) = \left(1 - \exp \left(-\left(\sum_{j=1}^n \beta(t) m_{kj} I_j(s) + \mu \right) \Delta t \right) \right) S_k(t)
 \end{equation}
 Assuming that the transmission rate and number of infected individuals stays constant over the interval $(t, t+\Delta)$, the probability that a susceptible individual leaves the compartment due to infection is given by 
 \begin{equation}
-\frac{\sum_{j=1}^n \beta(t) m_{ij} I_j(s)}{\sum_{j=1}^n \beta(t) m_{ij} I_j(s) + \mu}
+\frac{\sum_{j=1}^n \beta(t) m_{kj} I_j(s)}{\sum_{j=1}^n \beta(t) m_{kj} I_j(s) + \mu}
 \end{equation}
 Incidence (i.e., number of suseptible individuals that become infected during $(t, t+\Delta t)$ interval) is then given by the product of above probability and $S_{i, \tiny{\textrm{leave}}}(t)$.
 Similarly, an infected individual and a recovered individual suffer from constant hazard of $\gamma + \mu$ and $\mu$, respectively.
 Since these rates are not time-dependent, these can each be translated into transition probabilities assuming exponentially distributed life time in each compartment, yielding
 \begin{equation}
 \begin{aligned}
-I_{i, \tiny{\textrm{leave}}}(t) &= (1 - \exp(-(\gamma + \mu)\Delta t)) I_i(t) \\
-R_{i, \tiny{\textrm{leave}}}(t) &= (1 - \exp(-\mu \Delta t)) R_i(t)
+I_{k, \tiny{\textrm{leave}}}(t) &= (1 - \exp(-(\gamma + \mu)\Delta t)) I_k(t) \\
+R_{k, \tiny{\textrm{leave}}}(t) &= (1 - \exp(-\mu \Delta t)) R_k(t)
 \end{aligned}
 \end{equation}
 Then, the full discrete time model is given by
@@ -138,7 +134,7 @@ if (.Platform$OS.type=="windows") {
 \subsection{Implementation of the model}
 
 Implementation of the model is done using the \texttt{Rcpp} package.
-The source code is too long to be display here. 
+The source code is too long to be displayed here. 
 Interested readers should look at the source code \texttt{SIRmodel\_npatch.cpp}.
 Before we perform any analysis, we have to load the model file:
 <<load model>>==
@@ -147,31 +143,47 @@ sourceCpp("SIRmodel_npatch.cpp")
 
 \subsection{Parameters}
 
-Base parameters are stored as a list along with base initial conditions, which are equal to endemic equilibrium assuming a constant transmission rate. Note that \texttt{initfun} returns a list of states at the endemic equilibrium given a parameter.
+Base parameters are stored as a list.
 
-<<param >>==
-initfun <- function(param) {
-    with(param,{
-        epsilon <- mu/(mu+gamma)
-        
-        list(
-            S=pop/R0,
-            I=epsilon*(1-1/R0)*pop,
-            R=pop-(1-R0-epsilon*(1-1/R0))
-        )
-    })
-}
-
+<<base_param>>==
 base.params <- list(
     R0=17,
     pop=1e6,
-    b1=0.08,
+    b1=0.25,
     gamma=365/13,
     mu=0.02,
     dt=1/365,
     nsteps=365*100
 )
+@
 
+
+Here, we deinfe a function named \texttt{initfun} that returns states at the endemic equilibrium assuming constant transmission rate.
+
+<<<initfun>>==
+initfun <- function(param,
+                    n.patch=1,
+                    round=FALSE) {
+    with(param,{
+        epsilon <- mu/(mu+gamma)
+        
+        ll <- list(
+            S=rep(pop/R0, n.patch),
+            I=rep(epsilon*(1-1/R0)*pop, n.patch)
+        )
+        
+        if (round) ll <- lapply(ll, round)
+        
+        ll$R <- pop - ll$S - ll$I
+        
+        ll
+    })
+}
+@
+
+Base initial conditions are then equal to endemic equilibrium.
+
+<<base_init>>==
 base.init <- initfun(base.params)
 @
 

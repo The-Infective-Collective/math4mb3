@@ -557,6 +557,7 @@ gprob
 Here we demonstrate that we obtain similar coherence probabilities even with different choices of threshold. This demonstrates that our observed results and inferences aren't sensitive to our choice of coherence threshold.
 
 Threshold of 10:
+
 <<coherenceplot-5, echo = FALSE, tidy = TRUE>>==
 R0df <- bind_rows(df1, df2,df3) %>% 
     group_by(R0, m) %>%

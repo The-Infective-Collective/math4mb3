@@ -3,19 +3,12 @@ library(latex2exp)
 library(ggplot2); theme_set(theme_bw(base_size = 12,
                                    base_family = "Times"))
 
-
-library(directlabels)
-if (.Platform$OS.type=="windows") {
-    windowsFonts(Times=windowsFont("Times"))
-} 
-
-# load data correctly
+load("bifurcation_data.rda")
 
 load("coherence_m0.0001.rda")
 df1 <- reslist
 
 load("coherence_m0.001-0.01.rda")
-load("bifurcation_data.rda")
 df2 <- reslist
 
 load("coherence_m0.1-0.5.rda")
@@ -27,12 +20,10 @@ R0df <- bind_rows(df1, df2,df3) %>%
     summarize(prob.coherence = length(which((incoherence2 < 100)))/100) %>%
     mutate(m.factor = as.factor(m))
 
-
 bifur_df_norm <- bifur_df %>%
     mutate(lp=log(prevalence)) %>%
     mutate(nlp=lp-min(lp)) %>%
     mutate(nlp=nlp/max(nlp))
-
 
 levels(R0df$m.factor) <- c("m = 0.0001", "m = 0.001", "m = 0.01", "m = 0.1", "m = 0.5")
 
@@ -43,6 +34,5 @@ gprob <- ggplot(R0df) +
   labs(x='Reproductive number', y='Probability of coherence') + 
   scale_color_manual(values=c(1,1,2,3,4,5,6))+
   theme(legend.position="none")
-#  theme(strip.text = element_text(size=25))
 
 ggsave("probabilitycoherence.png", device="png", gprob, width=7, height=5)

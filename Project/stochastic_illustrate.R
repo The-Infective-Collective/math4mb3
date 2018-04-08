@@ -44,7 +44,7 @@ gex <- ggplot(simdf3) +
     theme(
         panel.grid = element_blank(),
         legend.title = element_blank(),
-        legend.position = c(0.05, 0.85)
-    )
+        legend.position = c(0.1, 0.84),
+        strip.text = element_text(size=25))
 
-ggsave("stochastic_illustrate.pdf", gex, width=10, height=4)
+ggsave("stochastic_illustrate.pdf", gex, width=7, height=5)

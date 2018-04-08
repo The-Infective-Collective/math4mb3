@@ -10,17 +10,19 @@ if (.Platform$OS.type=="windows") {
 } 
 
 # load data correctly
-load("R0m.rda")
-load("bifurcation_data.rda")
+
+load("coherence_m0.0001.rda")
 df1 <- reslist
 
-load("R0.rda")
+load("coherence_m0.001-0.01.rda")
+load("bifurcation_data.rda")
 df2 <- reslist
 
-load("R0_0.0001.rda")
+load("coherence_m0.1-0.5.rda")
 df3 <- reslist
 
-R0df <- bind_rows(df3, df1,df2) %>% 
+
+R0df <- bind_rows(df1, df2,df3) %>% 
     group_by(R0, m) %>%
     summarize(prob.coherence = length(which((incoherence2 < 100)))/100) %>%
     mutate(m.factor = as.factor(m))

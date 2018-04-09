@@ -48,6 +48,8 @@ start.time <- proc.time()
 \linenumbers
 \maketitle
 
+\tableofcontents
+
 \section{Introduction}
 This supplement contains the necessary code to reproduce the data and graphs in the main paper. We also include additional discussion and explanation of some of our methods and results.
 

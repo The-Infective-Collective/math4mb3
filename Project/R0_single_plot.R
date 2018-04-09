@@ -2,12 +2,12 @@ library(tidyverse)
 library(latex2exp)
 
 # load data correctly
-load("R0m.rda")
+load("coherence_m0.0001.rda")
 #load("R0_0.0001.rda")
 load("bifurcation_data.rda")
 df1 <- reslist
 
-R0df <- bind_rows(df1[[2]]) %>%
+R0df <- bind_rows(df1[[1]]) %>%
   group_by(R0, m) %>%
   summarize(prob.coherence = length(which((incoherence2 < 100)))/100)
 

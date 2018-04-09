@@ -147,11 +147,6 @@ The bifurcation diagram shows incidence on January 1 as a function of the basic 
 \label{fig:bifurcation}
 \end{figure}
 
-% TODO: What R_0 is in this model 
-% TODO: Give what $b_0$ and $b_1$ are
-% TODO: This model produces an R_0 bifurcation diagram similar to etc
-% R_0 = b_0 * N / (gamma + mu) \approx b_0 * N /gamma because mu is so small
-
 \subsection{Stochasticity} \label{ss:stoch_model}
 This discrete time model arising from a probabilistic argument allows for a natural implementation of demographic stochasticity. We add stochasticity to this model by treating the number of individuals that transition between compartments as a binomial random variable defined using the transition probabilities in the base model. That is, we replace the terms in \Cref{eq:SIR-det} with
 \begin{equation}

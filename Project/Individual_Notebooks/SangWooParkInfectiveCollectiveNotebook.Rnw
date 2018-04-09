@@ -652,13 +652,91 @@ Worked on a preliminary (?) bifurcation diagram:
 
 Made more progress on combining stochastic figure and bifurcation figure.
 
+\section*{\Sexpr{date.string(this.year, 4, 2)}}
+
+\textbf{Group work} \\
+\emph{Approximate Duration: 1 Hour}
+
+\begin{itemize}
+    \item In-class meeting
+\end{itemize}
+
+\section*{\Sexpr{date.string(this.year, 4, 3)}}
+
+\textbf{Solo work} \\
+\emph{Approximate Duration: 0.5 Hour}
+
+Fixing bifurcation diagram that re-ran after debugging...
+
+\textbf{Group work} \\
+\emph{Approximate Duration: 1.5 Hour}
+
+Working on presentation and discuss directions/figures
+
+\textbf{Solo work} \\
+\emph{Approximate Duration: 1.5 Hour}
+
+Fixing bifurcation, making model diagram, etc... working on figures in general...
+
+\section*{\Sexpr{date.string(this.year, 4, 4)}}
+
+\textbf{Group work} \\
+\emph{Approximate Duration: 1.5 Hour}
+
+Worked on presentation; divided up work; discussed results we have so far
+
+\textbf{Solo work} \\
+\emph{Approximate Duration: 2 Hour}
+
+Figure tweaking and working on the presentation.
+
+\textbf{Group work} \\
+\emph{Approximate Duration: 1.5 Hour}
+
+Working with Daniel Presta on preparing the presentation
+
+\section*{\Sexpr{date.string(this.year, 4, 5)}}
+
+\textbf{Group work} \\
+\emph{Approximate Duration: 3 Hour}
+
+Prepared for the presentation tomorrow!
+
+\section*{\Sexpr{date.string(this.year, 4, 6)}}
+
+\textbf{Group work} \\
+\emph{Approximate Duration: 1 Hour}
+
+Prepared for the presentation today!
+
+
+\section*{\Sexpr{date.string(this.year, 4, 7)}}
+
+\textbf{Solo work} \\
+\emph{Approximate Duration: 6 Hour}
+
+Working on the final document
+
+\section*{\Sexpr{date.string(this.year, 4, 8)}}
+
+\textbf{Group work} \\
+\emph{Approximate Duration: 4.5 Hour}
+
+Working on the final document and long google hangout calls...
+
+
+\textbf{Solo work} \\
+\emph{Approximate Duration: 3 Hour}
+
+Working on the final document...
+
 \section*{Total time spent on this project}
 
 \begin{quote}
 
-\emph{Group work:} $7.5$ hours
+\emph{Group work:} $21.5$ hours
 
-\emph{Solo work:} $30$ hours
+\emph{Solo work:} $43$ hours
 
 \end{quote}
 

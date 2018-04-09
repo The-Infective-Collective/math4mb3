@@ -387,7 +387,6 @@ For each $m$ value we test 100 random initial conditions and run the model for 1
 if (file.exists("coherence_m0.0001.rda")) {
   load("coherence_m0.0001.rda")
   df1 <- reslist
-  
 } else {
   nsim <- 100
   R0vec <- seq(1, 20, by=0.4)
@@ -408,7 +407,6 @@ if (file.exists("coherence_m0.0001.rda")) {
       for (i in 1:nsim) {
         
         init <- r.init.science(2)
-        
         df <- run_SIR(pp, init, M, term_time)
         
         incoherence2 <- apply(df[(nrow(df) - 2*365):nrow(df), c("I1", "I2")], 1, coherence_calc) %>% mean()
@@ -424,13 +422,11 @@ if (file.exists("coherence_m0.0001.rda")) {
           incoherence5 = incoherence5
         )
       }
-      
       subreslist[[which(R0vec ==R)]] <-do.call("rbind", subsubreslist)
     }
     
     ss <- do.call("rbind", subreslist)
     ss$m <- m
-    
     reslist[[which(mvec==m)]] <- ss
   }
 }
@@ -668,9 +664,9 @@ gprob
 \subsection{Factorial simulation}
 
 Here, we vary $\R_0$ from 1 to 20 by 0.2 steps and simulate the stochastic model 100 times for each combination of $\R_0$ and mixing proportion $m$.
-Here, we do not use random initial conditions as it may lead to exaggeration of global extinction probability.
+Here, we do not use random initial conditions as it may lead to exaggeration of global extinction probability (some initial conditions may lead to immediate extinction without a start of an epidemic).
 Instead, we start from the endemic equilibrium.
-Once again, this simulation takes approximately 11 hours. Thus, we load a saved file instead.
+Once again, as this simulation takes approximately 11 hours, we load a saved file instead.
 
 <<stoch_sim>>==
 if (file.exists("stochastic.rda")) {
@@ -718,6 +714,9 @@ if (file.exists("stochastic.rda")) {
 
 \subsection{Plot}
 
+Using the simulated file, we can plot the results of the simulation.
+First, we clean up the data using \texttt{dplyr} and \texttt{tidyr} pacakge so that it can be used with a \texttt{ggplot} function.
+
 <<>>==
 sdf <- reslist %>%
     bind_rows %>%
@@ -732,6 +731,9 @@ sdf <- reslist %>%
                       labels=c("Global extinction", "Local extinction")))
 @
 
+We are interested in comparing global and local extinction probabilities for measles parameters.
+The following code demonstrates how to achieve appropriate statistics.
+
 <<>>==
 sdf %>% 
     filter(R0 > 12.5, R0 <=18, m=="m = 0.001") %>%
@@ -741,6 +743,9 @@ sdf %>%
         upr=range(value)[2]
     )
 @
+
+We are interested in comparing global extinction probabilities across different mixing proportions.
+The following code demonstrates how to achieve appropriate statistics.
 
 <<>>==
 sdf %>% 
@@ -752,12 +757,16 @@ sdf %>%
     )
 @
 
+Before we plot the result of our stochastic simulation, we have to normalize the bifurcation diagram so that it can be layed below the probability diagram.
+
 <<>>==
 bifur_df_norm <- bifur_df %>%
     mutate(lp=log(prevalence)) %>%
     mutate(nlp=lp-min(lp)) %>%
     mutate(nlp=nlp/max(nlp))
 @
+
+Finally, we generate the diagram of interest:
 
 <<>>==
 gstoch <- ggplot(bifur_df_norm) +

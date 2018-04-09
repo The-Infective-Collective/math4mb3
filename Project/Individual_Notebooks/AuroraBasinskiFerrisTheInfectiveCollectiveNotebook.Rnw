@@ -51,6 +51,7 @@ date.string <- function(year,month,day) {
 \end{itemize}
 
 \section*{\Sexpr{date.string(this.year, 3, 16)}}
+
 \textbf{Group Work (Everyone)} \\
 \emph{Approximate Duration: 1 Hour}
 
@@ -59,6 +60,7 @@ date.string <- function(year,month,day) {
 \end{itemize}
 
 \section*{\Sexpr{date.string(this.year, 3, 19)}}
+
 \textbf{Group Work (Everyone)} \\
 \emph{Approximate Duration: 1 Hour}
 
@@ -105,11 +107,12 @@ date.string <- function(year,month,day) {
 \end{itemize}
 
 \section*{\Sexpr{date.string(this.year, 3, 26)}}
+
 \textbf{Solo work} \\
-\emph{Approximate Duration: 1/2 Hour}
+\emph{Approximate Duration: 1/2 Hour} 
 
 \begin{itemize}
-\item Started writing my section of the draft on numerical methods and results. 
+\item Started writing my section of the draft on numerical methods and results.
 \end{itemize}
 
 \textbf{Group Work (Everyone)} \\
@@ -128,6 +131,7 @@ date.string <- function(year,month,day) {
 \end{itemize}
 
 \section*{\Sexpr{date.string(this.year, 3, 27)}}
+
 \textbf{Solo work} \\
 \emph{Approximate Duration: 5 Hours}
 
@@ -146,6 +150,7 @@ date.string <- function(year,month,day) {
 
 
 \section*{\Sexpr{date.string(this.year, 4, 2)}}
+
 \textbf{Group Work (Everyone)} \\
 \emph{Approximate Duration: 1 Hour}
 
@@ -162,6 +167,7 @@ date.string <- function(year,month,day) {
 \end{itemize}
 
 \section*{\Sexpr{date.string(this.year, 4, 3)}}
+
 \textbf{Group Work (Everyone)} \\
 \emph{Approximate Duration: 1 Hour}
 
@@ -185,6 +191,7 @@ date.string <- function(year,month,day) {
 
 
 \section*{\Sexpr{date.string(this.year, 4, 4)}}
+
 \textbf{Group Work (Everyone)} \\
 \emph{Approximate Duration: 1 Hour}
 
@@ -218,7 +225,7 @@ date.string <- function(year,month,day) {
 \emph{Approximate Duration: 3.5 Hour}
 
 \begin{itemize}
-\item Met to discuss the slides and presentation. We went through what needed to be said in each section and how to transition into different sections. Ran through the presentation and made changes as we noticed them when practicing (such as switching out plots if it made more sense to show a different ones).
+\item Met to discuss the slides and presentation. We went through what needed to be said in each section and how to transition into different sections. Ran through the presentation and made changes as we noticed them when practicing (such as switching out plots if it made more sense to show different ones).
 \end{itemize}
 
 \textbf{Solo Work}\\
@@ -268,10 +275,11 @@ date.string <- function(year,month,day) {
 \end{itemize}
 
 \textbf{Solo Work}\\
-\emph{Approximate Duration: 1.5 Hour}
+\emph{Approximate Duration: 3 Hour}
 \begin{itemize}
 \item Edited some stuff in the deterministic results section and in the discussion.
 \item Did some editing of the supplementary file and added in code to calculate mean probability of coherence.
+\item Some bookkeeping and organizing. Spent some time organizing the invididual notebook file. Also read through the final document and organizing word count.
 \end{itemize}
 
 
@@ -283,7 +291,7 @@ date.string <- function(year,month,day) {
 
 \emph{Group work (Michael and I): 14}
 
-\emph{Solo work: 15.5}
+\emph{Solo work: 17}
 
 \end{quote}
 

@@ -568,7 +568,7 @@ bifur_df_norm <- bifur_df %>%
 
 levels(R0df$m.factor) <- c("m = 0.0001", "m = 0.001", "m = 0.01", "m = 0.1", "m = 0.5")
 
-gprob <- ggplot(R0df) +
+gprob.main <- ggplot(R0df) +
   geom_line(aes(R0, prob.coherence),size=1) +
   facet_wrap(~m.factor, ncol =2) + 
   geom_path(data= bifur_df_norm, aes(R0, nlp, group=interaction(i, j, sim), col=factor(i)), alpha=0.5) +
@@ -576,10 +576,11 @@ gprob <- ggplot(R0df) +
   scale_color_manual(values=c(1,1,2,3,4,5,6))+
   theme(legend.position="none")
 
-gprob
+gprob.main
 @
 
-Next, we calculate the mean probabilities of coherence for $0.01\%$ ($m=0.0001$), $0.1\%$ ($m=0.001$), and $1\%$ ($m=0.01$) across all basic reproductive number values. 
+Next, we calculate the mean probabilities of coherence for mixing values of $0.01\%$ ($m=0.0001$), $0.1\%$ ($m=0.001$), and $1\%$ ($m=0.01$) across all basic reproductive number values. 
+
 <<meanprob, tidy=TRUE>>==
 #for 0.0001
 R0df_0.0001 <- bind_rows(df1[[1]]) %>%
@@ -855,6 +856,13 @@ plot(gstoch)
 @
 
 \section{Save results for inclusion in main paper}
+
+We now save our figures for use in the final paper.
+
+The plot for probability of coherence:
+<<fig2save>>==
+ggsave("probabilitycoherence.pdf", device= "pdf", gprob.main, width=7, height = 5)
+@
 
 \section{Time to generate this document}
 

@@ -26,3 +26,8 @@ You can run `supplementary/supp.Rnw` by opening it in RStudio and clicking "Comp
  * `supplementary/bifurcation.rda`
 
  These data files contain statistics generated from many, many simulations and are therefore extremely time-consuming (in fact, so long that we didn't have time to run them again to figure out how long they took; at least 25 hours on a modern student-budget laptop).  If for some reason you do not have access to these files, please contact any of the authors for a copy.
+
+ If you do indeed choose to run these simulations yourself, then you will need `supplementary/SIRmodel_npatch.cpp`, which contains the source code that runs the SIR model.
+
+# Other information
+* `TheInfectiveCollective-WordCount.html` contains, at the bottom, a word count of the document using the TeXcount web interface at: http://app.uio.no/ifi/texcount/online.php

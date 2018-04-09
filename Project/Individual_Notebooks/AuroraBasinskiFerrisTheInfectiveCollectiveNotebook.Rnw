@@ -33,7 +33,7 @@ date.string <- function(year,month,day) {
 
 \section*{\Sexpr{date.string(this.year, 3, 9)}}
 
-\textbf{Group Work} \\
+\textbf{Group Work (Everyone)} \\
 \emph{Approximate Duration: 1/2 Hour}
 
 \begin{itemize}
@@ -42,7 +42,7 @@ date.string <- function(year,month,day) {
 
 \section*{\Sexpr{date.string(this.year, 3, 14)}}
 
-\textbf{Group Work} \\
+\textbf{Group Work (Everyone)} \\
 \emph{Approximate Duration: 1 Hour}
 
 \begin{itemize}
@@ -146,7 +146,7 @@ date.string <- function(year,month,day) {
 
 
 \section*{\Sexpr{date.string(this.year, 4, 2)}}
-\textbf{Group Work} \\
+\textbf{Group Work (Everyone)} \\
 \emph{Approximate Duration: 1 Hour}
 
 \begin{itemize}
@@ -169,7 +169,7 @@ date.string <- function(year,month,day) {
 \item Met to plan the presentation. Got a template started, planned the sections and what will be discussed in each section. Talked about the final plots that need to be created before the presentation on Friday.
 \end{itemize}
 
-\textbf{Group work (Michael and I)}
+\textbf{Group work (Michael and I)}\\
 \emph{Approximate Duration: 1 Hour}
 
 \begin{itemize}
@@ -227,6 +227,45 @@ date.string <- function(year,month,day) {
 \begin{itemize}
 \item We met the morning before our presentation to run through it a few times and make sure it all flowed well.
 \end{itemize}
+
+\section*{\Sexpr{date.string(this.year, 4, 7)}}
+
+\textbf{Solo Work}\\
+\emph{Approximate Duration: 4 Hours}
+\begin{itemize}
+\item I wrote the deterministic results section.
+\item I wrote part of the discussion (mostly the part talking about whooping cough and measles).
+\end{itemize}
+
+\textbf{Group Work (Michael and I)}\\
+\emph{Approximate Duration: 1.5 Hours}
+\begin{itemize}
+\item Michael and I wrote the PHAC summary.
+\end{itemize}
+
+\section*{\Sexpr{date.string(this.year, 4, 8)}}
+
+\textbf{Group Work (Michael and I)}\\
+\emph{Approximate Duration: 2 Hours}
+\begin{itemize}
+\item Spent some time organizing the code used for the deterministic model.
+\item Wrote the supplementary file for the deterministic model.
+\end{itemize}
+
+\textbf{Group Work (Everyone)}\\
+\emph{Approximate Duration: 5 Hours}
+\begin{itemize}
+\item Skyped twice (first one 3 hours long and second one 2 hours long) to run through our document together and do a group edit.
+\item After the first Skype, we all went and did some individual edits on our sections to make the whole document flow better.
+\end{itemize}
+
+\textbf{Individual Work}\\
+\emph{Approximate Duration: 1 Hour}
+\begin{itemize}
+\item Edited some stuff in the deterministic results section and in the discussion.
+\item Did some editing of the supplementary file and added in code to calculate mean probability of coherence.
+\end{itemize}
+
 
 \section*{Total time spent on this project}
 

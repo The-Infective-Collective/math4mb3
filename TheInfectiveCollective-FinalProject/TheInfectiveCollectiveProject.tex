@@ -55,17 +55,15 @@
 \item Sang Woo Park (parksw3@mcmaster.ca), 
 \item Daniel Presta (prestad@mcmaster.ca)}
 \end{itemize}
-\noindent 
-Date compiled: \today\ @ \thistime 
 
 \noindent
-Word Count: 
+Word Count (omitting executive summary): 2975 
 
 \vfill
 \newpage 
 \linenumbers
 
-\section*{Executive summary}
+\section*{Executive Summary}
 Major North American urban centres are distributed sparsely and are loosely connected to each other through travel. This spatial structure presents challenges in the eradication of diseases and control of epidemics. Even if the disease is eradicated in one city, it may be reintroduced if infected individuals from other populations visit and interact with susceptible individuals. This phenomenon, where an eradicated disease is reintroduced via contact with another city, is called “the rescue effect”.
 
 The rescue effect, in theory, can be avoided if eradication of the disease happens simultaneously across all of the connected populations. Therefore, it is beneficial from a disease control perspective to have “synchronous” or “coherent” patterns of prevalence between the populations. That is, to have temporal peaks and troughs in prevalence occurring at the same time in every city. In this way, cities that have eradicated the disease are at lower risk of reintroduction since other populations would also experience low incidence of the disease. Via coordinated vaccination, we may be able to achieve this simultaneous and thus sustainable eradication of the disease.
@@ -105,7 +103,7 @@ Here, we examine the effects of dispersal rates and changes in parameter space o
 \subsection{The model} \label{ss:deter_model}
 We use a discrete time SIR (Susceptible-Infected-Recovered) model with time-dependent transmission rate and with two subpopulations (or spatial patches), based on a compartmental ODE SIR model. While individuals do not migrate between the subpopulations, we assume that a proportion $(1-m)$ of infected individuals only contact susceptible individuals in their own subpopulation, while the remaining proportion $m$ of infected individuals from each patch contact only susceptibles from the opposite subpopulation. Alternatively, we can interpret $m$ as the mean proportion of time that an infected individual spends in the opposite patch. Since an equal proportion $m$ of infectives from each patch contact susceptibles from the opposite patch, we refer to this as an equal coupling connectivity structure. 
 
-The number of individuals leaving each compartment is given by a transition probability derived from a hazard analysis (see the Supplementary Information (part?) for the full construction of the model). Let $S_k(t)$, $I_k(t)$, and $R_k(t)$ denote the number of susceptible, infected, and recovered individuals respectively in subpopulation $k$ at time $t$. Then our model is given by 
+The number of individuals leaving each compartment is given by a transition probability derived from a hazard analysis (see the Supplementary Information Section 2.1 for the full construction of the model). Let $S_k(t)$, $I_k(t)$, and $R_k(t)$ denote the number of susceptible, infected, and recovered individuals respectively in subpopulation $k$ at time $t$. Then our model is given by 
 \begin{equation}
 \label{eq:discretedeterministic}
 \begin{aligned}
@@ -126,7 +124,7 @@ r_k(t) &= \frac{\gamma}{\gamma + \mu} R_{k, \tiny{\textrm{leave}}}(t)\\
 \end{aligned}
 \end{equation}
 Here, $\beta(t)$ is the transmission rate, $m_{k,j}$ is the proportion of infected individuals in patch $j$ who interact with susceptibles in patch $k$, $\gamma$ is the per capita recovery rate, and $\mu$ is the per capita natural death rate. The birth rate $\nu_k(t)$ is defined such that the population size remains constant at $N = 1,000, 000$ individuals in each patch. Unless otherwise stated, we choose parameters that reflect measles-like dynamics. In particular, $\gamma = 365/13 \textrm{ years}^{-1}$ (reflecting the sum of an 8 day exposed period and 5 day infectious period). We take $\Delta t = 1/365$ years, $\gamma = 0.02 \textrm{ years}^{-1}$.
-Since transmission rates for childhood diseases depend on the contact rates between children \cite{keeling2002understanding}, we used a step-function as our time-dependent transmission rate. We defined $\beta (t)$ similar to \cite{bauch2003interepidemic} where the transmission rate is high during the school term and low otherwise (see Supplementary Information for details):
+Since transmission rates for childhood diseases depend on the contact rates between children \cite{keeling2002understanding}, we used a step-function as our time-dependent transmission rate. We defined $\beta (t)$ similar to \cite{bauch2003interepidemic} where the transmission rate is high during the school term and low otherwise (see Supplementary Information Section 2.2 for details):
 \begin{equation}
 \begin{aligned}
 \beta (t) &=
@@ -162,7 +160,7 @@ b_k(t) &= S_{k, \tiny{\textrm{leave}}}(t) - i_k(t) + I_{k, \tiny{\textrm{leave}}
 \end{equation}
 
 \subsection{Implementation}
-The model was implemented using the \texttt{Rcpp} package for the \Rlogo programming language. The source code is available in the Supplementary Information, as well as online at \url{https://github.com/The-Infective-Collective/math4mb3}.  
+The model was implemented using the \texttt{Rcpp} package for the \Rlogo programming language. The source code is available in the Supplementary Information Section 2.4, as well as online at \url{https://github.com/The-Infective-Collective/math4mb3}.  
 
 \subsection{Measurement of coherence}
 \label{ss:measurement}
@@ -254,7 +252,7 @@ Coherence was not strictly defined, in the sense that our criteria for coherence
 Furthermore, extinction probabilities were computed on the basis of whether or not extinction occurred at least once, and frequency of extinctions was neglected.
 
 We believe these simplifications are reasonable for several reasons. 
-First, our inferences are not particularly sensitive to our choice of threshold for coherence (see Supplementary Information).
+First, our inferences are not particularly sensitive to our choice of threshold for coherence (see Supplementary Information Section 4.1).
 In terms of practical application to disease control, we are generally concerned with time scales of less than 100 years. 
 If coherence does not occur within 100 years, then for practical purposes relating to eradication of disease it can be treated as an incoherent system.
 Likewise, a pathogen that has not gone globally extinct within 100 years can practically be treated as persistent.

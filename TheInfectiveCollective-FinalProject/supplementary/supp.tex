@@ -220,11 +220,7 @@ Before we perform any analysis, we have to load the model file:
 \begin{alltt}
 \hlkwd{sourceCpp}\hlstd{(}\hlstr{"SIRmodel_npatch.cpp"}\hlstd{)}
 \end{alltt}
-
-
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning in normalizePath(file, winslash = "{}/"{}): path[1]="{}SIRmodel\_npatch.cpp"{}: No such file or directory}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in sourceCpp("{}SIRmodel\_npatch.cpp"{}): file not found: 'SIRmodel\_npatch.cpp'}}\end{kframe}
+\end{kframe}
 \end{knitrout}
 
 \subsection{Parameters}
@@ -640,10 +636,7 @@ We observe stretches of both synchrony and asynchrony in simulated trajectory fo
 
 \hlkwd{set.seed}\hlstd{(}\hlnum{10}\hlstd{)}
 \hlstd{df4} \hlkwb{<-} \hlkwd{SIRmodel_npatch_stochastic}\hlstd{(pp3, init, M, term_time)}
-\end{alltt}
 
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in SIRmodel\_npatch\_stochastic(pp3, init, M, term\_time): could not find function "{}SIRmodel\_npatch\_stochastic"{}}}\begin{alltt}
 \hlstd{simdf3} \hlkwb{<-} \hlkwd{list}\hlstd{(}
     \hlkwc{patch1}\hlstd{=}\hlkwd{data.frame}\hlstd{(}
         \hlkwc{time}\hlstd{=df4}\hlopt{$}\hlstd{time,}
@@ -657,10 +650,7 @@ We observe stretches of both synchrony and asynchrony in simulated trajectory fo
     \hlkwd{bind_rows}\hlstd{(}\hlkwc{.id}\hlstd{=}\hlstr{"patch"}\hlstd{)} \hlopt{%>%}
     \hlkwd{gather}\hlstd{(key, value,} \hlopt{-}\hlstd{time,} \hlopt{-}\hlstd{patch)} \hlopt{%>%}
     \hlkwd{filter}\hlstd{(time} \hlopt{>} \hlnum{60}\hlstd{, time} \hlopt{<} \hlnum{85}\hlstd{)}
-\end{alltt}
 
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in data.frame(time = df4\$time, I = df4\$I[, 1]): object 'df4' not found}}\begin{alltt}
 \hlstd{gex} \hlkwb{<-} \hlkwd{ggplot}\hlstd{(simdf3)} \hlopt{+}
     \hlkwd{geom_line}\hlstd{(}\hlkwd{aes}\hlstd{(time, value,} \hlkwc{col}\hlstd{=patch),} \hlkwc{lwd}\hlstd{=}\hlnum{1.1}\hlstd{)} \hlopt{+}
     \hlkwd{scale_x_continuous}\hlstd{(}\hlstr{"Time (years)"}\hlstd{,} \hlkwc{expand}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,} \hlnum{0}\hlstd{))} \hlopt{+}
@@ -671,15 +661,12 @@ We observe stretches of both synchrony and asynchrony in simulated trajectory fo
         \hlkwc{legend.title} \hlstd{=} \hlkwd{element_blank}\hlstd{(),}
         \hlkwc{legend.position} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0.1}\hlstd{,} \hlnum{0.84}\hlstd{),}
         \hlkwc{strip.text} \hlstd{=} \hlkwd{element_text}\hlstd{(}\hlkwc{size}\hlstd{=}\hlnum{25}\hlstd{))}
-\end{alltt}
 
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in ggplot(simdf3): object 'simdf3' not found}}\begin{alltt}
 \hlkwd{plot}\hlstd{(gex)}
 \end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-2-1} 
 
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in plot(gex): object 'gex' not found}}\end{kframe}
 \end{knitrout}
 
 
@@ -778,11 +765,11 @@ The following code demonstrates how to achieve appropriate statistics.
     \hlstd{)}
 \end{alltt}
 \begin{verbatim}
-## # A tibble: 2 x 3
-##   key                 lwr   upr
-##   <fct>             <dbl> <dbl>
-## 1 Global extinction 0.    0.130
-## 2 Local extinction  0.230 0.650
+## # A tibble: 2 × 3
+##                 key   lwr   upr
+##              <fctr> <dbl> <dbl>
+## 1 Global extinction  0.00  0.13
+## 2  Local extinction  0.23  0.65
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -802,13 +789,13 @@ The following code demonstrates how to achieve appropriate statistics.
     \hlstd{)}
 \end{alltt}
 \begin{verbatim}
-## # A tibble: 4 x 3
-##   m           lwr   upr
-##   <chr>     <dbl> <dbl>
-## 1 m = 0.001    0. 0.330
-## 2 m = 0.01     0. 0.470
-## 3 m = 0.1      0. 0.520
-## 4 m = 0.5      0. 0.480
+## # A tibble: 4 × 3
+##           m   lwr   upr
+##       <chr> <dbl> <dbl>
+## 1 m = 0.001     0  0.33
+## 2  m = 0.01     0  0.47
+## 3   m = 0.1     0  0.52
+## 4   m = 0.5     0  0.48
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -862,7 +849,10 @@ The plot for probability of coherence:
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{ggsave}\hlstd{(}\hlstr{"probabilitycoherence.pdf"}\hlstd{,} \hlkwc{device}\hlstd{=} \hlstr{"pdf"}\hlstd{, gprob.main,} \hlkwc{width}\hlstd{=}\hlnum{7}\hlstd{,} \hlkwc{height} \hlstd{=} \hlnum{5}\hlstd{)}
+\hlkwd{ggsave}\hlstd{(}\hlstr{"bifurcation.pdf"}\hlstd{, gbifur,} \hlkwc{width}\hlstd{=}\hlnum{6}\hlstd{,} \hlkwc{height}\hlstd{=}\hlnum{4}\hlstd{)}
+\hlkwd{ggsave}\hlstd{(}\hlstr{"probabilitycoherence.pdf"}\hlstd{, gprob.main,} \hlkwc{width}\hlstd{=}\hlnum{6}\hlstd{,} \hlkwc{height} \hlstd{=} \hlnum{4}\hlstd{)}
+\hlkwd{ggsave}\hlstd{(}\hlstr{"stochastic_illustrate.pdf"}\hlstd{, gex,} \hlkwc{width}\hlstd{=}\hlnum{6}\hlstd{,} \hlkwc{height}\hlstd{=}\hlnum{4}\hlstd{)}
+\hlkwd{ggsave}\hlstd{(}\hlstr{"stochastic.pdf"}\hlstd{, gstoch,} \hlkwc{width}\hlstd{=}\hlnum{6}\hlstd{,} \hlkwc{height}\hlstd{=}\hlnum{4}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -871,6 +861,6 @@ The plot for probability of coherence:
 
 
 
-CPU time to generate this document: 7.435S seconds
+CPU time to generate this document: 12S seconds
 
 \end{document}

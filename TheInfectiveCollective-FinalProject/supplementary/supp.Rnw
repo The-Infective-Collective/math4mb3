@@ -859,9 +859,11 @@ plot(gstoch)
 
 We now save our figures for use in the final paper.
 
-The plot for probability of coherence:
 <<fig2save>>==
-ggsave("probabilitycoherence.pdf", device= "pdf", gprob.main, width=7, height = 5)
+ggsave("bifurcation.pdf", gbifur, width=6, height=4)
+ggsave("probabilitycoherence.pdf", gprob.main, width=6, height = 4)
+ggsave("stochastic_illustrate.pdf", gex, width=6, height=4)
+ggsave("stochastic.pdf", gstoch, width=6, height=4)
 @
 
 \section{Time to generate this document}

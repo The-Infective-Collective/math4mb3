@@ -183,13 +183,152 @@ date.string <- function(year,month,day) {
 \item Wrote up my findings in the project document, while also explaining a bit about time-dependent transmission rates in general.
 \end{itemize}
 
+\section*{\Sexpr{date.string(this.year, 4, 1)}}
+
+\textbf{Solo work} \\
+\emph{Apprxomiate Duration: 1 Hour}
+\begin{itemize}
+\item Read papers on coherence, specifically Earn et. al (2000) to determine next steps that should be taken for stochastic results.
+\item Tried to make a diagram similar to that displayed in stohasticfig for only two mixing rates (but for more values of basic reproductive number), but stopped once I realized that the simulation would take an extremely long time.
+\end{itemize}
+
+\section*{\Sexpr{date.string(this.year, 4, 2)}}
+
+\textbf{Group work} \\
+\emph{Apprxomiate Duration: 1 Hour}
+\begin{itemize}
+\item We met to discuss Dr. Earn's feedback and to settle on a definitive path for the remainder of the project.
+\item Dr. Earn gave us feedback on how we should approach the remainder of the paper.
+\item Split up work for the next couple days; I will be running sample trajectories and exploring the behaviour of stochastic trajectories near cycle endpoints of the bifurcation diagram. 
+\end{itemize}
+
+\textbf{Solo work} \\
+\emph{Apprxomiate Duration: 1 Hour}
+\begin{itemize}
+\item Played around with sample trajectories for a bit (for the stochastic model).
+\item Specifically tried to examine the correspondence between sharp increases and decreases in local/global extinction and the beginning of new cycles (or end of old cycles) in the bifurcation diagram.
+\end{itemize}
+
+\section*{\Sexpr{date.string(this.year, 4, 3)}}
+
+\textbf{Solo work} \\
+\emph{Apprxomiate Duration: 3 Hours}
+\begin{itemize}
+\item Continued to examine various sample trajectories; continued work from previous night.
+\item Using a few of these samples, I made figures that displayed local/global extinction and rescue effect, as well as synchronous vs. asynchronous behaviour.
+\item Still need to learn \texttt{ggplot} so I can make my graphs look consistent with other figures in the project.
+\end{itemize}
+
+\textbf{Group work} \\
+\emph{Apprxomiate Duration: 1 Hour}
+\begin{itemize}
+\item We met to talk about our progress on our individual parts and to plan the presentation.
+\item Set up a \texttt{beamer} file and formed a general idea of what should be on each slide.
+\item Split up work for presentation and decided which plots we must have done for Friday (presentation day).
+\end{itemize}
+
+\section*{\Sexpr{date.string(this.year, 4, 4)}}
+
+\textbf{Group work} \\
+\emph{Apprxomiate Duration: 1 Hour}
+\begin{itemize}
+\item Changed our incoherence measure; it is no longer an absolute threshold, it is instead relative to epidemic size.
+\item Discussed themes for our plots and how to go about making our indvidual slides look consistent.
+\end{itemize}
+
+\textbf{Group work} \\
+\emph{Apprxomiate Duration: 1 Hour}
+\begin{itemize}
+\item Changed our incoherence measure again; changed it back to an absolute threshold, but instead raised the threshold.
+\item Finished planning out presentation, I will work on the introductory slides with Aurora and stochastic results slides with DPark.
+\end{itemize}
+
+\textbf{Solo work} \\
+\emph{Apprxomiate Duration: 2 Hours}
+\begin{itemize}
+\item Learned basics from \texttt{ggplot} from DPark so I could make my graphs look nicer.
+\item DPark and I worked on slideshow presentation, we made our graphs look consistent and decided which figures to include in presentation, as well as what to write.
+\item Began introductory slide of presentation.
+\end{itemize}
+
+\section*{\Sexpr{date.string(this.year, 4, 5)}}
+
+\textbf{Solo work} \\
+\emph{Apprxomiate Duration: 1 Hour}
+\begin{itemize}
+\item Made some edits to stochastic section of presentation.
+\item Finished introductory slides with Aurora.
+\end{itemize}
+
+\textbf{Group work} \\
+\emph{Apprxomiate Duration: 3.5 hours}
+\begin{itemize}
+\item Made final changes to the \texttt{beamer} file and finalized the presentation for tomorrow.
+\item Discussed changing coherence measure again but decided against it.
+\item Changed research questions and introduction a bit, also talked about how to transition from section to section to maintain good flow during the presentation.
+\item Ran through the presentation a few time; each time we practiced, we gave each other feedback on what we could do to shorten our speaking time and have better flow.
+\end{itemize}
+
+\textbf{Solo work} \\
+\emph{Apprxomiate Duration: 0.5 Hours}
+\begin{itemize}
+\item Practiced my parts of presentation, I will be doing the introduction, summary, and conlusion/future questions.
+\end{itemize}
+
+\section*{\Sexpr{date.string(this.year, 4, 6)}}
+
+\textbf{Group work} \\
+\emph{Apprxomiate Duration: 1 hour}
+\begin{itemize}
+\item Practiced the presentation a few times before presenting in class.
+\item Discussed how to present next questions/future directions, and how to try our best to stay under time.
+\end{itemize}
+
+\textbf{Solo work} \\
+\emph{Apprxomiate Duration: 0.5 Hours}
+\begin{itemize}
+\item Practiced my parts of presentation in between our group meeting and our presentation in class.
+\end{itemize}
+
+\section*{\Sexpr{date.string(this.year, 4, 7)}}
+
+\textbf{Solo work} \\
+\emph{Apprxomiate Duration: 3.5 Hours}
+\begin{itemize}
+\item Wrote up the first bit (paragraph and Figure 2) of the stochastic results section.
+\item Later, I added more to the stochastic results section and edited the rest of the section.
+\item I fixed Figure 2 so that its axis titles would be the same size as those in other figures.
+\item I began to read other papers to get an idea of what to write for the introduction.
+\end{itemize}
+
+\section*{\Sexpr{date.string(this.year, 4, 8)}}
+
+\textbf{Solo work} \\
+\emph{Apprxomiate Duration: 7.5 Hours}
+\begin{itemize}
+\item Finished up edits for stochastic section and discussion.
+\item Wrote introduction and abstract.
+\item Contributed to the supplementary file by writing the section of time-dependent transmission rate and the section on observed synchrony and asynchrony in stochastic models.
+\item Read through final document a couple times to make a few small edits, also helped organize word count.
+\end{itemize}
+
+\textbf{Group work} \\
+\emph{Apprxomiate Duration: 5 hours}
+\begin{itemize}
+\item Met over Google Hangout chat twice; first meeting was for two hours, second meeting was for three hours.
+\item During the first meeting, we went through our document together, and made edits together as a group.
+\item We split up any edits and final work and decided to meet again the evening.
+\item In the evening, we edited the entire document again, specifically going over parts that were added since the afternoon.
+\item By the end of the second meeting, we were more or less ready to submit.
+\end{itemize}
+
 \section*{Total time spent on this project}
 
 \begin{quote}
 
-\emph{Group work:} 8.5 hours
+\emph{Group work:} 22 hours
 
-\emph{Solo work:} 16 hours
+\emph{Solo work:} 36 hours
 
 \end{quote}
 
